@@ -1,21 +1,23 @@
-package com.example.demo.services
+package com.tacs.backend.service
 
-import com.example.demo.request.Letter
-import com.example.demo.request.LetterColor
+import com.tacs.backend.request.Color
+import com.tacs.backend.request.Letter
+import com.tacs.backend.request.Try
 import org.springframework.stereotype.Component
 
 @Component
 class FindWordResolver {
-    fun findPossibleWords(letters: List<Letter>, initialPossibleWords: List<String>): List<String> {
+    fun findPossibleWords(tries: List<Try>, initialPossibleWords: List<String>): List<String> {
 
-        val lettersByColour = letters.mapIndexed { index, letter ->
+        //TODO: If we have more than one try, should we filter one by one?
+        val lettersByColour = tries.first().letters.mapIndexed { index, letter ->
             index to letter
         }.groupBy { it.second.color }
 
         val filteringByColour = mapOf(
-                LetterColor.GRAY to { possibleWord:String, letter: Letter, _: Int -> !possibleWord.contains(letter.letter) },
-                LetterColor.GREEN to { possibleWord:String, letter: Letter, index: Int -> possibleWord[index] == letter.letter.first() },
-                LetterColor.YELLOW to { possibleWord:String, letter: Letter, index: Int -> possibleWord[index] != letter.letter.first() && possibleWord.contains(letter.letter) },
+                Color.GRAY to { possibleWord:String, letter: Letter, _: Int -> !possibleWord.contains(letter.letter) },
+                Color.GREEN to { possibleWord:String, letter: Letter, index: Int -> possibleWord[index] == letter.letter.first() },
+                Color.YELLOW to { possibleWord:String, letter: Letter, index: Int -> possibleWord[index] != letter.letter.first() && possibleWord.contains(letter.letter) },
         )
         var possibleWords = initialPossibleWords
         filteringByColour.forEach { (letterColour, predicateToColour) ->
