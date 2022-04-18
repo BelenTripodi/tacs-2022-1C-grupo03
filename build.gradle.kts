@@ -30,12 +30,12 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation ("com.fasterxml.jackson.datatype:jackson-datatype-joda")
-	compileOnly("org.projectlombok:lombok")
 	compileOnly("joda-time:joda-time:2.10.14")
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("mysql:mysql-connector-java")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+	implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
 }
 
 tasks.withType<KotlinCompile> {
