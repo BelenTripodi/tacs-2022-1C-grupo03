@@ -4,10 +4,16 @@ import org.springframework.stereotype.Component
 
 @Component
 class HelperRepository {
+    private var snapshot: MutableMap<String,List<String>> = mutableMapOf()
+
     fun getAllWordsByLanguage(language: String): List<String> {
-        //TODO: We should read this file only one time
-        val allWords = HelperRepository::class.java.getResource("/helper/5letter-${language}.list")?.readText()?.split("\n")
-                ?: emptyList()
-        return allWords.filter { it.isNotEmpty() }.map { it.uppercase() }
+        if (!snapshot.contains(language)) {
+            snapshot[language] = getData(language)
+        }
+        return snapshot[language]?.filter { it.isNotEmpty() }?.map { it.uppercase() } ?: emptyList()
     }
+
+    private fun getData(language: String): List<String> =
+            HelperRepository::class.java.getResource("/helper/5letter-${language}.list")?.readText()?.split("\r\n")
+                    ?: emptyList()
 }
