@@ -1,25 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import LoginPage from "./components/auth/LoginPage";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import SignUpPage from "./components/auth/SignUpPage";
+import { Grid } from "@mui/material";
+import Navbar from "./components/layout/Navbar";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar />
+
+      <Grid
+        alignItems="center"
+        direction="column"
+        justifyContent="center"
+        container
+        padding={2}
+      >
+        <BrowserRouter>
+          <Routes>
+            <Route path="/signin" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+          </Routes>
+        </BrowserRouter>
+      </Grid>
+    </>
   );
 }
 
