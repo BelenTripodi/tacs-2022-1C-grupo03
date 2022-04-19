@@ -7,7 +7,7 @@ import com.fasterxml.jackson.datatype.joda.JodaModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.text.SimpleDateFormat
 
-val customObjectMapper : ObjectMapper = jacksonObjectMapper().apply {
+val mapper : ObjectMapper = jacksonObjectMapper().apply {
     registerModule(JodaModule())
     configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
     configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)

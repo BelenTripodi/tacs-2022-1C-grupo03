@@ -1,13 +1,17 @@
 package com.tacs.backend.client
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.tacs.backend.exception.OxfordException
-import com.tacs.backend.utils.customObjectMapper
-import org.apache.logging.log4j.message.StringFormattedMessage
+import com.tacs.backend.exception.BadRequestException
+import com.tacs.backend.exception.MalformedClientResponse
+import com.tacs.backend.exception.WordNotFoundException
+import com.tacs.backend.utils.mapper
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.net.HttpURLConnection
+import java.net.MalformedURLException
 import java.net.URL
+import java.net.UnknownServiceException
+import javax.naming.ServiceUnavailableException
 
 @Component
 class OxfordDictionariesClient(
@@ -29,15 +33,26 @@ class OxfordDictionariesClient(
         connection.addRequestProperty("app_id", appId)
         connection.addRequestProperty("app_key", appKey)
 
-        return when (connection.responseCode) {
-            200 -> customObjectMapper.readValue(connection.inputStream)
-            else -> {
-                val message = customObjectMapper.readValue<OxfordDictionariesResponse>(connection.errorStream).error!!
-                throw OxfordException(message, connection.responseCode)
+        val responseCode = connection.responseCode
+
+        if (responseCode == 200) {
+            return mapper.readValue(connection.inputStream)
+        } else {
+            val message = mapper.readValue<OxfordDictionariesResponse>(connection.errorStream).error
+                ?: throw MalformedClientResponse("Oxford Dictionaries Client return an unexpected response")
+            when(responseCode) {
+                404 ->
+                    throw WordNotFoundException(message)
+                500 ->
+                    throw ServiceUnavailableException(message)
+                414 ->
+                    throw MalformedURLException(message)
+                400 ->
+                    throw BadRequestException(message)
+                else ->
+                    throw UnknownServiceException(message)
             }
         }
-
-
     }
 }
 
