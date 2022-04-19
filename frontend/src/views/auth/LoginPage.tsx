@@ -56,7 +56,7 @@ const LoginPage = () => {
             <Input name="password" title="Contraseña" />
           </FormControl>
         </Grid>
-        <Grid item direction="row">
+        <Grid item direction="row" sx={{display: 'flex'}}>
         <Grid item xs={6} direction="column" margin={2}>
           <Button type="submit" color="primary" variant="outlined" >
             LogIn
