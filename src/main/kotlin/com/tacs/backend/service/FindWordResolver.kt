@@ -7,12 +7,15 @@ import org.springframework.stereotype.Component
 
 @Component
 class FindWordResolver {
-    fun findPossibleWords(tries: List<Try>, initialPossibleWords: List<String>): List<String> {
+    fun findPossibleWords(tries: List<Try>, tryIndex: Int, initialPossibleWords: List<String>): List<String> {
 
-        //TODO: If we have more than one try, should we filter one by one?
-        val lettersByColour = tries.first().letters.mapIndexed { index, letter ->
+        if (tries.size == tryIndex) {
+            return initialPossibleWords
+        }
+
+        val lettersByColour = tries.getOrNull(tryIndex)?.letters?.mapIndexed { index, letter ->
             index to letter
-        }.groupBy { it.second.color }
+        }?.groupBy { it.second.color } ?: emptyMap()
 
         val filteringByColour = mapOf(
                 Color.GRAY to { possibleWord:String, letter: Letter, _: Int -> !possibleWord.contains(letter.letter) },
@@ -27,24 +30,6 @@ class FindWordResolver {
                 }
             }
         }
-        return possibleWords
-
-
-//        lettersByColour[LetterColor.GRAY]?.forEach { (_, letter) ->
-//            possibleWords = possibleWords.filter { possibleWord ->
-//                !possibleWord.contains(letter.letter)
-//            }
-//        }
-//        lettersByColour[LetterColor.GREEN]?.forEach { (index, letter) ->
-//            possibleWords = possibleWords.filter { possibleWord ->
-//                possibleWord[index] == letter.letter.first()
-//            }
-//        }
-//        lettersByColour[LetterColor.YELLOW]?.forEach { (index, letter) ->
-//            possibleWords = possibleWords.filter { possibleWord ->
-//                possibleWord[index] != letter.letter.first() && possibleWord.contains(letter.letter)
-//            }
-//        }
-//        return possibleWords
+        return findPossibleWords(tries, tryIndex + 1, possibleWords)
     }
 }
