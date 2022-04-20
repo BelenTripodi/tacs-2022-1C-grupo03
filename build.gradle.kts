@@ -26,16 +26,23 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-data-rest")
 	//implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-validation:2.6.6")
+	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation ("com.fasterxml.jackson.datatype:jackson-datatype-joda")
+	implementation("javax.validation:validation-api:2.0.1.Final")
 	compileOnly("joda-time:joda-time:2.10.14")
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("mysql:mysql-connector-java")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
+	implementation("io.kotlintest:kotlintest:2.0.7")
+	testImplementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
+	testImplementation("io.mockk:mockk:1.12.3")
+
 }
 
 tasks.withType<KotlinCompile> {
@@ -46,5 +53,5 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.withType<Test> {
-	useJUnitPlatform()
+	useJUnit()
 }

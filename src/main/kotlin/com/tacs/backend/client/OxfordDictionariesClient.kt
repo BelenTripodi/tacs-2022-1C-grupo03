@@ -59,5 +59,5 @@ class OxfordDictionariesClient(
 data class Sense(val definitions: List<String>?)
 data class Entry(val senses: List<Sense>?)
 data class LexicalEntry(val entries: List<Entry>?)
-data class OxfordResult(val lexicalEntries: List<LexicalEntry>?)
+data class OxfordResult(val id: String, val lexicalEntries: List<LexicalEntry>?)
 data class OxfordDictionariesResponse(val results: List<OxfordResult>? = null, val error: String? = null)

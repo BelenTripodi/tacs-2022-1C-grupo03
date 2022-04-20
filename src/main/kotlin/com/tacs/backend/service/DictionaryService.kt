@@ -12,7 +12,7 @@ class DictionaryService(
     fun getWordDefinition(word: String, language: Language): DictionaryResponse {
         val clientResponse = oxfordDictionariesClient.getDefinition(word, language.type)
         return DictionaryResponse(word,
-            clientResponse.results?.firstOrNull()?.lexicalEntries?.firstOrNull()?.entries?.firstOrNull()?.senses?.firstOrNull()?.definitions?.firstOrNull() ?: ""
+            clientResponse.results?.firstOrNull { it.id == word }?.lexicalEntries?.firstOrNull()?.entries?.firstOrNull()?.senses?.firstOrNull()?.definitions?.firstOrNull() ?: ""
             )
     }
 }

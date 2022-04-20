@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.net.MalformedURLException
 import java.net.UnknownServiceException
 import javax.naming.ServiceUnavailableException
+import javax.validation.UnexpectedTypeException
 
 @RestController
 @ControllerAdvice
