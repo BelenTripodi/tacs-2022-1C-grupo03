@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.example"
-version = "0.0.1-SNAPSHOT"
+version = "5.2.2"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 configurations {
@@ -39,8 +39,11 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
-	implementation("io.kotlintest:kotlintest:2.0.7")
-	testImplementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
+	testImplementation("io.kotest:kotest-runner-junit5:5.2.2")
+	testImplementation("io.kotest:kotest-assertions-core:5.2.2")
+	testImplementation("io.kotest:kotest-property:5.2.2")
+	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.1")
 	testImplementation("io.mockk:mockk:1.12.3")
 
 }
@@ -52,6 +55,6 @@ tasks.withType<KotlinCompile> {
 	}
 }
 
-tasks.withType<Test> {
-	useJUnit()
+tasks.withType<Test>().configureEach {
+	useJUnitPlatform()
 }
