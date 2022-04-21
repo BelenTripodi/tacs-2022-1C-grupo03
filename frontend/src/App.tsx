@@ -17,7 +17,6 @@ import NotFound from "./components/NotFound";
 const App = () => {
   const [user, setUser] = useState({ name: "", auth: false });
 
-  console.log("Esta auth el loco?" + user.auth);
   return (
     <BrowserRouter>
       <UserContext.Provider
