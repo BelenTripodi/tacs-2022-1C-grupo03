@@ -47,7 +47,7 @@ const LoginPage = () => {
               <h3>Ingresar a la App</h3>
             </Grid>
             <Grid item margin={2}>
-              <FormControl>
+              <FormControl fullWidth>
                 <InputLabel htmlFor="nombreUsuario">
                   Nombre de Usuario*
                 </InputLabel>
@@ -55,23 +55,26 @@ const LoginPage = () => {
               </FormControl>
             </Grid>
             <Grid item margin={2}>
-              <FormControl>
+              <FormControl fullWidth>
                 <InputLabel htmlFor="password">Contraseña*</InputLabel>
-                <Input name="password" title="Contraseña" type="password" onChange={(event) => setPassword(event.target.value)}/>
+                <Input name="password" title="Contraseña" type="password" onChange={(event) => setPassword(event.target.value)} fullWidth/>
               </FormControl>
             </Grid>
             <Grid item direction="row" sx={{ display: "flex" }}>
-              <Grid item xs={6} direction="column" margin={2}>
-                <Button type="submit" color="primary" variant="outlined" onClick={handleLogin}>
+              <Grid item xs={12} direction="column" margin={2}>
+                <Button type="submit" color="primary" variant="outlined" onClick={handleLogin} fullWidth>
                   LogIn
                 </Button>
               </Grid>
-              <Grid item xs={6} direction="column" margin={2}>
-                <Button color="secondary" variant="outlined">
-                  <Link to="/signup">Registrarse</Link>
-                </Button>
-              </Grid>
             </Grid>
+              <Grid item direction="row" sx={{display: "flex"}}>
+              <Grid item xs={8} direction="column">
+                <p>Aún no tienes una cuenta?</p>  
+              </Grid>
+              <Grid item xs={4} direction="column" margin={2}>
+                <Link to="/signup">Registrarse</Link>
+              </Grid>
+              </Grid>
           </Grid>
         </Paper>
       </Grid>
