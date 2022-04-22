@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { Input, Container, Typography, MenuItem } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { CircularProgress } from "@mui/material";
+import Loading from "../../components/Loading";
 const axios = require('axios').default;
 
 interface IMeaning {
@@ -34,13 +35,7 @@ const Dictionary = () =>{
         setDict(e.target.value)
     }
 
-    if(loading){
-        return (
-            <Container sx={{textAlign:'center', marginTop: '4rem'}}>
-                <CircularProgress />
-            </Container>
-        )
-    }
+    if(loading) return <Loading />
 
     return(
         <>

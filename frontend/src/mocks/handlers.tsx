@@ -12,5 +12,19 @@ export const handlers = [
                 ]
             })
         )
+    }),
+    
+    rest.post(`${process.env.REACT_APP_BACKEND_URL}/help`, (req, res, ctx) => {
+        return res(
+            ctx.delay(1500),
+            ctx.status(200),
+            ctx.json({
+                possibleWords: [
+                    "word1",
+                    "word2",
+                    "word3"  
+                ]
+            })
+        )
     })
 ]
