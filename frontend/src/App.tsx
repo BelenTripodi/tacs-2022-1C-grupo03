@@ -34,7 +34,6 @@ const App = () => {
         {user.auth ? (
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/login" element={<Dashboard />}/>
             <Route path="/dictionary" element={<Dictionary />} />
             <Route path="/helper" element={<Helper />} />
             <Route path="/championship" element={<Championship />} />
