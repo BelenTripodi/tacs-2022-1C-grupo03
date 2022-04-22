@@ -13,6 +13,7 @@ import UserProvider from "./context/UserProvider";
 
 import UserContext from "./context/UserContext";
 import NotFound from "./components/NotFound";
+import Layout from "./components/layout/Layout";
 
 const App = () => {
   const [user, setUser] = useState({ name: "", auth: false });
@@ -30,14 +31,15 @@ const App = () => {
           },
         }}
       >
-        {user.auth && <Navbar />}
         {user.auth ? (
           <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/dictionary" element={<Dictionary />} />
-            <Route path="/helper" element={<Helper />} />
-            <Route path="/championship" element={<Championship />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="/dictionary" element={<Dictionary />} />
+              <Route path="/helper" element={<Helper />} />
+              <Route path="/championship" element={<Championship />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
           </Routes>
         ) : (
           <Routes>
