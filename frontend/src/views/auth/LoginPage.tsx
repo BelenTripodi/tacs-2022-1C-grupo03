@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
 
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
 import { Avatar, Button, FormControl, Grid, Input, InputLabel } from "@mui/material";
 import { TextField } from "@mui/material";
@@ -10,17 +10,21 @@ import UserContext from "../../context/UserContext";
 
 const LoginPage = () => {
 
+  let navigate = useNavigate();
+
   const [name,setName] = useState("");
   const [password,setPassword] = useState("");
 
   const { user, login, logout } = useContext(UserContext);
 
   const handleLogin = () => {
+    // TODO Conectarse con la API
+
     login(name);
 
     console.log(user);
 
-    (<Navigate to="/" />)
+   navigate("/");
   }
 
   return (
