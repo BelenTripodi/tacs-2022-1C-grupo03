@@ -4,7 +4,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.tacs.backend.exception.BadRequestException
 import com.tacs.backend.exception.MalformedClientResponse
 import com.tacs.backend.exception.WordNotFoundException
-import com.tacs.backend.utils.mapper
+import com.tacs.backend.utils.TacsObjectMapper
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.net.HttpURLConnection
@@ -21,7 +21,7 @@ class OxfordDictionariesClient(
     private val appKey: String,
     @Value("\${oxfordDictionary.baseUrl}")
     private val baseUrl: String,
-
+    private val mapper: TacsObjectMapper
 ) {
     private val wordsUrl = "$baseUrl%s?q=%s&fields=definitions"
 
@@ -36,9 +36,9 @@ class OxfordDictionariesClient(
         val responseCode = connection.responseCode
 
         if (responseCode == 200) {
-            return mapper.readValue(connection.inputStream)
+            return mapper.mapper.readValue(connection.inputStream)
         } else {
-            val message = mapper.readValue<OxfordDictionariesResponse>(connection.errorStream).error
+            val message = mapper.mapper.readValue<OxfordDictionariesResponse>(connection.errorStream).error
                 ?: throw MalformedClientResponse("Oxford Dictionaries Client return an unexpected response")
             when(responseCode) {
                 404 ->

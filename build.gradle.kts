@@ -39,12 +39,15 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
-	testImplementation("io.kotest:kotest-runner-junit5:5.2.2")
-	testImplementation("io.kotest:kotest-assertions-core:5.2.2")
-	testImplementation("io.kotest:kotest-property:5.2.2")
+	testImplementation("io.kotest:kotest-runner-junit5:5.2.3")
+	testImplementation("io.kotest:kotest-assertions-core:5.2.3")
+	testImplementation("io.kotest:kotest-property:5.2.3")
 	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.1")
 	testImplementation("io.mockk:mockk:1.12.3")
+	testImplementation("org.powermock:powermock-mockito-release-full:1.6.4")
+	testImplementation("org.powermock:powermock-api-mockito2:2.0.9")
+	testImplementation("org.mockito:mockito-core:4.4.0")
 
 }
 
