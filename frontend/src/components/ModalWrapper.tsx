@@ -1,9 +1,12 @@
 import React from "react";
+import {Modal} from "@mui/material";
 
-const Modal = ({children ,onClose}: {children: React.ReactNode,onClose: (() => void)}) => {
-    <Modal>
-
-    </Modal>
+const ModalWrapper = ({children ,onClose}: {children: React.ReactElement,onClose: (() => void)}) => {
+    return (
+        <Modal open onClose={onClose}>
+            {children}
+        </Modal>
+    );
 }
 
-export default Modal;
+export default ModalWrapper;
