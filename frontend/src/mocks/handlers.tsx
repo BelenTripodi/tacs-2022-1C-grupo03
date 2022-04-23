@@ -15,6 +15,7 @@ export const handlers = [
     }),
     
     rest.post(`${process.env.REACT_APP_BACKEND_URL}/help`, (req, res, ctx) => {
+        console.log("Request", req.body)
         return res(
             ctx.delay(1500),
             ctx.status(200),
