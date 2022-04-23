@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
-import java.net.URL
 import java.net.UnknownServiceException
 import javax.naming.ServiceUnavailableException
 
@@ -21,18 +20,19 @@ class OxfordDictionariesClient(
     private val appKey: String,
     @Value("\${oxfordDictionary.baseUrl}")
     private val baseUrl: String,
-    private val mapper: TacsObjectMapper
+    private val mapper: TacsObjectMapper,
+    private val urlOpener: URLOpener
 ) {
     private val wordsUrl = "$baseUrl%s?q=%s&fields=definitions"
 
     fun getDefinition(word: String, language: String): OxfordDictionariesResponse {
 
         val stringURL = wordsUrl.format(language, word)
-        val connection = createConnection(stringURL)
-        connection.requestMethod = "GET"
-        connection.addRequestProperty("Accept", "application/json")
-        connection.addRequestProperty("app_id", appId)
-        connection.addRequestProperty("app_key", appKey)
+        val headers = mapOf(
+            "app_id" to  appId,
+            "app_key" to appKey
+        )
+        val connection: HttpURLConnection= urlOpener.createConnection(stringURL, headers = headers) as HttpURLConnection
 
         val responseCode = connection.responseCode
 
@@ -54,11 +54,6 @@ class OxfordDictionariesClient(
                     throw UnknownServiceException(message)
             }
         }
-    }
-
-    fun createConnection(string: String): HttpURLConnection{
-        return URL(string).openConnection() as HttpURLConnection
-        //TODO: What if URL creation returns an error?
     }
 }
 
