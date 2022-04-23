@@ -36,6 +36,7 @@ const Helper = () =>{
     }, [])
 
     // Este useEffect es para que una vez se inicialice el inputRef, se ponga el foco en el primer input
+    // La idea es que cargue esta view y ya al toque puedas ingresar caracteres
     useEffect( () => {
         if(inputRefs.length){
             inputRefs[0].current?.focus()
@@ -57,9 +58,7 @@ const Helper = () =>{
         setLetters(prev => {
             const aux = [...prev]
             const currentColor = aux[index].color
-            console.log("Current color before click", currentColor)
             aux[index].color = (currentColor+1) % colorToHex.length
-            console.log("Current color after click", aux[index].color)
             return [...aux]
         })
     }
