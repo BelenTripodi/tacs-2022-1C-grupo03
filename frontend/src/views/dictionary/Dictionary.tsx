@@ -49,6 +49,7 @@ const Dictionary = () =>{
                     onChange={handleDictionaryChange}
                     label="Age"
                     displayEmpty
+                    sx={{minWidth: '300px'}}
                 >
                     <MenuItem value={0}>Diccionario de la Lengua española</MenuItem>
                     <MenuItem value={1}>Diccionario de Oxford</MenuItem>
