@@ -8,7 +8,7 @@ enum COLORS {
 }
 
 const colorToHex = [
-    '#c8bf0f', // amarillo
+    '#daee07', // amarillo
     '#96999b', // gris
     '#32b45f' // verde
 ]
@@ -44,13 +44,18 @@ const Helper = () =>{
     }, [inputRefs])
 
 
-    // Cuando se detecta el ingreso de un caracter en un input, se pasa al siguiente en la lista
     const handleCharInput = (index: number) => {
+        const currentValue = inputRefs[index].current!.value
+        const regex = /^[a-z]*$/i // solo acepto caracteres y el string vacio.
+        if(!regex.test(currentValue)) return
+
         setLetters(prev => {
             const aux = [...prev]
-            aux[index].letter = inputRefs[index].current!.value
+            aux[index].letter = currentValue.length > 1? currentValue[currentValue.length - 1] : currentValue 
+            // esto es para que quede solo el ultimo caracter ingresado en el input
             return [...aux]
         })
+        // Cuando se detecta el ingreso de un caracter en un input, se pasa al siguiente en la lista
         inputRefs[(index+1) % wordLength].current!.focus()
     }
 
@@ -103,7 +108,7 @@ const Helper = () =>{
 
         
                 {/* Resultados del Helper */}
-                <Container sx={{'&>*': {margin: '1rem 0'} ,display: 'flex', flexDirection:'column', alignItems:'center'}}>
+                <Container sx={{'&>*': {margin: '1.1rem 0'} ,display: 'flex', flexDirection:'column', alignItems:'center'}}>
                     <>
                         <Button variant="contained" onClick={getHelp}>Get Help!</Button>
                         {loading && <Loading/>}
