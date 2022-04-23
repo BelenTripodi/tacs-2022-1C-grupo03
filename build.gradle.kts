@@ -45,9 +45,6 @@ dependencies {
 	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.1")
 	testImplementation("io.mockk:mockk:1.12.3")
-	testImplementation("org.powermock:powermock-mockito-release-full:1.6.4")
-	testImplementation("org.powermock:powermock-api-mockito2:2.0.9")
-	testImplementation("org.mockito:mockito-core:4.4.0")
 
 }
 
