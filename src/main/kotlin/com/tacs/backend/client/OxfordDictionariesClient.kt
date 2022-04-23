@@ -27,7 +27,8 @@ class OxfordDictionariesClient(
 
     fun getDefinition(word: String, language: String): OxfordDictionariesResponse {
 
-        val connection: HttpURLConnection = URL(wordsUrl.format(language, word)).openConnection() as HttpURLConnection
+        val stringURL = wordsUrl.format(language, word)
+        val connection = createConnection(stringURL)
         connection.requestMethod = "GET"
         connection.addRequestProperty("Accept", "application/json")
         connection.addRequestProperty("app_id", appId)
@@ -53,6 +54,11 @@ class OxfordDictionariesClient(
                     throw UnknownServiceException(message)
             }
         }
+    }
+
+    fun createConnection(string: String): HttpURLConnection{
+        return URL(string).openConnection() as HttpURLConnection
+        //TODO: What if URL creation returns an error?
     }
 }
 

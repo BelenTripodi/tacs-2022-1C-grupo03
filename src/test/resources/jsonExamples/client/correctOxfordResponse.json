@@ -1,0 +1,38 @@
+{
+  "metadata": {
+    "operation": "retrieve",
+    "provider": "Oxford University Press",
+    "schema": "RetrieveEntry"
+  },
+  "query": "definicion",
+  "results": [
+    {
+      "id": "someId",
+      "language": "es",
+      "lexicalEntries": [
+        {
+          "entries": [
+            {
+              "senses": [
+                {
+                  "definitions": [
+                    "someDef"
+                  ],
+                  "id": "id6ffd8fbf-21b0-4536-9f80-022da24c8ef5"
+                }
+              ]
+            }
+          ],
+          "language": "es",
+          "lexicalCategory": {
+            "id": "noun",
+            "text": "Noun"
+          },
+          "text": "definición"
+        }
+      ],
+      "type": "headword",
+      "word": "definición"
+    }
+  ]
+}

@@ -1,48 +1,33 @@
 package com.tacs.backend.client
 
-import com.fasterxml.jackson.module.kotlin.readValue
+import com.tacs.backend.utils.FileReader
 import com.tacs.backend.utils.TacsObjectMapper
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.any
-import org.powermock.api.mockito.PowerMockito
-import org.powermock.modules.junit4.PowerMockRunner
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.spyk
 import java.io.InputStream
 import java.net.HttpURLConnection
-import java.net.URL
 
-@RunWith(PowerMockRunner::class)
 class OxfordDictionariesClientTest : WordSpec() {
-
-    private val mapper = PowerMockito.mock(TacsObjectMapper::class.java)
-    private val oxfordDictionariesClient =
-        OxfordDictionariesClient("someAppId", "someAppKey", "https://od-api.oxforddictionaries.com/api/v2/words/", mapper)
+    private val mapper = TacsObjectMapper()
+    private val oxfordDictionariesClient= spyk<OxfordDictionariesClient>(OxfordDictionariesClient("someAppId", "someAppKey", "https://od-api.oxforddictionaries.com/api/v2/words/", mapper))
 
     init {
         "oxfordClientTest" When {
             "getDefinition with a word and a language" should {
-                val clientResponse = OxfordDictionariesResponse(
-                    listOf(
-                        OxfordResult(
-                            "someId", listOf(
-                                LexicalEntry(listOf(Entry(listOf(Sense(listOf("someDef"))))))
-                            )
-                        )
-                    )
-                )
-                val u = PowerMockito.mock(URL::class.java)
-                val url = "https://od-api.oxforddictionaries.com/api/v2/words/es?q=casa&fields=definitions"
-                PowerMockito.whenNew(URL::class.java).withArguments(url).thenReturn(u)
-                val huc: HttpURLConnection = PowerMockito.mock(HttpURLConnection::class.java)
-                PowerMockito.`when`(u.openConnection()).thenReturn(huc)
-                PowerMockito.`when`(huc.responseCode).thenReturn(200)
-                PowerMockito.`when`(huc.inputStream).thenReturn(InputStream.nullInputStream())
-                PowerMockito.`when`(mapper.mapper.readValue<OxfordDictionariesResponse>(any(InputStream::class.java))).thenReturn(clientResponse)
-
+                val huc: HttpURLConnection = mockk(relaxed = true)
+                val url = "https://od-api.oxforddictionaries.com/api/v2/words/es?q=definicion&fields=definitions"
+                every { oxfordDictionariesClient.createConnection(url) } returns huc
                 "return correct response" {
-                    val response = oxfordDictionariesClient.getDefinition("casa", "es")
+                    val oxfordResponse = FileReader.read("jsonExamples/client/correctOxfordResponse.json")
+                    val inputStream: InputStream = oxfordResponse.byteInputStream()
+                    every { huc.responseCode } returns 200
+                    every { huc.inputStream } returns inputStream
+                    every { huc.addRequestProperty(any(), any()) } returns Unit
+                    val response = oxfordDictionariesClient.getDefinition("definicion", "es")
                     response.results shouldNotBe null
                     response.results!!.forEach { result ->
                         result.lexicalEntries!! shouldNotBe null
