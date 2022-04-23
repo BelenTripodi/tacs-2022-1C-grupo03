@@ -57,7 +57,9 @@ const Helper = () =>{
         setLetters(prev => {
             const aux = [...prev]
             const currentColor = aux[index].color
+            console.log("Current color before click", currentColor)
             aux[index].color = (currentColor+1) % colorToHex.length
+            console.log("Current color after click", aux[index].color)
             return [...aux]
         })
     }
@@ -92,10 +94,10 @@ const Helper = () =>{
                         marginTop: '4rem'
                     }}
                 >
-                    {letters.length && Array(wordLength).fill(0).map( (_, index) =>
+                    {inputRefs.length && colorRefs.length && letters.length && Array(wordLength).fill(0).map( (_, index) =>
                         <Container key={index}>
                             <Input inputRef={inputRefs[index]} onChange={() => handleCharInput(index)} value={letters[index].letter}/>
-                            <div  ref={colorRefs[index]} onClick={() => handleColorClick(index)} style={{background: `${colorToHex[letters[index].color]}`}}>a</div>
+                            <div  ref={colorRefs[index]} onClick={() => handleColorClick(index)} style={{background: `${colorToHex[letters[index].color]}`, minWidth:'inherit', minHeight: '20px'}}></div>
                         </Container>
                     )}
                 </Container>
