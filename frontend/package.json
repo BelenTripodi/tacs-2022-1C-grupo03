@@ -15,6 +15,7 @@
     "@types/node": "^16.11.27",
     "@types/react": "^18.0.5",
     "@types/react-dom": "^18.0.1",
+    "axios": "^0.26.1",
     "formik": "^2.2.9",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -46,5 +47,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "msw": "^0.39.2"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }
