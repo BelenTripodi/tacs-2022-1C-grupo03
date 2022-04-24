@@ -77,6 +77,12 @@ const Helper = () =>{
         })
     }
 
+    const newTry = () => {
+        setTries([])
+        setLetters( Array(wordLength).fill(0).map( _ => {return {letter: '', color: COLORS.GREY}}))
+        inputRefs[0].current?.focus()
+        setPossibleWords([])
+    }
 
     // fetch
     const getHelp = async () => {
@@ -96,6 +102,7 @@ const Helper = () =>{
                 return [...temp]
             })
             setPossibleWords(response.data.possibleWords)
+            inputRefs[0].current?.focus()
         } catch (error) {
             console.log("Error getting help", {error})
         } finally {
@@ -109,6 +116,7 @@ const Helper = () =>{
                 <Typography align="center" variant='h2' marginTop='2rem'>Wordle Helper</Typography>
                 <Typography align="center" variant="subtitle1">If you are inda stupid, this is the right place!</Typography>
 
+                {/**Contenedor de los inputs*/}
                 <Container 
                     sx={{
                         display: 'flex',
@@ -126,11 +134,25 @@ const Helper = () =>{
                     )}
                 </Container>
 
+                {/**Contenedor de los Intentos realizados previamente*/}
+                <Container sx={{textAlign: 'center'}}>
+                    <Typography variant='h5'>Last tries: {tries.length === 0 && '-'}</Typography>
+                    {tries.length>0 && 
+                        tries.map( (_try: Try, index) => {
+                            const word = _try.letters.reduce((prev: string, current : ILetter) => prev+current.letter, '')
+                            return <Typography key={index} paragraph>{`${index+1}: ${word}`}</Typography>
+                        })
+                    }
+                </Container>
         
                 {/* Resultados del Helper */}
                 <Container sx={{'&>*': {margin: '1.1rem 0'} ,display: 'flex', flexDirection:'column', alignItems:'center'}}>
                     <>
-                        <Button variant="contained" onClick={getHelp}>Get Help!</Button>
+                        
+                        <Container sx={{display: 'flex', margin: '1rem 0', justifyContent: 'space-around', width: '400px'}}>
+                            <Button variant="contained" onClick={getHelp}>Get Help!</Button>
+                            <Button variant="contained" onClick={newTry}>New try</Button>
+                        </Container>
                         {loading && <Loading/>}
                         {possibleWords.length > 0 &&  
                                 <>
