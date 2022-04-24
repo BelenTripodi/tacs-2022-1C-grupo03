@@ -1,17 +1,19 @@
+require('dotenv').config()
 const { SlashCommandBuilder } = require('@discordjs/builders')
+const axios = require('axios')
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('dictionary')
         .setDescription('Replies with word meaning')
-        .addIntegerOption((option) =>
+        .addStringOption((option) =>
             option
                 .setName('dictionary')
                 .setDescription('Diccionario utilizado para buscar la palabra')
                 .setRequired(true)
                 .addChoices(
-                    { name: 'Diccionario de la Lengua española', value: 0 },
-                    { name: 'Diccionario de Oxford', value: 1 }
+                    { name: 'spanish', value: 'spanish' },
+                    { name: 'english', value: 'english' }
                 )
         )
         .addStringOption((option) =>
@@ -21,9 +23,19 @@ module.exports = {
                 .setRequired(true)
         ),
     async execute(interaction) {
-        console.log(interaction.commandName)
-        console.log(interaction.options.getInteger('dictionary'))
-        console.log(interaction.options.get())
-        await interaction.reply(`word meaning: sdasddasdas etc etc`)
+        try {
+            const language = interaction.options.getString('language')
+            const word = interaction.options.getString('word')
+            const response = await axios.get(
+                `${process.env.BACKEND_URL}/dictionary`,
+                {
+                    params: { word, language },
+                }
+            )
+            console.log(response)
+            await interaction.reply(`word meaning: sdasddasdas etc etc`)
+        } catch (error) {
+            console.log('Error fetching dictionary data', { error })
+        }
     },
 }
