@@ -114,7 +114,7 @@ const Helper = () =>{
     return(
         <>
                 <Typography align="center" variant='h2' marginTop='2rem'>Wordle Helper</Typography>
-                <Typography align="center" variant="subtitle1">If you are inda stupid, this is the right place!</Typography>
+                <Typography align="center" variant="subtitle1">If you are kinda stupid, this is the right place!</Typography>
 
                 {/**Contenedor de los inputs*/}
                 <Container 
