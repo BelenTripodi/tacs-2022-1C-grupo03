@@ -8,7 +8,7 @@ module.exports = {
         .setDescription('Replies with word meaning')
         .addStringOption((option) =>
             option
-                .setName('dictionary')
+                .setName('language')
                 .setDescription('Diccionario utilizado para buscar la palabra')
                 .setRequired(true)
                 .addChoices(
@@ -32,8 +32,13 @@ module.exports = {
                     params: { word, language },
                 }
             )
-            console.log(response)
-            await interaction.reply(`word meaning: sdasddasdas etc etc`)
+
+            let strResponse = ''
+            const defs = response.data.definitions
+            for (let i = 0; i < defs.length; i++) {
+                strResponse += `${i + 1} : ${defs[i]}\n`
+            }
+            await interaction.reply(strResponse)
         } catch (error) {
             console.log('Error fetching dictionary data', { error })
         }

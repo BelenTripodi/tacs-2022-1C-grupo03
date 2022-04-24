@@ -1,5 +1,4 @@
 require('dotenv').config()
-require('./mocks/MockConfig')
 const fs = require('node:fs')
 const { Client, Collection, Intents } = require('discord.js')
 
@@ -34,11 +33,9 @@ for (const file of eventFiles) {
     }
 }
 
-const MockRequests = require('mock-requests')
-
-const { response } = require('./mocks/dictionaryResponse')
-const url = process.env.BACKEND_URL
-
-MockRequests.setMockUrlResponse(url + '/dictionary', response)
+if (process.env.ENV === 'development') {
+    const { server } = require('./mocks/server')
+    server.listen()
+}
 
 client.login(token)

@@ -20,6 +20,6 @@
   },
   "devDependencies": {
     "eslint": "^8.14.0",
-    "mock-requests": "^1.4.0"
+    "msw": "^0.39.2"
   }
 }
