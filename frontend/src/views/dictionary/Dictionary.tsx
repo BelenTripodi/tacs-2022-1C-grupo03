@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Input, Container, Typography, MenuItem } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { CircularProgress } from "@mui/material";
 import Loading from "../../components/Loading";
 const axios = require('axios').default;
 
@@ -11,7 +10,7 @@ interface IMeaning {
 }
 
 const Dictionary = () =>{
-    const [ dict, setDict ] = useState('0')
+    const [ language, setLanguage ] = useState('spanish')
     const [meaning, setMeaning ] = useState<IMeaning>({word: '', definitions: []})
     const inputRef = useRef<HTMLInputElement>()
     const [loading, setLoading] = useState(false)
@@ -21,7 +20,7 @@ const Dictionary = () =>{
             if(event.key === 'Enter'){
                 setLoading(true)
                 const word = inputRef.current?.value
-                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/dictionary`, {params: {word}})
+                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/dictionary`, {params: {word, language}})
                 setMeaning({word, definitions: response.data.definitions})
             }
         } catch (error) {
@@ -32,7 +31,7 @@ const Dictionary = () =>{
     }
 
     const handleDictionaryChange = (e: SelectChangeEvent) : void => {
-        setDict(e.target.value)
+        setLanguage(e.target.value)
     }
 
     if(loading) return <Loading />
@@ -45,14 +44,14 @@ const Dictionary = () =>{
                 <Select
                     labelId="dictionary"
                     id="dictionary"
-                    value={dict}
+                    value={language}
                     onChange={handleDictionaryChange}
                     label="Age"
                     displayEmpty
                     sx={{minWidth: '300px'}}
                 >
-                    <MenuItem value={0}>Diccionario de la Lengua española</MenuItem>
-                    <MenuItem value={1}>Diccionario de Oxford</MenuItem>
+                    <MenuItem value={'spanish'}>Español</MenuItem>
+                    <MenuItem value={'english'}>Ingles</MenuItem>
                 </Select>
                 <Container sx={{display:'flex', alignItems:'center'}}>
                     <Input 
