@@ -18,6 +18,10 @@ interface ILetter {
     color: COLORS
 }
 
+interface Try {
+    letters: ILetter[]
+}
+
 const Helper = () =>{
     const [loading, setLoading] = useState(false)
     const wordLength = 5
@@ -26,6 +30,7 @@ const Helper = () =>{
     const [inputRefs, setInputRefs ] = useState<RefObject<HTMLInputElement>[]>([])
     const [colorRefs, setColorRefs ] = useState<RefObject<HTMLDivElement>[]>([])
     const [letters, setLetters] = useState<ILetter[]>([])
+    const [tries, setTries] = useState<Try[]>([])
     
 
     // Inicializacion de los array de Referencias a los elementos del DOM
@@ -74,7 +79,12 @@ const Helper = () =>{
         try {
             setPossibleWords([])
             setLoading(true)
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/help`, letters)
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/help`, tries)
+            
+            // actualizo la lista de intentos
+            const aux = [...tries]
+            aux.push({letters})
+            setTries(aux)
             setPossibleWords(response.data.possibleWords)
         } catch (error) {
             console.log("Error getting help", {error})
