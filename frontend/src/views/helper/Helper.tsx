@@ -49,13 +49,17 @@ const Helper = () =>{
     }, [inputRefs])
 
 
+    const getDeepCopy = (arr: any[]) => {
+        return JSON.parse(JSON.stringify(arr))
+    }
+
     const handleCharInput = (index: number) => {
         const currentValue = inputRefs[index].current!.value
         const regex = /^[a-z]*$/i // solo acepto caracteres y el string vacio.
         if(!regex.test(currentValue)) return
 
         setLetters(prev => {
-            const aux = [...prev]
+            const aux = getDeepCopy(prev)
             aux[index].letter = currentValue.length > 1? currentValue[currentValue.length - 1] : currentValue 
             // esto es para que quede solo el ultimo caracter ingresado en el input
             return [...aux]
@@ -66,7 +70,7 @@ const Helper = () =>{
 
     const handleColorClick = (index: number) => {
         setLetters(prev => {
-            const aux = [...prev]
+            const aux = getDeepCopy(prev)
             const currentColor = aux[index].color
             aux[index].color = (currentColor+1) % colorToHex.length
             return [...aux]
@@ -79,12 +83,18 @@ const Helper = () =>{
         try {
             setPossibleWords([])
             setLoading(true)
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/help`, tries)
-            
-            // actualizo la lista de intentos
-            const aux = [...tries]
+            const aux = getDeepCopy(tries)
+            console.log("Aux", aux)
             aux.push({letters})
-            setTries(aux)
+            console.log("Aux to push", aux)
+
+            // actualizo la lista de intentos
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/help`, aux)
+            setTries(prev => {
+                const temp = getDeepCopy(prev)
+                temp.push({letters})
+                return [...temp]
+            })
             setPossibleWords(response.data.possibleWords)
         } catch (error) {
             console.log("Error getting help", {error})
