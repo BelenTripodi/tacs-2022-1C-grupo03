@@ -15,7 +15,7 @@ class HelpController(private val helperRepository: HelperRepository, private val
     @PostMapping("/help")
     fun possibleWords(@RequestBody helpRequest: HelpRequest): List<String> {
         val wordsRepository = helperRepository.getAllWordsByLanguage(helpRequest.language.name)
-        return findWordResolver.findPossibleWords(helpRequest.tries, 0, wordsRepository)
+        return findWordResolver.findPossibleWords(helpRequest.tries, wordsRepository )
     }
 
 }
