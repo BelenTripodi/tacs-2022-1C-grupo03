@@ -4,18 +4,22 @@ import UserContext from "./UserContext";
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState({ name: "", auth: false });
 
-  const login = (name: string) => {
+  const login = (name: string,jwt: string) => {
     setUser({
         name: name,
         auth: true
-    })
-  }
+    });
+
+    localStorage.setItem("jwt",jwt);
+  };
 
   const logout = () => {
       setUser((user) => ({
           name: "",
           auth: false
       }))
+
+      localStorage.removeItem("jwt");
   }
 
   return (
