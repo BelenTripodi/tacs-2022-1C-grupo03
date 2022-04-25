@@ -1,5 +1,6 @@
 const { rest } = require('msw')
-const { dictionaryResponse } = require('./dictionaryResponse')
+const { dictionaryResponse } = require('./staticResponses/dictionaryResponse')
+const { possibleWords } = require('./staticResponses/helpResponse')
 
 module.exports = {
     handlers: [
@@ -22,7 +23,7 @@ module.exports = {
                 ctx.delay(1500),
                 ctx.status(200),
                 ctx.json({
-                    possibleWords: ['word1', 'word2', 'word3'],
+                    possibleWords,
                 })
             )
         }),

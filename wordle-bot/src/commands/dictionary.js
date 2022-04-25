@@ -33,11 +33,10 @@ module.exports = {
                 }
             )
 
-            let strResponse = ''
-            const defs = response.data.definitions
-            for (let i = 0; i < defs.length; i++) {
-                strResponse += `${i + 1} : ${defs[i]}\n`
-            }
+            const strResponse = response.data.definitions.reduce(
+                (prev, current) => `${prev}- "${current}"\n`,
+                ''
+            )
             await interaction.reply(strResponse)
         } catch (error) {
             console.log('Error fetching dictionary data', { error })
