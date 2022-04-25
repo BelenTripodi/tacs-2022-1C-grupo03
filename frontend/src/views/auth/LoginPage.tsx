@@ -38,7 +38,7 @@ const LoginPage = () => {
   const handleLogin = () => {
     httpClient
       .post("/login", {
-        userName: name,
+        username: name,
         password: password,
       })
       .then((result) => {
