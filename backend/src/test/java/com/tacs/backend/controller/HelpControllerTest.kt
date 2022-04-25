@@ -1,4 +1,4 @@
-package java.com.tacs.backend.controller
+package com.tacs.backend.controller
 
 class HelpControllerTest {
 }

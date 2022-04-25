@@ -1,5 +1,6 @@
 package com.tacs.backend.service
 
+import com.tacs.backend.utils.FileReader
 import org.springframework.stereotype.Component
 
 @Component
@@ -14,6 +15,5 @@ class HelperRepository {
     }
 
     private fun getData(language: String): List<String> =
-            HelperRepository::class.java.getResource("/helper/5letter-${language}.list")?.readText()?.split("\r\n")
-                    ?: emptyList()
+           FileReader.read("helper/5letter-${language.lowercase()}.list").split("\r\n")
 }
