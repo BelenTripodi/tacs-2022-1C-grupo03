@@ -17,7 +17,7 @@ const SignUpPage = () => {
   const handleSignUp = () => {
     // TODO Conectarse con la API acá
 
-    login(username);
+    login(username,"");
 
     navigate("/");
   };
