@@ -23,7 +23,12 @@ const App = () => {
       <UserContext.Provider
         value={{
           user,
-          login: (name: string) => {
+          login: (name: string,jwt: string) => {
+            console.log("Por settear");
+            console.log(jwt);
+
+            localStorage.setItem("jwt",jwt);
+
             setUser({ name: name, auth: true });
           },
           logout: () => {
