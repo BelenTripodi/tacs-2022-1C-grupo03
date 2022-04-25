@@ -56,9 +56,9 @@ const LoginPage = () => {
         alignItems="center"
         direction="column"
         container
-        sx={{ display: "flex" }}
+        sx={{ display: "flex"}}
         padding={2}
-      >
+      > 
         <Paper>
           <Grid margin={2}>
             <Grid
@@ -76,10 +76,7 @@ const LoginPage = () => {
               <h3>Ingresar a la App</h3>
               {errors.map((error,index) => {
                 return (
-                <Alert severity="error" key={index}>
-                  <AlertTitle>
-                    Login Error
-                  </AlertTitle>
+                <Alert severity="error" key={index} sx={{fontWeight: 10 }}>
                   {error}
                 </Alert>
                 );
