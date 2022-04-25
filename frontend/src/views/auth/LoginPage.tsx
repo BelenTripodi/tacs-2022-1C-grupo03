@@ -42,7 +42,7 @@ const LoginPage = () => {
         password: password,
       })
       .then((result) => {
-        login(name, result.data.jwt);
+        login(name, result.data.data.jwt);
         navigate("/");
       })
       .catch((err) => {
