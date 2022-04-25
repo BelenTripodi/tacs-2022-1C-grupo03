@@ -3,6 +3,7 @@ package com.tacs.backend.controller
 import com.tacs.backend.exception.BadRequestException
 import com.tacs.backend.exception.MalformedClientResponse
 import com.tacs.backend.exception.WordNotFoundException
+import com.tacs.backend.exception.WrongCredentialsException
 import com.tacs.backend.response.Error
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -42,4 +43,8 @@ class ErrorHandlerController: ResponseEntityExceptionHandler() {
     @ExceptionHandler(UnknownServiceException::class)
     fun unknownServiceError(exception: UnknownServiceException): ResponseEntity<Error> =
         ResponseEntity(Error(HttpStatus.SERVICE_UNAVAILABLE.value(), exception.message!!), HttpStatus.SERVICE_UNAVAILABLE)
+
+    @ExceptionHandler(WrongCredentialsException::class)
+    fun unknownServiceError(exception: WrongCredentialsException): ResponseEntity<Error> =
+        ResponseEntity(Error(HttpStatus.UNAUTHORIZED.value(), exception.message!!), HttpStatus.UNAUTHORIZED)
 }
