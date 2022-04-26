@@ -115,7 +115,7 @@ const Helper = () =>{
 
             const response = await httpClient.post("/help",{
                 tries: aux,
-                language: 0
+                language: "SPANISH"
             });
             
             // actualizo la lista de intentos
@@ -124,7 +124,7 @@ const Helper = () =>{
                 temp.push({letters})
                 return [...temp]
             })
-            setPossibleWords(response.data)
+            setPossibleWords(response.data.possibleWords)
 
             // vacio los inputs y enfoco en el primero
             emptyInputs()
