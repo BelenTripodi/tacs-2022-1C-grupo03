@@ -17,7 +17,7 @@ class FindWordResolver(private val helperRepository: HelperRepository) {
 
     private fun findWordsRecursively(tries: List<Try>, initialPossibleWords: List<String>, tryIndex: Int = 0): List<String> {
 
-        if (tries.size == tryIndex - 1 ) {
+        if (tries.size == tryIndex) {
             return initialPossibleWords
         }
 
