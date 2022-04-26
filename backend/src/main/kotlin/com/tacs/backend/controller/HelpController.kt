@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class HelpController {
 
     @PostMapping("/help")
