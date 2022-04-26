@@ -111,12 +111,7 @@ const Helper = () =>{
             const aux = getDeepCopy(tries)
             aux.push({letters})
 
-            const jwt = localStorage.getItem("jwt");
-
             const response = await httpClient.get("/help",{
-                headers: {
-                    "Authorization": `Bearer ${jwt}`
-                },
                 data: aux
             })
             
