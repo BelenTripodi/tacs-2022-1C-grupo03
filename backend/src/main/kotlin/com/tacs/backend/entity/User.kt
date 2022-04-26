@@ -8,9 +8,13 @@ import javax.persistence.Id
 
 @Entity
 data class User(
-             @Id
-             @GeneratedValue(strategy = GenerationType.IDENTITY)
-             val id: Long = 0,
-             val name: String = "",
-             val password: String = ""
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0,
+    val username: String = "",
+    val password: String = ""
+)
+
+data class AuthUser(
+    val jwt: String = ""
 )

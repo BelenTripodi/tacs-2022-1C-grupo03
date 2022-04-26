@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {useContext} from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -11,26 +11,38 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
+import UserContext from './../../context/UserContext';
 
 const pages = [
   { name: "Diccionario", route: "dictionary" },
   { name: "Torneos", route: "championship" },
   { name: "Helper", route: "helper" },
 ];
-const settings = ["Perfil", "Cerrar sesión"];
 
 const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<
-    null | undefined | HTMLElement
+  null | undefined | HTMLElement
   >(null);
-
+  
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
-
+  
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  
+  const { user, logout } = useContext(UserContext);
+  
+  const settings = [{
+    name: user.name,
+    handler: () => {}
+  },
+   {
+      name: "Cerrar sesión",
+      handler: logout
+    }
+];
 
   return (
     <AppBar position="static">
@@ -66,7 +78,9 @@ const NavBar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Configuración">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={user.name}>
+                  {user.name.toUpperCase().charAt(0)}
+                </Avatar>
               </IconButton>
             </Tooltip>
             <Menu
@@ -86,8 +100,8 @@ const NavBar = () => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={setting.name} onClick={setting.handler}>
+                  <Typography textAlign="center">{setting.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
