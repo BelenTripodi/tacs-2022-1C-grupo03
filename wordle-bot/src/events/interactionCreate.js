@@ -6,8 +6,6 @@ module.exports = {
         )
         if (!interaction.isCommand()) return
 
-        // aca podria agregar una funcion para ver si esta con el token
-
         const commandName = interaction.commandName
         interaction.client.commands.get(commandName).execute(interaction)
     },
