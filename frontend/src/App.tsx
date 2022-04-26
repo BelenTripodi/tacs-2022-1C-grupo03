@@ -33,6 +33,7 @@ const App = () => {
           },
           logout: () => {
             setUser({ name: "", auth: false });
+            localStorage.removeItem("jwt");
           },
         }}
       >
