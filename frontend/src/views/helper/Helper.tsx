@@ -1,7 +1,11 @@
-import {useEffect, useState, createRef, RefObject} from "react";
+import {useEffect, useState, createRef, RefObject } from "react";
 import { Typography, Container, Input, Button } from "@mui/material";
 import Loading from "../../components/Loading";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '../../components/Alert';
+
 const axios = require('axios').default;
+
 
 enum COLORS {
     YELLOW, GREY, GREEN
@@ -23,6 +27,7 @@ interface Try {
 }
 
 const Helper = () =>{
+    const [alertOpened, setAlertOpened] = useState(false)
     const [loading, setLoading] = useState(false)
     const wordLength = 5
     const [possibleWords, setPossibleWords] = useState([])
@@ -77,6 +82,10 @@ const Helper = () =>{
         })
     }
 
+    const handleAlertClose = () => {
+        setAlertOpened(false)
+    }
+
     const newTry = () => {
         setTries([])
         setLetters( Array(wordLength).fill(0).map( _ => {return {letter: '', color: COLORS.GREY}}))
@@ -84,25 +93,35 @@ const Helper = () =>{
         setPossibleWords([])
     }
 
+    const emptyInputs = () => {
+        setLetters( Array(wordLength).fill(0).map( _ => {return {letter: '', color: COLORS.GREY}}))
+        inputRefs[0].current?.focus()
+    }
+    
     // fetch
     const getHelp = async () => {
         try {
+            if(inputRefs.some(ref => !ref.current!.value )){
+                setAlertOpened(true)
+                return
+            }
             setPossibleWords([])
             setLoading(true)
             const aux = getDeepCopy(tries)
-            console.log("Aux", aux)
             aux.push({letters})
-            console.log("Aux to push", aux)
 
-            // actualizo la lista de intentos
             const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/help`, aux)
+            
+            // actualizo la lista de intentos
             setTries(prev => {
                 const temp = getDeepCopy(prev)
                 temp.push({letters})
                 return [...temp]
             })
             setPossibleWords(response.data.possibleWords)
-            inputRefs[0].current?.focus()
+
+            // vacio los inputs y enfoco en el primero
+            emptyInputs()
         } catch (error) {
             console.log("Error getting help", {error})
         } finally {
@@ -150,7 +169,7 @@ const Helper = () =>{
                     <>
                         
                         <Container sx={{display: 'flex', margin: '1rem 0', justifyContent: 'space-around', width: '400px'}}>
-                            <Button variant="contained" onClick={getHelp}>Get Help!</Button>
+                            <Button variant="contained"  onClick={getHelp}>Get Help!</Button>
                             <Button variant="contained" onClick={newTry}>New try</Button>
                         </Container>
                         {loading && <Loading/>}
@@ -163,6 +182,11 @@ const Helper = () =>{
                         }
                     </>
                 </Container>
+                <Snackbar open={alertOpened} autoHideDuration={6000} onClose={handleAlertClose}>
+                    <Alert onClose={handleAlertClose} severity="error" sx={{ width: '100%' }}>
+                    Fullfil all the inputs
+                    </Alert>
+                </Snackbar>
         </>
     )
 }
