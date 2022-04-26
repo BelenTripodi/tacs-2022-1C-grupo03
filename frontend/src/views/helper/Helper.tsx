@@ -111,9 +111,11 @@ const Helper = () =>{
             const aux = getDeepCopy(tries)
             aux.push({letters})
 
-            const response = await httpClient.get("/help",{
-                data: aux
-            })
+            console.log(Object.keys(aux));
+
+            const response = await httpClient.post("/help",{
+                tries: aux
+            });
             
             // actualizo la lista de intentos
             setTries(prev => {
