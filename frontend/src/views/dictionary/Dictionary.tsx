@@ -13,7 +13,7 @@ interface IMeaning {
 }
 
 const Dictionary = () =>{
-    const [ language, setLanguage ] = useState('es')
+    const [ language, setLanguage ] = useState(0)
     const [meaning, setMeaning ] = useState<IMeaning>({word: '', definitions: []})
     const inputRef = useRef<HTMLInputElement>()
     const [loading, setLoading] = useState(false)
@@ -23,7 +23,7 @@ const Dictionary = () =>{
             if(event.key === 'Enter'){
                 setLoading(true)
                 const word = inputRef.current?.value
-                const response = await httpClient.get("/dictionary",{params: {word,language}})
+                const response = await httpClient.get("/dictionary",{params: {word,language: 0}})
                 setMeaning({word, definitions: response.data.definitions})
             }
         } catch (error) {
@@ -34,7 +34,7 @@ const Dictionary = () =>{
     }
 
     const handleDictionaryChange = (e: SelectChangeEvent) : void => {
-        setLanguage(e.target.value)
+        setLanguage(Number(e.target.value))
     }
 
     if(loading) return <Loading />
@@ -47,14 +47,14 @@ const Dictionary = () =>{
                 <Select
                     labelId="dictionary"
                     id="dictionary"
-                    value={language}
+                    value={language.toString()}
                     onChange={handleDictionaryChange}
                     label="Age"
                     displayEmpty
                     sx={{minWidth: '300px'}}
                 >
-                    <MenuItem value={'es'}>Español</MenuItem>
-                    <MenuItem value={'en-gb'}>Ingles</MenuItem>
+                    <MenuItem value={0}>Español</MenuItem>
+                    <MenuItem value={1}>Ingles</MenuItem>
                 </Select>
                 <Container sx={{display:'flex', alignItems:'center'}}>
                     <Input 
