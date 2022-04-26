@@ -1,26 +1,30 @@
 package com.tacs.backend.service
 
-import com.tacs.backend.request.Colour
-import com.tacs.backend.request.Letter
-import com.tacs.backend.request.Try
+import com.tacs.backend.request.*
+import com.tacs.backend.utils.HelperRepository
 import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
+import io.mockk.every
+import io.mockk.mockk
 
 class FindWordResolverTest: WordSpec() {
-    private val findWordResolver = FindWordResolver()
+    private val helperRepository = mockk<HelperRepository>()
+    private val findWordResolver = FindWordResolver(helperRepository)
     private val initialPossibleWords = listOf(
         "ABEJA","ABETO","SABLE","LIBRO","LICEO","ARCOS","CASAR","CASCO","CURSO",
         "HURTO", "CURVO", "ENERO", "TORSO","TERCO", "TERMO", "TERSO",
     )
     init {
         "findWordResolver" When {
+            every { helperRepository.getAllWordsByLanguage(Language.SPANISH.name) } returns initialPossibleWords
             "tries is empty" should {
+                val helpRequest = HelpRequest(emptyList(), Language.SPANISH)
                 "return same initialPossibleWords" {
-                    findWordResolver.findPossibleWords(emptyList(), initialPossibleWords) shouldContainExactly  initialPossibleWords
+                    findWordResolver.findPossibleWords(helpRequest) shouldContainExactly  initialPossibleWords
                 }
             }
             "tries with GREEN letter" should {
@@ -33,7 +37,8 @@ class FindWordResolverTest: WordSpec() {
                         Letter("O", Colour.GREEN),
                     ))
                     )
-                    val result = findWordResolver.findPossibleWords(tries, initialPossibleWords)
+                    val helpRequest = HelpRequest(tries, Language.SPANISH)
+                    val result = findWordResolver.findPossibleWords(helpRequest)
                     result shouldContainExactlyInAnyOrder   listOf("CURSO",
                         "HURTO", "CURVO", "ENERO", "TORSO","TERCO", "TERMO", "TERSO")
                     result.forEach {
@@ -57,7 +62,8 @@ class FindWordResolverTest: WordSpec() {
                         Letter("O", Colour.GREEN),
                     ))
                     )
-                    val result = findWordResolver.findPossibleWords(tries, initialPossibleWords)
+                    val helpRequest = HelpRequest(tries, Language.SPANISH)
+                    val result = findWordResolver.findPossibleWords(helpRequest)
                     withClue("filter gray letters"){
                         result.forEach { possibleWord ->
                             (possibleWord.all { !listOf('H','U','A','D','I').contains(it) }).shouldBeTrue()
