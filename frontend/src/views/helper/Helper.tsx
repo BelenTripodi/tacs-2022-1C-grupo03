@@ -8,21 +8,21 @@ import httpClient from './../../services/client/index'
 import { LANGUAGE } from '../../Interfaces/Language'
 import LanguageSelector from '../../components/LanguageSelector'
 
-enum COLOURS {
-    YELLOW,
-    GREY,
-    GREEN,
+enum COLOUR {
+    YELLOW = 'YELLOW',
+    GRAY = 'GRAY',
+    GREEN = 'GREEN',
 }
 
-const colorToHex = [
-    '#daee07', // amarillo
-    '#96999b', // gris
-    '#32b45f', // verde
-]
+const colorToHex = {
+    YELLOW: { hexValue: '#daee07', next: 'GRAY' },
+    GRAY: { hexValue: '#96999b', next: 'GREEN' },
+    GREEN: { hexValue: '#32b45f', next: 'YELLOW' },
+}
 
 interface ILetter {
     letter: string
-    colour: COLOURS
+    colour: COLOUR
 }
 
 interface Try {
@@ -59,7 +59,7 @@ const Helper = () => {
             Array(wordLength)
                 .fill(0)
                 .map((_) => {
-                    return { letter: '', colour: COLOURS.GREY }
+                    return { letter: '', colour: COLOUR.GRAY }
                 })
         )
     }, [])
@@ -101,8 +101,8 @@ const Helper = () => {
     const handleColourClick = (index: number) => {
         setLetters((prev) => {
             const aux = getDeepCopy(prev)
-            const currentColor = aux[index].colour
-            aux[index].colour = (currentColor + 1) % colorToHex.length
+            const currentColor: COLOUR = aux[index].colour
+            aux[index].colour = colorToHex[currentColor].next
             return [...aux]
         })
     }
@@ -117,7 +117,7 @@ const Helper = () => {
             Array(wordLength)
                 .fill(0)
                 .map((_) => {
-                    return { letter: '', colour: COLOURS.GREY }
+                    return { letter: '', colour: COLOUR.GRAY }
                 })
         )
         inputRefs[0].current?.focus()
@@ -129,7 +129,7 @@ const Helper = () => {
             Array(wordLength)
                 .fill(0)
                 .map((_) => {
-                    return { letter: '', colour: COLOURS.GREY }
+                    return { letter: '', colour: COLOUR.GRAY }
                 })
         )
         inputRefs[0].current?.focus()
@@ -208,6 +208,7 @@ const Helper = () => {
                                     style={{
                                         background: `${
                                             colorToHex[letters[index].colour]
+                                                .hexValue
                                         }`,
                                         minWidth: 'inherit',
                                         minHeight: '30px',
@@ -270,18 +271,11 @@ const Helper = () => {
                     {loading && <Loading />}
                     {possibleWords.length > 0 && (
                         <>
-                            <Container
-                                sx={{
-                                    border: '2px solid black',
-                                    display: 'flex',
-                                }}
-                            >
-                                {possibleWords.map((word, index) => (
-                                    <Typography key={index} paragraph>{`${
-                                        index + 1
-                                    } : ${word}`}</Typography>
-                                ))}
-                            </Container>
+                            {possibleWords.map((word, index) => (
+                                <Typography key={index} paragraph>{`${
+                                    index + 1
+                                } : ${word}`}</Typography>
+                            ))}
                         </>
                     )}
                 </>
