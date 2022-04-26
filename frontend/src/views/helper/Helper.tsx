@@ -20,7 +20,7 @@ const colorToHex = [
 
 interface ILetter {
     letter: string,
-    color: COLORS
+    colour: COLORS
 }
 
 interface Try {
@@ -43,7 +43,7 @@ const Helper = () =>{
     useEffect( () => {
         setInputRefs(Array(wordLength).fill(0).map( _ => createRef()))
         setColorRefs( Array(wordLength).fill(0).map( _ => createRef()))
-        setLetters( Array(wordLength).fill(0).map( _ => {return {letter: '', color: COLORS.GREY}}))
+        setLetters( Array(wordLength).fill(0).map( _ => {return {letter: '', colour: COLORS.GREY}}))
     }, [])
 
     // Este useEffect es para que una vez se inicialice el inputRef, se ponga el foco en el primer input
@@ -77,8 +77,8 @@ const Helper = () =>{
     const handleColorClick = (index: number) => {
         setLetters(prev => {
             const aux = getDeepCopy(prev)
-            const currentColor = aux[index].color
-            aux[index].color = (currentColor+1) % colorToHex.length
+            const currentColor = aux[index].colour
+            aux[index].colour = (currentColor+1) % colorToHex.length
             return [...aux]
         })
     }
@@ -89,13 +89,13 @@ const Helper = () =>{
 
     const newTry = () => {
         setTries([])
-        setLetters( Array(wordLength).fill(0).map( _ => {return {letter: '', color: COLORS.GREY}}))
+        setLetters( Array(wordLength).fill(0).map( _ => {return {letter: '', colour: COLORS.GREY}}))
         inputRefs[0].current?.focus()
         setPossibleWords([])
     }
 
     const emptyInputs = () => {
-        setLetters( Array(wordLength).fill(0).map( _ => {return {letter: '', color: COLORS.GREY}}))
+        setLetters( Array(wordLength).fill(0).map( _ => {return {letter: '', colour: COLORS.GREY}}))
         inputRefs[0].current?.focus()
     }
     
@@ -111,10 +111,11 @@ const Helper = () =>{
             const aux = getDeepCopy(tries)
             aux.push({letters})
 
-            console.log(Object.keys(aux));
+            console.log(aux);
 
             const response = await httpClient.post("/help",{
-                tries: aux
+                tries: aux,
+                language: 0
             });
             
             // actualizo la lista de intentos
@@ -123,7 +124,7 @@ const Helper = () =>{
                 temp.push({letters})
                 return [...temp]
             })
-            setPossibleWords(response.data.possibleWords)
+            setPossibleWords(response.data)
 
             // vacio los inputs y enfoco en el primero
             emptyInputs()
@@ -153,7 +154,7 @@ const Helper = () =>{
                     {inputRefs.length && colorRefs.length && letters.length && Array(wordLength).fill(0).map( (_, index) =>
                         <Container key={index}>
                             <Input inputRef={inputRefs[index]} onChange={() => handleCharInput(index)} value={letters[index].letter}/>
-                            <div  ref={colorRefs[index]} onClick={() => handleColorClick(index)} style={{background: `${colorToHex[letters[index].color]}`, minWidth:'inherit', minHeight: '20px'}}></div>
+                            <div  ref={colorRefs[index]} onClick={() => handleColorClick(index)} style={{background: `${colorToHex[letters[index].colour]}`, minWidth:'inherit', minHeight: '20px'}}></div>
                         </Container>
                     )}
                 </Container>
