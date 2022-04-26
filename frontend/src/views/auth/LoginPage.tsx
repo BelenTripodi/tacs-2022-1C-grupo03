@@ -24,13 +24,13 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [errors, setError] = useState<string[]>([]);
 
-  const { user, login, logout } = useContext(UserContext);
+  const { login } = useContext(UserContext);
 
   const addError = (error: string) => {
     setError((prev) => [...prev, error]);
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     httpClient
       .post("/login", {
         username: name,
