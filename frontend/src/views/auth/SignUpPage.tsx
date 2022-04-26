@@ -2,6 +2,7 @@ import { Avatar, Button, FormControl, Grid, Input, InputLabel, Paper } from "@mu
 import React,{useState,useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import UserContext from './../../context/UserContext';
+import httpClient from './../../services/client/index';
 
 const SignUpPage = () => {
 
@@ -15,7 +16,10 @@ const SignUpPage = () => {
 
 
   const handleSignUp = () => {
-    // TODO Conectarse con la API acá
+    httpClient.post("/signup",{
+      username: username,
+      password: password
+    });
 
     login(username,"");
 
