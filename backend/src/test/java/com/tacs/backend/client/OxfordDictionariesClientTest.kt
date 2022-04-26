@@ -4,14 +4,15 @@ import com.tacs.backend.exception.BadRequestException
 import com.tacs.backend.exception.MalformedClientResponse
 import com.tacs.backend.exception.WordNotFoundException
 import com.tacs.backend.utils.FileReader
-import com.tacs.backend.utils.TacsObjectMapper
 import com.tacs.backend.utils.asyncFileRead
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.core.test.TestCase
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import io.mockk.*
+import io.mockk.clearAllMocks
+import io.mockk.every
+import io.mockk.mockk
 import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
@@ -19,9 +20,8 @@ import java.net.UnknownServiceException
 import javax.naming.ServiceUnavailableException
 
 class OxfordDictionariesClientTest : WordSpec() {
-    private val mapper = TacsObjectMapper()
     private val urlOpener = mockk<URLOpener>()
-    private val oxfordDictionariesClient= OxfordDictionariesClient("someAppId", "someAppKey", "someBaseURL", mapper, urlOpener)
+    private val oxfordDictionariesClient= OxfordDictionariesClient("someAppId", "someAppKey", "someBaseURL", urlOpener)
     override suspend fun beforeTest(testCase: TestCase) {
         clearAllMocks()
     }
