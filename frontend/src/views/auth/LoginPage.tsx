@@ -42,8 +42,11 @@ const LoginPage = () => {
         navigate("/");
       })
       .catch((err) => {
-        console.log(err);
-        addError("Error al internat iniciar sesión");
+        if(err?.response?.status === 401){
+          addError("Error al internat iniciar sesión");
+        } else {
+          addError(err.message);
+        }
       });
   };
 
