@@ -2,7 +2,10 @@ import React, { useRef, useState } from "react";
 import { Input, Container, Typography, MenuItem } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Loading from "../../components/Loading";
+import httpClient from './../../services/client/index';
+
 const axios = require('axios').default;
+
 
 interface IMeaning {
     word: string | undefined,
@@ -10,7 +13,7 @@ interface IMeaning {
 }
 
 const Dictionary = () =>{
-    const [ language, setLanguage ] = useState('spanish')
+    const [ language, setLanguage ] = useState('es')
     const [meaning, setMeaning ] = useState<IMeaning>({word: '', definitions: []})
     const inputRef = useRef<HTMLInputElement>()
     const [loading, setLoading] = useState(false)
@@ -20,7 +23,7 @@ const Dictionary = () =>{
             if(event.key === 'Enter'){
                 setLoading(true)
                 const word = inputRef.current?.value
-                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/dictionary`, {params: {word, language}})
+                const response = await httpClient.get("/dictionary",{params: {word,language}})
                 setMeaning({word, definitions: response.data.definitions})
             }
         } catch (error) {
@@ -50,8 +53,8 @@ const Dictionary = () =>{
                     displayEmpty
                     sx={{minWidth: '300px'}}
                 >
-                    <MenuItem value={'spanish'}>Español</MenuItem>
-                    <MenuItem value={'english'}>Ingles</MenuItem>
+                    <MenuItem value={'es'}>Español</MenuItem>
+                    <MenuItem value={'en-gb'}>Ingles</MenuItem>
                 </Select>
                 <Container sx={{display:'flex', alignItems:'center'}}>
                     <Input 
