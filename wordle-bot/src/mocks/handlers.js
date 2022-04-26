@@ -6,7 +6,7 @@ module.exports = {
     handlers: [
         rest.get(`${process.env.BACKEND_URL}/dictionary`, (req, res, ctx) => {
             console.log(
-                'Params: ',
+                '[MOCK]:Params: ',
                 req.url.searchParams.get('word'),
                 req.url.searchParams.get('language')
             )
@@ -17,13 +17,20 @@ module.exports = {
             )
         }),
 
-        rest.post(`${process.env.BACKEND_URL}/help`, (req, res, ctx) => {
-            console.log('Request', req.body)
+        rest.get(`${process.env.BACKEND_URL}/help`, (req, res, ctx) => {
+            console.log('[MOCK]: Request received', req.body)
             return res(
-                ctx.delay(1500),
-                ctx.status(200),
                 ctx.json({
                     possibleWords,
+                })
+            )
+        }),
+        rest.get(`${process.env.BACKEND_URL}/login`, (req, res, ctx) => {
+            console.log('[MOCK]: Request received', req.body)
+            return res(
+                ctx.set('Authorization', 'Bearer randomtoken'),
+                ctx.json({
+                    data: 'puto el que lee',
                 })
             )
         }),

@@ -35,7 +35,17 @@ for (const file of eventFiles) {
 
 if (process.env.ENV === 'development') {
     const { server } = require('./mocks/server')
-    server.listen()
+    server.listen({
+        onUnhandledRequest(req) {
+            console.error(
+                'Found an unhandled %s request to %s',
+                req.method,
+                req.url.href
+            )
+        },
+    })
+    server.printHandlers()
+    console.log('Worker started')
 }
 
 client.login(token)
