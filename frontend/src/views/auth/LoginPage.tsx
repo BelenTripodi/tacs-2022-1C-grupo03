@@ -17,9 +17,6 @@ import UserContext from "../../context/UserContext";
 
 import httpClient from "../../services/client";
 
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-
 const LoginPage = () => {
   let navigate = useNavigate();
 
@@ -28,8 +25,6 @@ const LoginPage = () => {
   const [errors, setError] = useState<string[]>([]);
 
   const { user, login, logout } = useContext(UserContext);
-
-  const MySwal = withReactContent(Swal);
 
   const addError = (error: string) => {
     setError((prev) => [...prev, error]);
@@ -42,10 +37,12 @@ const LoginPage = () => {
         password: password,
       })
       .then((result) => {
+        console.log(result.data);
         login(name, result.data.data.jwt);
         navigate("/");
       })
       .catch((err) => {
+        console.log(err);
         addError("Error al internat iniciar sesión");
       });
   };

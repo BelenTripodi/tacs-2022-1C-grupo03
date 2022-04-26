@@ -3,6 +3,7 @@ import { Typography, Container, Input, Button } from "@mui/material";
 import Loading from "../../components/Loading";
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '../../components/Alert';
+import httpClient from './../../services/client/index';
 
 const axios = require('axios').default;
 
@@ -110,7 +111,14 @@ const Helper = () =>{
             const aux = getDeepCopy(tries)
             aux.push({letters})
 
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/help`, aux)
+            const jwt = localStorage.getItem("jwt");
+
+            const response = await httpClient.get("/help",{
+                headers: {
+                    "Authorization": `Bearer ${jwt}`
+                },
+                data: aux
+            })
             
             // actualizo la lista de intentos
             setTries(prev => {
