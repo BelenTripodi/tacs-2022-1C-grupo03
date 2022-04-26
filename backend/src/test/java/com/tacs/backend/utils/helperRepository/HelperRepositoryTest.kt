@@ -1,4 +1,4 @@
-package com.tacs.backend.service
+package com.tacs.backend.utils.helperRepository
 
 import com.tacs.backend.utils.HelperRepository
 import io.kotest.core.spec.style.WordSpec
