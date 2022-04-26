@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping
+@CrossOrigin(origins = arrayOf("*"), allowedHeaders = ["*"])
 class SessionController(private val userRepository: UserDAO, private val passwordEncoder: PasswordEncoder, private val sessionService: SessionService) {
 
     @PostMapping("/login")
@@ -24,7 +25,13 @@ class SessionController(private val userRepository: UserDAO, private val passwor
 
 
     @PostMapping("/signup")
-    fun signup(@RequestBody signupRequest: SessionRequest): String = "EXITO"
+    fun signup(@RequestBody signupRequest: SessionRequest): String {
+        if(userRepository.findByUsername(signupRequest.username).isNotEmpty()){
+            return "User already exists"
+        }
+        userRepository.save(User(username = signupRequest.username,password = passwordEncoder.encode(signupRequest.password)))
+        return "Registration successful"
+    }
 
     @PostMapping("/logout")
     fun logout(): String = "EXITO"
