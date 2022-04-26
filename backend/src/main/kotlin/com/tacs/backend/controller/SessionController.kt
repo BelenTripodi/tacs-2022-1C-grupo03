@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping
-@CrossOrigin(origins = arrayOf("*"), allowedHeaders = ["*"])
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class SessionController(private val userRepository: UserDAO, private val passwordEncoder: PasswordEncoder, private val sessionService: SessionService) {
 
     @PostMapping("/login")
