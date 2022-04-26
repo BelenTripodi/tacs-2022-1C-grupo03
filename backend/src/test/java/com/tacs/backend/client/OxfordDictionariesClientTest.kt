@@ -4,6 +4,7 @@ import com.tacs.backend.exception.BadRequestException
 import com.tacs.backend.exception.MalformedClientResponse
 import com.tacs.backend.exception.WordNotFoundException
 import com.tacs.backend.utils.FileReader
+import com.tacs.backend.utils.asyncFileRead
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.core.test.TestCase
@@ -29,7 +30,7 @@ class OxfordDictionariesClientTest : WordSpec() {
         "oxfordClient.getDefinition" When {
             "connection returns 200" should {
                 "return correct response" {
-                    val oxfordResponse = FileReader.read("jsonExamples/client/correctOxfordResponse.json")
+                    val oxfordResponse = asyncFileRead("jsonExamples/client/correctOxfordResponse.json")
                     val inputStream: InputStream = oxfordResponse.byteInputStream()
                     val huc: HttpURLConnection = mockk(relaxed = true)
                     every { urlOpener.createConnection(any(), any()) } returns huc
@@ -59,7 +60,7 @@ class OxfordDictionariesClientTest : WordSpec() {
             }
             "connection returns 400" should {
                 "throw BadRequestException" {
-                    val oxfordResponse = FileReader.read("jsonExamples/client/someErrorResponse.json")
+                    val oxfordResponse = asyncFileRead("jsonExamples/client/someErrorResponse.json")
                     val inputStream: InputStream = oxfordResponse.byteInputStream()
                     val huc: HttpURLConnection = mockk(relaxed = true)
                     every { urlOpener.createConnection(any(), any()) } returns huc
@@ -73,7 +74,7 @@ class OxfordDictionariesClientTest : WordSpec() {
             }
             "connection returns 404" should {
                 "throw WordNotFoundException" {
-                    val oxfordResponse = FileReader.read("jsonExamples/client/someErrorResponse.json")
+                    val oxfordResponse = asyncFileRead("jsonExamples/client/someErrorResponse.json")
                     val inputStream: InputStream = oxfordResponse.byteInputStream()
                     val huc: HttpURLConnection = mockk(relaxed = true)
                     every { urlOpener.createConnection(any(), any()) } returns huc
@@ -87,7 +88,7 @@ class OxfordDictionariesClientTest : WordSpec() {
             }
             "connection returns 500" should {
                 "throw ServiceUnavailableException" {
-                    val oxfordResponse = FileReader.read("jsonExamples/client/someErrorResponse.json")
+                    val oxfordResponse = asyncFileRead("jsonExamples/client/someErrorResponse.json")
                     val inputStream: InputStream = oxfordResponse.byteInputStream()
                     val huc: HttpURLConnection = mockk(relaxed = true)
                     every { urlOpener.createConnection(any(), any()) } returns huc
@@ -101,7 +102,7 @@ class OxfordDictionariesClientTest : WordSpec() {
             }
             "connection returns 414" should {
                 "throw MalformedURLException" {
-                    val oxfordResponse = FileReader.read("jsonExamples/client/someErrorResponse.json")
+                    val oxfordResponse = asyncFileRead("jsonExamples/client/someErrorResponse.json")
                     val inputStream: InputStream = oxfordResponse.byteInputStream()
                     val huc: HttpURLConnection = mockk(relaxed = true)
                     every { urlOpener.createConnection(any(), any()) } returns huc
@@ -115,7 +116,7 @@ class OxfordDictionariesClientTest : WordSpec() {
             }
             "connection returns unexpected code" should {
                 "throw UnknownServiceException" {
-                    val oxfordResponse = FileReader.read("jsonExamples/client/someErrorResponse.json")
+                    val oxfordResponse = asyncFileRead("jsonExamples/client/someErrorResponse.json")
                     val inputStream: InputStream = oxfordResponse.byteInputStream()
                     val huc: HttpURLConnection = mockk(relaxed = true)
                     every { urlOpener.createConnection(any(), any()) } returns huc
@@ -130,7 +131,7 @@ class OxfordDictionariesClientTest : WordSpec() {
 
             "connection doesn't return 200 and response is unexpected" should {
                 "throw MalformedClientResponse" {
-                    val oxfordResponse = FileReader.read("jsonExamples/client/unexpectedErrorResponse.json")
+                    val oxfordResponse = asyncFileRead("jsonExamples/client/unexpectedErrorResponse.json")
                     val inputStream: InputStream = oxfordResponse.byteInputStream()
                     val huc: HttpURLConnection = mockk(relaxed = true)
                     every { urlOpener.createConnection(any(), any()) } returns huc
