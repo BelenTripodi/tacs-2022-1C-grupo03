@@ -1,12 +1,9 @@
 import { Alert, Avatar, Button, FormControl, Grid, Input, InputLabel, Paper } from "@mui/material";
-import React,{useState,useContext} from "react";
+import React,{useState} from "react";
 import { useNavigate } from "react-router-dom";
-import UserContext from './../../context/UserContext';
 import httpClient from './../../services/client/index';
 
 const SignUpPage = () => {
-
-  const { login } = useContext(UserContext);
 
   let navigate = useNavigate();
 
