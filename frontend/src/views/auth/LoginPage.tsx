@@ -46,7 +46,7 @@ const LoginPage = () => {
         navigate("/");
       })
       .catch((err) => {
-        addError(err.message);
+        addError("Error al internat iniciar sesión");
       });
   };
 

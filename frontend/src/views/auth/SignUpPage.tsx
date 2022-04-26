@@ -25,7 +25,7 @@ const SignUpPage = () => {
     }).then((result) => {
       navigate("/login");
     }).catch(err => {
-      addError(err.message);
+      addError("Error al intentar registrarse");
     })
   };
 
