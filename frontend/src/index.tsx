@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
-if(process.env.REACT_APP_ENV=== 'development'){
+// sacado de la documentacion de msw. Inicio el worker junto con la aplicacion
+if(process.env.REACT_APP_ENV=== 'development'){ 
   const { worker } = require('./mocks/browser')
   worker.start()
 }
