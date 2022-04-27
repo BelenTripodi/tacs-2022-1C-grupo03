@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class HelpController(private val findWordResolver: FindWordResolver) {
 
     @PostMapping("/help")
@@ -19,4 +21,4 @@ class HelpController(private val findWordResolver: FindWordResolver) {
         return ResponseEntity(HelperResponse(findWordResolver.findPossibleWords(helpRequest)), HttpStatus.OK)
     }
 
-}
+} 
