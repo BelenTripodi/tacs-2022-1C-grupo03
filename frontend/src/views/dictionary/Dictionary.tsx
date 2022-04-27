@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react'
-import { Input, Container, Typography, MenuItem } from '@mui/material'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
+import { Input, Container, Typography } from '@mui/material'
+import { SelectChangeEvent } from '@mui/material/Select'
 import Loading from '../../components/Loading'
-import httpClient from './../../services/client/index'
+import HttpClient from './../../services/client/index'
 import { LANGUAGE } from '../../Interfaces/Language'
 import LanguageSelector from '../../components/LanguageSelector'
 
@@ -25,9 +25,8 @@ const Dictionary = () => {
             if (event.key === 'Enter') {
                 setLoading(true)
                 const word = inputRef.current?.value
-                const response = await httpClient.get('/dictionary', {
-                    params: { word, language },
-                })
+                const response = await HttpClient.httpGet("/dictionary",{word,language});
+                
                 setMeaning({ word, definitions: [response.data.definition] })
             }
         } catch (error) {
