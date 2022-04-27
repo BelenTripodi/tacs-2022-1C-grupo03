@@ -2,11 +2,13 @@ import { rest } from 'msw'
 
 export const handlers = [
     rest.get(`${process.env.REACT_APP_BACKEND_URL}/dictionary`, (req, res, ctx) => {
+        console.log("Params: ", req.url.searchParams.get('language'), req.url.searchParams.get('word'))
         return res(
             ctx.delay(1500),
             ctx.status(200),
             ctx.json({
                 definitions: [
+                    "asdasdasdsa",
                     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur odit explicabo",
                     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur odit explicabo Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur odit explicabo"
                 ]
@@ -15,7 +17,6 @@ export const handlers = [
     }),
     
     rest.post(`${process.env.REACT_APP_BACKEND_URL}/help`, (req, res, ctx) => {
-        console.log("Request", req.body)
         return res(
             ctx.delay(1500),
             ctx.status(200),
@@ -25,6 +26,15 @@ export const handlers = [
                     "word2",
                     "word3"  
                 ]
+            })
+        )
+    }),
+    rest.post(`${process.env.REACT_APP_BACKEND_URL}/login`, (req, res, ctx) => {
+        return res(
+            ctx.json({
+                data: {
+                    jwt: 'randomjwt'
+                }
             })
         )
     })

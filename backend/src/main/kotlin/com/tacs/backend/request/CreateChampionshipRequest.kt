@@ -6,8 +6,10 @@ data class CreateChampionshipRequest(val name: String, val languages: List<Langu
 enum class VisibilityType {
     PUBLIC, PRIVATE
 }
-enum class Language {
-    SPANISH, ENGLISH
+enum class Language(val type: String = "") {
+    SPANISH("es"),
+    ENGLISH("en-gb");
+
 }
 
 data class AddUserToChampionshipRequest(val userId: String)

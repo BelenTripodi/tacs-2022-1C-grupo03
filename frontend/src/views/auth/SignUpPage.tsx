@@ -1,11 +1,9 @@
-import { Avatar, Button, FormControl, Grid, Input, InputLabel, Paper } from "@mui/material";
-import React,{useState,useContext} from "react";
+import { Alert, Avatar, Button, FormControl, Grid, Input, InputLabel, Paper } from "@mui/material";
+import React,{useState} from "react";
 import { useNavigate } from "react-router-dom";
-import UserContext from './../../context/UserContext';
+import httpClient from './../../services/client/index';
 
 const SignUpPage = () => {
-
-  const { login } = useContext(UserContext);
 
   let navigate = useNavigate();
 
@@ -13,13 +11,22 @@ const SignUpPage = () => {
 
   const [password,setPassword] = useState("");
 
+  const [errors, setError] = useState<string[]>([]);
+
+  const addError = (error: string) => {
+    setError((prev) => [...prev, error]);
+  };
+
 
   const handleSignUp = () => {
-    // TODO Conectarse con la API acá
-
-    login(username);
-
-    navigate("/");
+    httpClient.post("/signup",{
+      username: username,
+      password: password
+    }).then((result) => {
+      navigate("/login");
+    }).catch(err => {
+      addError("Error al intentar registrarse");
+    })
   };
 
     return (
@@ -47,6 +54,13 @@ const SignUpPage = () => {
               <Grid item>
                 <h3>Ingrese sus datos para registrarse</h3>
               </Grid>
+              {errors.map((error,index) => {
+                return (
+                <Alert severity="error" key={index} sx={{fontWeight: 10 }}>
+                  {error}
+                </Alert>
+                );
+              })}
               <Grid item margin={2}>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="nombreUsuario">

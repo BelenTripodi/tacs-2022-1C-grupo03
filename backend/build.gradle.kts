@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.example"
-version = "0.0.1-SNAPSHOT"
+version = "5.2.2"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 configurations {
@@ -25,17 +25,28 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-data-rest")
-	//implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("io.jsonwebtoken:jjwt:0.9.1")
+	implementation("org.springframework.boot:spring-boot-starter-validation:2.6.6")
+	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation ("com.fasterxml.jackson.datatype:jackson-datatype-joda")
-	compileOnly("org.projectlombok:lombok")
+	implementation("javax.validation:validation-api:2.0.1.Final")
 	compileOnly("joda-time:joda-time:2.10.14")
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("mysql:mysql-connector-java")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+	implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
+	testImplementation("io.kotest:kotest-runner-junit5:5.2.3")
+	testImplementation("io.kotest:kotest-assertions-core:5.2.3")
+	testImplementation("io.kotest:kotest-property:5.2.3")
+	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.1")
+	testImplementation("io.mockk:mockk:1.12.3")
+
 }
 
 tasks.withType<KotlinCompile> {
@@ -45,6 +56,6 @@ tasks.withType<KotlinCompile> {
 	}
 }
 
-tasks.withType<Test> {
+tasks.withType<Test>().configureEach {
 	useJUnitPlatform()
 }
