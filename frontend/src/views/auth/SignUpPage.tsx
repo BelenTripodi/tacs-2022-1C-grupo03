@@ -1,7 +1,7 @@
 import { Alert, Avatar, Button, FormControl, Grid, Input, InputLabel, Paper } from "@mui/material";
 import React,{useState} from "react";
 import { useNavigate } from "react-router-dom";
-import httpClient from './../../services/client/index';
+import HttpClient from './../../services/client/index';
 
 const SignUpPage = () => {
 
@@ -19,10 +19,11 @@ const SignUpPage = () => {
 
 
   const handleSignUp = () => {
-    httpClient.post("/signup",{
+    HttpClient.httpPostWithoutHeaders("/signup",{
       username: username,
       password: password
-    }).then((result) => {
+    })
+    .then((result) => {
       navigate("/login");
     }).catch(err => {
       addError("Error al intentar registrarse");
