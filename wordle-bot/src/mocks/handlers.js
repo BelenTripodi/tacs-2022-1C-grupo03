@@ -17,15 +17,11 @@ module.exports = {
             )
         }),
 
-        rest.get(`${process.env.BACKEND_URL}/help`, (req, res, ctx) => {
+        rest.post(`${process.env.BACKEND_URL}/help`, (req, res, ctx) => {
             console.log('[MOCK]: Request received', req.body)
-            return res(
-                ctx.json({
-                    possibleWords,
-                })
-            )
+            return res(ctx.json(possibleWords))
         }),
-        rest.get(`${process.env.BACKEND_URL}/login`, (req, res, ctx) => {
+        rest.post(`${process.env.BACKEND_URL}/login`, (req, res, ctx) => {
             console.log('[MOCK]: Request received', req.body)
             return res(
                 ctx.set('Authorization', 'Bearer randomtoken'),

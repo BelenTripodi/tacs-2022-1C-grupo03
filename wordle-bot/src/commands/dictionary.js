@@ -12,8 +12,8 @@ module.exports = {
                 .setDescription('Diccionario utilizado para buscar la palabra')
                 .setRequired(true)
                 .addChoices(
-                    { name: 'spanish', value: 'spanish' },
-                    { name: 'english', value: 'english' }
+                    { name: 'spanish', value: 'SPANISH' },
+                    { name: 'english', value: 'ENGLISH' }
                 )
         )
         .addStringOption((option) =>
@@ -26,20 +26,16 @@ module.exports = {
         try {
             const language = interaction.options.getString('language')
             const word = interaction.options.getString('word')
-            const response = await axios.get(
-                `${process.env.BACKEND_URL}/dictionary`,
-                {
-                    params: { word, language },
-                }
-            )
+            const response = await interaction.user.axios.get('/dictionary', {
+                params: { word, language },
+            })
 
-            const strResponse = response.data.definitions.reduce(
-                (prev, current) => `${prev}- "${current}"\n`,
-                ''
-            )
-            await interaction.reply(strResponse)
+            if (response.data.definition)
+                await interaction.reply(response.data.definition)
+            else await interaction.reply(`Definition NOT FOUND for ${word}`)
         } catch (error) {
             console.log('Error fetching dictionary data', { error })
+            await interaction.reply(`Error: fetch dictionary data ${word}`)
         }
     },
 }

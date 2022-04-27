@@ -16,8 +16,8 @@ Un timido bot para hacer de cliente a la aplicacion de TACS  **uwu**
 - Language: ('spanish', 'english')
 
 ### Modo ayuda
-1. /newgame : este comando indica que el usuario esta comenzando una nueva partida de wordle. El bot crea un registro de los intentos realizados por el usuario.
-2. /help <string>|<coloresDeCadaCaracter> : Cabe aclarar que el comando solo tiene un argumento, es un string entero separado por el caracter '|'. *string* representa la jugada realizada. *coloresDeCadaCaracter* es un string donde cada caracter representa el **color** del caracter de *string* en el mismo indice.
+1. /newgame <language>: este comando indica que el usuario esta comenzando una nueva partida de wordle, en el idioma indicado. El bot crea un registro de los intentos realizados por el usuario.
+2. /help <string>,<coloresDeCadaCaracter> : Cabe aclarar que el comando solo tiene un argumento, es un string entero separado por una coma ( ',' ). *string* representa la jugada realizada. *coloresDeCadaCaracter* es un string donde cada caracter representa el **color** del caracter de *string* en el mismo indice. Abajo se demuestra un ejemplo de uso
 
 *Restricciones*:
 - Colores: ('y','g','n'), donde 'y'=yellow. 'g'=green y 'n'='null' o el color gris.
@@ -31,7 +31,7 @@ Si mi jugada fue la siguiente:
 * letra c - color verde
 * letra d - color amarillo
 * letra e - color gris
-Si quiero pedir ayuda al bot, tendré que ejecutar /help abcde|nngyn
+Si quiero pedir ayuda al bot, tendré que ejecutar **/help abcde,nngyn**
 
 El bot ira guardando los intentos realizados, por cada usuario que se encuentre jugando, para poder hacer las request al backend.
 

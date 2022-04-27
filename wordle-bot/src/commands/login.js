@@ -22,16 +22,24 @@ module.exports = {
             const username = interaction.options.getString('username')
             const password = interaction.options.getString('password')
 
-            console.log('Doing post')
-            const response = await axios.get(
+            const response = await axios.post(
                 `${process.env.BACKEND_URL}/login`,
                 { username, password }
             )
-            console.log('Response from mock', response.headers.authorization)
-            interaction.user.jwt = response.headers.authorization
-            await interaction.reply('Dummy login')
+
+            // me guardo el jwt y creo la instancia de axios para que el usuario haga request/post con el header incluido
+            interaction.user.jwt = response.data.data.jwt
+            interaction.user.axios = axios.create({
+                baseURL: `${process.env.BACKEND_URL}`,
+                headers: { Authorization: `Bearer ${interaction.user.jwt}` },
+            })
+
+            await interaction.reply(
+                `${interaction.user.tag} Logged in succesfully uwu`
+            )
         } catch (error) {
             console.log('Error log in', { error })
+            await interaction.reply('Login failed: wrong credentials')
         }
     },
 }
