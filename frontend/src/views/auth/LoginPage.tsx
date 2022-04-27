@@ -3,7 +3,6 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Alert,
-  AlertTitle,
   Avatar,
   Button,
   FormControl,
@@ -15,7 +14,7 @@ import { Paper } from "@mui/material";
 
 import UserContext from "../../context/UserContext";
 
-import httpClient from "../../services/client";
+import HttpClient from "../../services/client";
 
 const LoginPage = () => {
   let navigate = useNavigate();
@@ -31,11 +30,10 @@ const LoginPage = () => {
   };
 
   const handleLogin = async () => {
-    httpClient
-      .post("/login", {
-        username: name,
-        password: password,
-      })
+    HttpClient.httpPostWithoutHeaders("/login",{
+      username: name,
+      password: password
+    })
       .then((result) => {
         console.log(result.data);
         login(name, result.data.data.jwt);
