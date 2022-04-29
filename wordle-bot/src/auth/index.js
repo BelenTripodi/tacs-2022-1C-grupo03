@@ -1,5 +1,8 @@
 const checkAuth = (interaction) => {
-    if (interaction.commandName !== 'login' && !interaction.user.jwt) {
+    if (
+        !['login', 'ping'].includes(interaction.commandName) &&
+        !interaction.user.jwt
+    ) {
         throw new Error('Error: user not authenticated')
     }
 }

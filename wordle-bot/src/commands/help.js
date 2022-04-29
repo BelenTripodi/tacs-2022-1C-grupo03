@@ -28,6 +28,7 @@ module.exports = {
                     content: `Start a new game first pls. COMMAND /newgame`,
                     ephemeral: true,
                 })
+                return
             }
 
             // parseo del input
@@ -36,12 +37,10 @@ module.exports = {
             updateTries(interaction, newTry)
 
             // post al backend sugerencias que falla por extraños motivos
-            console.log('Sending moves info', interaction.user.match)
             const response = await interaction.user.axios.post(
                 `/help`,
                 interaction.user.match
             )
-            console.log(response)
             // respuesta al usuario
             await interaction.reply({
                 content: JSON.stringify(response.data.possibleWords),
@@ -81,7 +80,7 @@ const updateTries = (interaction, newTry) => {
     const letters = []
     for (let i = 0; i < 5; i++) {
         letters.push({
-            letter: newTry[0][i],
+            letter: newTry[0][i].toUpperCase(), // porque la api acepta solo uppercase sino no response
             colour: charToColour[newTry[1][i].toLowerCase()],
         })
     }
