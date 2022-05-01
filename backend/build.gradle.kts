@@ -34,6 +34,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation ("com.fasterxml.jackson.datatype:jackson-datatype-joda")
 	implementation("javax.validation:validation-api:2.0.1.Final")
+	implementation("org.slf4j:slf4j-api:1.7.2")
+
 	compileOnly("joda-time:joda-time:2.10.14")
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("mysql:mysql-connector-java")
