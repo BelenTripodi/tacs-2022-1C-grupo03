@@ -28,6 +28,7 @@ class UserProfileController {
 
     @PostMapping("users/{id}/score")
     fun addUserScore(@PathVariable id: String, @RequestBody request: AddPointsRequest): GenericResponse<String> =
+
         GenericResponse("id: $id, language: ${request.language}, points: ${request.points}")
 
 

@@ -22,12 +22,25 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
             .authorizeRequests()
             .antMatchers(HttpMethod.POST, "/login").permitAll()
             .antMatchers(HttpMethod.POST,"/signup").permitAll()
+            .antMatchers(HttpMethod.GET,"/swagger-ui.html",
+                "/webjars/**",
+                "/v3/api-docs/**",
+                "/swagger-ui/**").permitAll()
             .anyRequest().authenticated()
     }
 
     @Bean
     fun defaultHttpFirewall(): HttpFirewall? {
         return DefaultHttpFirewall()
+    }
+
+    companion object {
+        private val AUTH_WHITELIST = listOf( // -- Swagger UI v2
+            "/swagger-ui.html",
+            "/webjars/**",
+            "/v3/api-docs/**",
+            "/swagger-ui/**" // other public endpoints of your API may be appended to this array
+        )
     }
 
 }

@@ -4,7 +4,7 @@ import com.tacs.backend.request.Language
 import com.tacs.backend.request.VisibilityType
 import org.joda.time.DateTime
 
-data class CreateChampionshipsResponse(val id: String, val name: String)
+data class CreateChampionshipsResponse(val id: Long, val name: String)
 
 data class GetChampionshipsResponse(val championships: List<ChampionshipResponse>)
 

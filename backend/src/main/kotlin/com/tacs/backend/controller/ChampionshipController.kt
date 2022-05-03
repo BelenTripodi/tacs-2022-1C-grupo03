@@ -1,5 +1,7 @@
 package com.tacs.backend.controller
 
+import com.tacs.backend.DAO.ChampionshipDAO
+import com.tacs.backend.entity.Championship
 import com.tacs.backend.request.AddUserToChampionshipRequest
 import com.tacs.backend.request.CreateChampionshipRequest
 import com.tacs.backend.request.Language
@@ -14,12 +16,23 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
-class ChampionshipController {
+class ChampionshipController (private val championshipRepository: ChampionshipDAO) {
 
     @PostMapping("/championships")
-    fun createChampionship(@RequestBody request: CreateChampionshipRequest): GenericResponse<CreateChampionshipsResponse> =
-        //TODO: send correctInfo
-        GenericResponse(CreateChampionshipsResponse("1", request.name))
+    fun createChampionship(@RequestBody request: CreateChampionshipRequest): GenericResponse<CreateChampionshipsResponse> {
+        val newChampionship = championshipRepository.save(createChampionshipEntity(request))
+        return GenericResponse(CreateChampionshipsResponse(newChampionship.championshipId, newChampionship.name))
+    }
+
+    private fun createChampionshipEntity(request: CreateChampionshipRequest): Championship {
+        return Championship(
+            name = request.name,
+            visibility = request.visibility,
+            startDate = request.startDate.millis,
+            finishDate = request.startDate.millis,
+            //languages = request.languages
+        )
+    }
 
     @PutMapping("championships/{id}/users")
     fun addUser(@PathVariable id: String, @RequestBody request: AddUserToChampionshipRequest): GenericResponse<String> =
