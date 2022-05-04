@@ -2,30 +2,27 @@ package com.tacs.backend.entity
 
 import com.tacs.backend.request.Language
 import com.tacs.backend.request.VisibilityType
+import java.util.*
 import javax.persistence.*
 
 @Entity
 data class Championship(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val championshipId: Long = 0,
-    val name: String,
-    /*@ElementCollection(targetElement = Language.class)
-    @JoinTable(name = "tblInterests", joinColumns = @JoinColumn(name = "personID"))
-    @Column(name = "interest", nullable = false)
-    @Enumerated(EnumType.STRING)
+    val idChampionship: Long = 0,
+    @ElementCollection(targetClass = Language :: class)
+    @CollectionTable(name = "language_championship_rel",
+        joinColumns = [JoinColumn(name = "id_championship")])
+    @Column(name = "id_language")
     val languages: List<Language>,
-    */
+    val name: String,
     @Enumerated(EnumType.STRING)
+    @Column(name = "visibility")
     val visibility: VisibilityType,
-    val startDate: Long,
-    val finishDate: Long
-)
-
-@Entity
-data class LanguageDTO(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val languageId: Long = 0,
-    val language: String
+    @Column(columnDefinition="DATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    val startDate: Date,
+    @Column(columnDefinition="DATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    val finishDate: Date,
 )

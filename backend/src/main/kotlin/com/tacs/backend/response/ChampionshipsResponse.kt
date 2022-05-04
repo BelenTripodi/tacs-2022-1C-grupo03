@@ -3,6 +3,7 @@ package com.tacs.backend.response
 import com.tacs.backend.request.Language
 import com.tacs.backend.request.VisibilityType
 import org.joda.time.DateTime
+import java.util.*
 
 data class CreateChampionshipsResponse(val id: Long, val name: String)
 
@@ -12,6 +13,6 @@ data class ChampionshipResponse(
     val name: String,
     val languages: List<Language>,
     val visibility: VisibilityType,
-    val startDate: DateTime,
-    val finishDate: DateTime
+    val startDate: Date,
+    val finishDate: Date
 )

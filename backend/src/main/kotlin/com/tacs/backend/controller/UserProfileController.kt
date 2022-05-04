@@ -8,6 +8,7 @@ import com.tacs.backend.response.GenericResponse
 import com.tacs.backend.response.GetChampionshipsResponse
 import org.joda.time.DateTime
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping
@@ -21,7 +22,8 @@ class UserProfileController {
     ): GenericResponse<GetChampionshipsResponse> {
         val championshipResponse = ChampionshipResponse(
             "torneo", listOf(Language.ENGLISH), VisibilityType.PUBLIC,
-            DateTime.now(), DateTime.now()
+            //TODO: verlo con datetime
+            Date(), Date()
         )
         return GenericResponse(GetChampionshipsResponse(listOf(championshipResponse)))
     }

@@ -43,11 +43,11 @@ class SessionController(private val userRepository: UserDAO, private val passwor
         userRepository.findAll()
 
 
-    @Bean
+/*    @Bean
     fun createUsers() {
         val anUser = User(id = 0, username = "username", password = passwordEncoder.encode("password"))
 
         userRepository.save(anUser)
 
-    }
+    }*/
 }

@@ -11,7 +11,10 @@ import com.tacs.backend.response.CreateChampionshipsResponse
 import com.tacs.backend.response.GenericResponse
 import com.tacs.backend.response.GetChampionshipsResponse
 import org.joda.time.DateTime
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping
@@ -19,18 +22,18 @@ import org.springframework.web.bind.annotation.*
 class ChampionshipController (private val championshipRepository: ChampionshipDAO) {
 
     @PostMapping("/championships")
-    fun createChampionship(@RequestBody request: CreateChampionshipRequest): GenericResponse<CreateChampionshipsResponse> {
+    fun createChampionship(@RequestBody request: CreateChampionshipRequest): ResponseEntity<CreateChampionshipsResponse> {
         val newChampionship = championshipRepository.save(createChampionshipEntity(request))
-        return GenericResponse(CreateChampionshipsResponse(newChampionship.championshipId, newChampionship.name))
+        return ResponseEntity(CreateChampionshipsResponse(newChampionship.idChampionship, newChampionship.name), HttpStatus.OK)
     }
 
     private fun createChampionshipEntity(request: CreateChampionshipRequest): Championship {
         return Championship(
             name = request.name,
             visibility = request.visibility,
-            startDate = request.startDate.millis,
-            finishDate = request.startDate.millis,
-            //languages = request.languages
+            startDate = request.startDate.toDate(),
+            finishDate = request.finishDate.toDate(),
+            languages = request.languages
         )
     }
 
@@ -42,18 +45,31 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
     fun championshipsByType(@RequestParam type: VisibilityType): GenericResponse<GetChampionshipsResponse> {
         val championshipResponse = ChampionshipResponse(
             "torneo", listOf(Language.ENGLISH), VisibilityType.PUBLIC,
-            DateTime.now(), DateTime.now()
+            //TODO: verlo con datetime
+            Date(), Date()
         )
         return GenericResponse(GetChampionshipsResponse(listOf(championshipResponse)))
     }
 
     @GetMapping("championships/{id}")
-    fun championshipById(@PathVariable id: String): GenericResponse<ChampionshipResponse> {
-        val championshipResponse = ChampionshipResponse(
-            "torneo", listOf(Language.ENGLISH), VisibilityType.PUBLIC,
-            DateTime.now(), DateTime.now()
+    fun championshipById(@PathVariable id: String): ResponseEntity<ChampionshipResponse> {
+        val foundChampionships = championshipRepository.findByIdChampionship(id.toLong())
+
+        return if (foundChampionships.isNotEmpty()) {
+            ResponseEntity(transformChampionshipResponse(foundChampionships.first()), HttpStatus.OK)
+        } else {
+            ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+    }
+
+    private fun transformChampionshipResponse(championship: Championship): ChampionshipResponse {
+        return ChampionshipResponse(
+            name = championship.name,
+            finishDate = championship.finishDate,
+            startDate = championship.startDate,
+            visibility = championship.visibility,
+            languages = championship.languages
         )
-        return GenericResponse(championshipResponse)
     }
 
 }
