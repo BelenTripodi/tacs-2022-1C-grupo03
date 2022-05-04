@@ -54,6 +54,12 @@ const Dictionary = () => {
 
     return (
         <>
+            <Typography align="center" variant="h2" marginTop="2rem">
+                Diccionario
+            </Typography>
+            <Typography align="center" variant="subtitle1">
+                Qué querés buscar?
+            </Typography>
             <Container
                 maxWidth="sm"
                 sx={{
@@ -79,7 +85,7 @@ const Dictionary = () => {
             {!meaning.word ? (
                 <Container sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Typography variant="h4" fontStyle="italic" color="#afb5b5">
-                        Not found...
+                        Busque una palabra...
                     </Typography>
                 </Container>
             ) : (
@@ -88,7 +94,10 @@ const Dictionary = () => {
                         {meaning.word.charAt(0).toUpperCase() +
                             meaning.word.slice(1)}
                     </Typography>
-                    <Typography paragraph>{`${meaning.definition}`}</Typography>
+                    <Typography paragraph>{`${
+                        meaning.definition.charAt(0).toUpperCase() +
+                        meaning.definition.slice(1)
+                    }`}</Typography>
                 </Container>
             )}
         </>
