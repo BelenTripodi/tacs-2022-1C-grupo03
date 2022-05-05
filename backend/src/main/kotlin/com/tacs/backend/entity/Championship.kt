@@ -10,7 +10,7 @@ data class Championship(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val idChampionship: Long = 0,
-    @ElementCollection(targetClass = Language :: class)
+    @ElementCollection(targetClass = Language::class)
     @CollectionTable(name = "language_championship_rel",
         joinColumns = [JoinColumn(name = "id_championship")])
     @Column(name = "id_language")
@@ -25,4 +25,5 @@ data class Championship(
     @Column(columnDefinition="DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
     val finishDate: Date,
+    val idOwner: Long,
 )

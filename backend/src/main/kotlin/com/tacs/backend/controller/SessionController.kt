@@ -7,10 +7,8 @@ import com.tacs.backend.request.SessionRequest
 import com.tacs.backend.response.GenericResponse
 import com.tacs.backend.service.SessionService
 import com.tacs.backend.utils.logger
-import org.springframework.context.annotation.Bean
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
-
 
 
 @RestController
