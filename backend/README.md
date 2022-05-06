@@ -18,7 +18,7 @@ docker build --tag app .
 docker run -p 8080:8080 app
 ```
 
-### Paso 3 - Acceder desde mediante login - signup
+### Paso 3 - Acceder mediante login - signup
 
 Si ya se cuenta con usuario: [http://localhost:8080/login](http://localhost:8080/login).
 
