@@ -1,5 +1,10 @@
 # tacs-2022-1C-grupo03
 
+
+##Documentación Swagger
+
+http://localhost:8080/swagger-ui/index.html
+
 ## Cómo correr la app en un contenedor
 
 ### Paso 1 - Crear la imagen
@@ -13,6 +18,10 @@ docker build --tag app .
 docker run -p 8080:8080 app
 ```
 
-### Paso 3 - Acceder desde el navegador
+### Paso 3 - Acceder desde mediante login - signup
 
-[http://localhost:8080/some_resource](http://localhost:8080/some_resource)
+Si ya se cuenta con usuario: [http://localhost:8080/login](http://localhost:8080/login).
+
+
+Creación de usuario: [http://localhost:8080/signup](http://localhost:8080/signup)
+
