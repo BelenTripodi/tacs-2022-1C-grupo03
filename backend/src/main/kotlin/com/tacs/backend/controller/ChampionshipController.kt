@@ -30,17 +30,6 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
         return ResponseEntity(CreateChampionshipsResponse(newChampionship.idChampionship, newChampionship.name), HttpStatus.OK)
     }
 
-    private fun createChampionshipEntity(request: CreateChampionshipRequest, ownerUser: User): Championship {
-        return Championship(
-            name = request.name,
-            visibility = request.visibility,
-            startDate = request.startDate.toDate(),
-            finishDate = request.finishDate.toDate(),
-            languages = request.languages,
-            idOwner = ownerUser.idUser
-        )
-    }
-
     @PutMapping("championships/{idChampionship}/users")
     fun addUser(@PathVariable idChampionship: Long, @RequestBody request: AddUserToChampionshipRequest): ResponseEntity<String> {
         val foundChampionships = championshipRepository.findByIdChampionship(idChampionship)
@@ -54,17 +43,8 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
     }
 
     @GetMapping("championships")
-    fun championshipsByType(@RequestParam type: VisibilityType, @RequestParam username: String): ResponseEntity<GetChampionshipsResponse> {
-        //Podemos tener algo como sesiones para no tener que buscar siempre el user?
-        val ownerUser = userRepository.findByUsername(username).first()
-        val resultChampionships = if (type == VisibilityType.PUBLIC) {
-            championshipRepository.findByVisibility(type).map { transformChampionshipResponse(it) }
-        } else {
-            val allChampionshipId = userByChampionshipRepository.findByUserByChampionshipIdIdUser(ownerUser.idUser)
-            val championships = championshipRepository.findAllByIdChampionshipIn(allChampionshipId.map { it.userByChampionshipId.idChampionship })
-            championships.filter { it.visibility == type }.map { transformChampionshipResponse(it) }
-        }
-
+    fun championshipsByType(): ResponseEntity<GetChampionshipsResponse> {
+        val resultChampionships = championshipRepository.findByVisibility(VisibilityType.PUBLIC).map { transformChampionshipResponse(it) }
         return ResponseEntity(GetChampionshipsResponse(resultChampionships), HttpStatus.OK)
     }
 
@@ -89,4 +69,14 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
         )
     }
 
+    private fun createChampionshipEntity(request: CreateChampionshipRequest, ownerUser: User): Championship {
+        return Championship(
+            name = request.name,
+            visibility = request.visibility,
+            startDate = request.startDate.toDate(),
+            finishDate = request.finishDate.toDate(),
+            languages = request.languages,
+            idOwner = ownerUser.idUser
+        )
+    }
 }
