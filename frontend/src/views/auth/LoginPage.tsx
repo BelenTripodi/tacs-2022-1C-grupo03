@@ -95,7 +95,7 @@ const LoginPage = () => {
                                     onChange={(event) =>
                                         setName(event.target.value)
                                     }
-                                    onKeyUp={handleLogin}
+                                    
                                 />
                             </FormControl>
                         </Grid>
@@ -112,7 +112,6 @@ const LoginPage = () => {
                                         setPassword(event.target.value)
                                     }
                                     fullWidth
-                                    onKeyUp={handleLogin}
                                 />
                             </FormControl>
                         </Grid>
