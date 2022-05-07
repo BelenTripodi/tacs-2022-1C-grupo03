@@ -31,7 +31,10 @@ module.exports = {
             })
 
             if (response.data.definition)
-                await interaction.reply(response.data.definition)
+                await interaction.reply(
+                    response.data.definition.charAt(0).toUpperCase() +
+                        response.data.definition.slice(1)
+                )
             else await interaction.reply(`Definition NOT FOUND for ${word}`)
         } catch (error) {
             console.log('Error fetching dictionary data', { error })
