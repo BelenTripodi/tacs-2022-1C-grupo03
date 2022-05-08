@@ -6,10 +6,9 @@ import com.tacs.backend.entity.User
 import com.tacs.backend.request.SessionRequest
 import com.tacs.backend.response.GenericResponse
 import com.tacs.backend.service.SessionService
-import org.springframework.context.annotation.Bean
+import com.tacs.backend.utils.logger
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
-
 
 
 @RestController
@@ -20,6 +19,7 @@ class SessionController(private val userRepository: UserDAO, private val passwor
     @PostMapping("/login")
     fun login(@RequestBody loginRequest: SessionRequest): GenericResponse<AuthUser> {
         val jwt = sessionService.getJwtToken(loginRequest.username,loginRequest.password)
+        logger().info("Retrieving jwt token")
         return GenericResponse(AuthUser(jwt = jwt))
     }
 
@@ -41,11 +41,11 @@ class SessionController(private val userRepository: UserDAO, private val passwor
         userRepository.findAll()
 
 
-    @Bean
+/*    @Bean
     fun createUsers() {
-        val anUser = User(username = "username", password = passwordEncoder.encode("password"))
+        val anUser = User(id = 0, username = "username", password = passwordEncoder.encode("password"))
 
         userRepository.save(anUser)
 
-    }
+    }*/
 }

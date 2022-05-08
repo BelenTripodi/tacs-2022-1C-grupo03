@@ -21,7 +21,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
         try {
-            if (existeJWTToken(request, response)) {
+            if (existsJWTToken(request, response)) {
                 val claims = validateToken(request)
                 if (claims["authorities"] != null) {
                     setUpSpringAuthentication(claims)
@@ -35,14 +35,17 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
         } catch (e: ExpiredJwtException) {
             response.status = HttpServletResponse.SC_FORBIDDEN
             response.sendError(HttpServletResponse.SC_FORBIDDEN, e.message)
+            logger.error("ERROR: ${e.message}",e)
             return
         } catch (e: UnsupportedJwtException) {
             response.status = HttpServletResponse.SC_FORBIDDEN
             response.sendError(HttpServletResponse.SC_FORBIDDEN, e.message)
+            logger.error("ERROR: ${e.message}",e)
             return
         } catch (e: MalformedJwtException) {
             response.status = HttpServletResponse.SC_FORBIDDEN
             response.sendError(HttpServletResponse.SC_FORBIDDEN, e.message)
+            logger.error("ERROR: ${e.message}",e)
             return
         }
     }
@@ -68,7 +71,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
         SecurityContextHolder.getContext().authentication = auth
     }
 
-    private fun existeJWTToken(request: HttpServletRequest, res: HttpServletResponse): Boolean {
+    private fun existsJWTToken(request: HttpServletRequest, res: HttpServletResponse): Boolean {
         val authenticationHeader = request.getHeader(HEADER)
         return !(authenticationHeader == null || !authenticationHeader.startsWith(PREFIX))
     }
