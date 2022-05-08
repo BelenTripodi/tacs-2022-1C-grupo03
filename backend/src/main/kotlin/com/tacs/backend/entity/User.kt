@@ -10,7 +10,7 @@ import javax.persistence.Id
 data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
+    val idUser: Long = 0,
     val username: String = "",
     val password: String = ""
 )
