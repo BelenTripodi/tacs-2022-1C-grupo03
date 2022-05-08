@@ -13,26 +13,30 @@ import NotFound from "./components/NotFound";
 import Layout from "./components/layout/Layout";
 
 import userService from "./services/user";
+import CreateChampionship from "./views/championship/CreateChampionship";
+import Score from "./views/championship/Score";
+import PublicChampionships from "./views/championship/PublicChampionships";
+import MyChampionships from "./views/championship/MyChampionships";
 
 const App = () => {
   const [user, setUser] = useState({ name: "", auth: false });
   const [loading, setLoading] = useState(true);
-  
-    if(loading){
-      setLoading(false);
-      try{
-        setUser({
-          name: userService.username(),
-          auth: true
-        })
-      }catch(err){
-        setUser({
-          name: "",
-          auth: false
-        })
-      }
+
+  if (loading) {
+    setLoading(false);
+    try {
+      setUser({
+        name: userService.username(),
+        auth: true,
+      });
+    } catch (err) {
+      setUser({
+        name: "",
+        auth: false,
+      });
     }
-  
+  }
+
   return (
     <BrowserRouter>
       <UserContext.Provider
@@ -54,7 +58,12 @@ const App = () => {
               <Route index element={<Dashboard />} />
               <Route path="/dictionary" element={<Dictionary />} />
               <Route path="/helper" element={<Helper />} />
-              <Route path="/championship" element={<Championship />} />
+              <Route path="/championship" element={<Championship />}>
+                <Route path="create" element={<CreateChampionship />} />
+                <Route path="score" element={<Score />} />
+                <Route path="public" element={<PublicChampionships />} />
+                <Route path="personal" element={<MyChampionships />} />
+              </Route>
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>

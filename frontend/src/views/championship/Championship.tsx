@@ -1,6 +1,7 @@
 import React from "react";
 import Sidebar from "../../components/layout/Sidebar";
 import Box from "@mui/material/Box";
+import { Outlet } from "react-router-dom";
 
 const Championship = () => {
   return (
@@ -12,9 +13,9 @@ const Championship = () => {
         height: "100%",
       }}
     >
-      <Sidebar></Sidebar>
+      <Sidebar />
       <Box sx={{ display: "flex", marginLeft: "10px", width: "auto" }}>
-        LALAL
+        <Outlet />
       </Box>
     </div>
   );
