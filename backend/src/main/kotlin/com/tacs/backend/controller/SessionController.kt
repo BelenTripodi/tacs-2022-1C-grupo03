@@ -1,16 +1,10 @@
 package com.tacs.backend.controller
 
-import com.tacs.backend.DAO.UserDAO
 import com.tacs.backend.entity.AuthUser
-import com.tacs.backend.entity.User
 import com.tacs.backend.request.SessionRequest
-import com.tacs.backend.response.GenericResponse
 import com.tacs.backend.service.SessionService
-import com.tacs.backend.utils.passwordEncoder
-import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 
 

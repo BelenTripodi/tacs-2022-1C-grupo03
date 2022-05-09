@@ -41,7 +41,7 @@ class OxfordDictionariesClientTest : WordSpec() {
                     response.results shouldNotBe null
                     response.results!!.forEach { result ->
                         result.lexicalEntries!! shouldNotBe null
-                        result.id shouldBe "someId"
+                        result.id shouldBe "casa"
                         result.lexicalEntries!!.forEach { lexicalEntry ->
                             lexicalEntry.entries!! shouldNotBe null
                             lexicalEntry.entries!!.forEach { entry ->

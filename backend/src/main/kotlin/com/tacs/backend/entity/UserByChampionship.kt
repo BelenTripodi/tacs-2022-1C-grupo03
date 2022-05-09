@@ -9,4 +9,4 @@ class UserByChampionship(
     val userByChampionshipId: UserByChampionshipId)
 
 @Embeddable
-data class UserByChampionshipId(var idChampionship: Long, var idUser: Long): java.io.Serializable
+data class UserByChampionshipId(var idChampionship: Long, var idUser: Long, var score: Long): java.io.Serializable
