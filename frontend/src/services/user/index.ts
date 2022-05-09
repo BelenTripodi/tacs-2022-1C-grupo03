@@ -19,6 +19,10 @@ class UserService{
     public username(){
         return this.userInfo().username;
     }
+
+    public hasToken(): boolean{
+        return localStorage.getItem("jwt") !== undefined;
+    }
 }
 
 export default new UserService(tokenService);
