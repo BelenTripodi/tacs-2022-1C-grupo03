@@ -29,10 +29,8 @@ class UserProfileController(private val championshipRepository: ChampionshipDAO,
 
     @PostMapping("users/{id}/score")
     fun addUserScore(@PathVariable id: String, @RequestBody request: AddPointsRequest): ResponseEntity<String> {
-        val userByChampionships = userByChampionshipDAO.findByUserByChampionshipIdIdUser(id.toLong()).map { c ->
-            UserByChampionship(c.userByChampionshipId.apply { score += request.points.toLong() })
-        }
-        userByChampionships.forEach { userByChampionshipDAO.save(it) }
+        val userByChampionships = userByChampionshipDAO.findByUserByChampionshipIdIdUser(id.toLong())
+        userByChampionships.forEach { userByChampionshipDAO.updateScore(it.score + request.points, it.userByChampionshipId) }
         return ResponseEntity("Points added successfully", HttpStatus.OK)
     }
 
