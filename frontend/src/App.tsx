@@ -48,7 +48,7 @@ const App = () => {
           },
         }}
       >
-        {user.auth ? (
+        {user.auth && userService.hasToken() ? (
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Dashboard />} />
