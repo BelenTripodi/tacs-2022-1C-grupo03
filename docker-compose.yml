@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  app:
+    build: ./backend
+    ports:
+      - 8080:8080
+  bot-uwu:
+    build: ./wordle-bot
+    environment:
+      - ENV=prod
+    links:
+      - app

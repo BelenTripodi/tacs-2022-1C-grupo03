@@ -48,4 +48,9 @@ if (process.env.ENV === 'development') {
     console.log('Worker started')
 }
 
+console.log('ENVIROMENT: ', process.env.ENV)
+console.log(
+    `Backend URL ${process.env.BACKEND_HOST}:${process.env.BACKEND_PORT}`
+)
+
 client.login(token)
