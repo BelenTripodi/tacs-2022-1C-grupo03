@@ -1,6 +1,5 @@
 package com.tacs.backend.DAO
 
-import com.tacs.backend.entity.Championship
 import com.tacs.backend.entity.UserByChampionship
 import com.tacs.backend.entity.UserByChampionshipId
 import org.springframework.data.jpa.repository.JpaRepository

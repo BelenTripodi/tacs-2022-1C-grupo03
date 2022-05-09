@@ -19,7 +19,7 @@ import java.util.stream.Collectors
 class SessionService(private val userRepository: UserDAO) {
 
     fun getJwtToken(username: String, password:String): String {
-        val user = userRepository.findByUsername(username).orElseThrow { WrongCredentialsException("Wrong username or password") }
+        val user = userRepository.findByUsername(username).firstOrNull() ?: throw WrongCredentialsException("Wrong username or password")
         if(passwordEncoder.matches(password, user.password)){
             val secretKey = "mySecretKey"
             val grantedAuthorities = AuthorityUtils
@@ -43,7 +43,7 @@ class SessionService(private val userRepository: UserDAO) {
     }
 
     fun signup(username: String, password: String) {
-        if(userRepository.findByUsername(username).isEmpty){
+        if(userRepository.findByUsername(username).isEmpty()){
             userRepository.save(User(username = username, password = passwordEncoder.encode(password)))
         } else throw UserAlreadyExistsException("User $username already exists")
 
