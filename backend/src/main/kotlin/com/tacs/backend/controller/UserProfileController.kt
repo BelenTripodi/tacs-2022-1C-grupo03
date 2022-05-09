@@ -3,6 +3,7 @@ package com.tacs.backend.controller
 import com.tacs.backend.DAO.ChampionshipDAO
 import com.tacs.backend.DAO.UserByChampionshipDAO
 import com.tacs.backend.entity.UserByChampionship
+import com.tacs.backend.exception.UnknownUserException
 import com.tacs.backend.request.AddPointsRequest
 import com.tacs.backend.request.VisibilityType
 import com.tacs.backend.response.ChampionshipResponse
@@ -30,6 +31,7 @@ class UserProfileController(private val championshipRepository: ChampionshipDAO,
     @PostMapping("users/{id}/score")
     fun addUserScore(@PathVariable id: String, @RequestBody request: AddPointsRequest): ResponseEntity<String> {
         val userByChampionships = userByChampionshipDAO.findByUserByChampionshipIdIdUser(id.toLong())
+        if (userByChampionships.isEmpty()) throw UnknownUserException("Couldn't add score: Unknown user")
         userByChampionships.forEach { userByChampionshipDAO.updateScore(it.score + request.points, it.userByChampionshipId) }
         return ResponseEntity("Points added successfully", HttpStatus.OK)
     }

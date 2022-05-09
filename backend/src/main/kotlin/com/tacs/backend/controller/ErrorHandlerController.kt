@@ -48,4 +48,12 @@ class ErrorHandlerController: ResponseEntityExceptionHandler() {
     @ExceptionHandler(UserAlreadyExistsException::class)
     fun userAlreadyExistError(exception: UserAlreadyExistsException): ResponseEntity<Error> =
         ResponseEntity(Error(HttpStatus.BAD_REQUEST.value(), exception.message), HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(UnknownUserException::class)
+    fun unknownUserError(exception: UnknownUserException): ResponseEntity<Error> =
+        ResponseEntity(Error(HttpStatus.NOT_FOUND.value(), exception.message), HttpStatus.NOT_FOUND)
+
+    @ExceptionHandler(ChampionshipNotFoundException::class)
+    fun championshipNotFoundError(exception: ChampionshipNotFoundException): ResponseEntity<Error> =
+        ResponseEntity(Error(HttpStatus.NOT_FOUND.value(), exception.message), HttpStatus.NOT_FOUND)
 }
