@@ -14,6 +14,6 @@ class DictionaryService(
         val clientResponse = oxfordDictionariesClient.getDefinition(word, language.type)
         return DictionaryResponse(word,
             clientResponse.results?.firstOrNull { it.id == word }?.lexicalEntries?.firstOrNull()?.entries?.firstOrNull()?.senses?.firstOrNull()?.definitions?.firstOrNull()
-                ?: throw WordNotFoundException("There isn't a definition for word: $word")            )
+                ?: throw WordNotFoundException("There isn't a definition for word: $word"))
     }
 }

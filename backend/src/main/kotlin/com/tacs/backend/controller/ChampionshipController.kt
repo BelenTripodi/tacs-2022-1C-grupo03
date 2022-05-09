@@ -7,6 +7,7 @@ import com.tacs.backend.entity.Championship
 import com.tacs.backend.entity.User
 import com.tacs.backend.entity.UserByChampionship
 import com.tacs.backend.entity.UserByChampionshipId
+import com.tacs.backend.exception.ChampionshipNotFoundException
 import com.tacs.backend.request.AddUserToChampionshipRequest
 import com.tacs.backend.request.CreateChampionshipRequest
 import com.tacs.backend.request.VisibilityType
@@ -26,7 +27,7 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
     fun createChampionship(@RequestBody request: CreateChampionshipRequest): ResponseEntity<CreateChampionshipsResponse> {
         val ownerUser = userRepository.findByUsername(request.owner).first()
         val newChampionship = championshipRepository.save(createChampionshipEntity(request, ownerUser))
-        userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(newChampionship.idChampionship, ownerUser.idUser)))
+        userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(newChampionship.idChampionship, ownerUser.idUser),0))
         return ResponseEntity(CreateChampionshipsResponse(newChampionship.idChampionship, newChampionship.name), HttpStatus.OK)
     }
 
@@ -34,10 +35,10 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
     fun addUser(@PathVariable idChampionship: Long, @RequestBody request: AddUserToChampionshipRequest): ResponseEntity<String> {
         val foundChampionships = championshipRepository.findByIdChampionship(idChampionship)
         return if (foundChampionships.isNotEmpty()) {
-            userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(foundChampionships.first().idChampionship, request.idUser)))
+            userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(foundChampionships.first().idChampionship, request.idUser),0))
             ResponseEntity("Successful creation", HttpStatus.OK)
         } else {
-            ResponseEntity("There isn't a championship with id: $idChampionship", HttpStatus.NOT_FOUND)
+            throw ChampionshipNotFoundException(idChampionship)
         }
 
     }
@@ -55,7 +56,7 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
         return if (foundChampionships.isNotEmpty()) {
             ResponseEntity(transformChampionshipResponse(foundChampionships.first()), HttpStatus.OK)
         } else {
-            ResponseEntity(HttpStatus.NOT_FOUND)
+            throw ChampionshipNotFoundException(id)
         }
     }
 

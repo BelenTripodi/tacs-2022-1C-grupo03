@@ -6,7 +6,8 @@ import javax.persistence.*
 @Table(name = "users_championship_rel")
 class UserByChampionship(
     @EmbeddedId
-    val userByChampionshipId: UserByChampionshipId)
+    val userByChampionshipId: UserByChampionshipId,
+    var score: Long)
 
 @Embeddable
 data class UserByChampionshipId(var idChampionship: Long, var idUser: Long): java.io.Serializable
