@@ -13,10 +13,16 @@ import { Visibility } from "../../Interfaces/Visibility";
 import { SelectChangeEvent } from "@mui/material/Select";
 import Container from "@mui/material/Container";
 
+enum Languages {
+  SPANISH = "Español",
+  ENGLISH = "Inglés",
+  BOTH = "Ambos",
+}
+
 const CreateChampionship = () => {
   const [name, setName] = useState("");
   const [visibility, setVisibility] = useState(Visibility.PRIVATE);
-  const [languages, setLanguages] = useState("");
+  const [languages, setLanguages] = useState(Languages.SPANISH);
   const [startDate, setStartDate] = useState("");
   const [finishDate, setFinishDate] = useState("");
 
@@ -28,8 +34,12 @@ const CreateChampionship = () => {
     setName(event.target.value as string);
   };
 
+  const onLanguageChange = (event: SelectChangeEvent) => {
+    setLanguages(event.target.value as Languages);
+  };
+
   const createChampionship = () => {
-    console.log(name, visibility);
+    console.log(name, visibility, languages);
   };
 
   return (
@@ -43,7 +53,7 @@ const CreateChampionship = () => {
         Crear Torneo
       </Typography>
       <Container
-        maxWidth="sm"
+        maxWidth="md"
         sx={{
           "&>*:not(last-child)": { margin: "1rem" },
           display: "flex",
@@ -67,6 +77,19 @@ const CreateChampionship = () => {
           >
             <MenuItem value={Visibility.PRIVATE}>Privado</MenuItem>
             <MenuItem value={Visibility.PUBLIC}>Publico</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel id="language-label">Idiomas</InputLabel>
+          <Select
+            labelId="language-label"
+            value={languages}
+            label="Idiomas"
+            onChange={onLanguageChange}
+          >
+            <MenuItem value={Languages.SPANISH}>Español</MenuItem>
+            <MenuItem value={Languages.ENGLISH}>Inglés</MenuItem>
+            <MenuItem value={Languages.BOTH}>Ambos</MenuItem>
           </Select>
         </FormControl>
       </Container>
