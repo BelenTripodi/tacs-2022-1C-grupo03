@@ -14,7 +14,7 @@ const Championship = () => {
       }}
     >
       <Sidebar />
-      <Box sx={{ display: "flex", marginLeft: "10px", width: "auto" }}>
+      <Box sx={{ marginLeft: "10px", width: "100%" }}>
         <Outlet />
       </Box>
     </div>
