@@ -16,7 +16,7 @@ class HelperRepository(@Value("\${helperRepository.pathRepositoryWords:helper/5l
 
     private fun getData(language: String): List<String> {
         val fullPath = pathRepositoryWords.replace(LANGUAGE_IN_PATH, language.lowercase())
-        return FileReader.read(fullPath).replace("/r", "").split("/n")
+        return FileReader.read(fullPath).replace("\r", "").split("\n")
     }
 
     companion object {
