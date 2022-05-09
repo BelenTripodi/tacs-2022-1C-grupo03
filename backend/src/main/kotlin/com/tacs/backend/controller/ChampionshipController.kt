@@ -24,7 +24,7 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
 
     @PostMapping("/championships")
     fun createChampionship(@RequestBody request: CreateChampionshipRequest): ResponseEntity<CreateChampionshipsResponse> {
-        val ownerUser = userRepository.findByUsername(request.owner).get()
+        val ownerUser = userRepository.findByUsername(request.owner).first()
         val newChampionship = championshipRepository.save(createChampionshipEntity(request, ownerUser))
         userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(newChampionship.idChampionship, ownerUser.idUser, 0)))
         return ResponseEntity(CreateChampionshipsResponse(newChampionship.idChampionship, newChampionship.name), HttpStatus.OK)
