@@ -38,9 +38,9 @@ class FindWordResolver(private val helperRepository: HelperRepository) {
 
     companion object {
         private val FILTERING_BY_COLOUR =  mapOf(
-            Colour.GRAY to { possibleWord:String, letter: Letter, _: Int -> !possibleWord.contains(letter.letter) },
-            Colour.GREEN to { possibleWord:String, letter: Letter, index: Int -> possibleWord[index] == letter.letter.first() },
-            Colour.YELLOW to { possibleWord:String, letter: Letter, index: Int -> possibleWord[index] != letter.letter.first() && possibleWord.contains(letter.letter) },
+            Colour.GRAY to { possibleWord:String, letter: Letter, _: Int -> !possibleWord.contains(letter.letter.uppercase()) },
+            Colour.GREEN to { possibleWord:String, letter: Letter, index: Int -> possibleWord[index] == letter.letter.uppercase().first() },
+            Colour.YELLOW to { possibleWord:String, letter: Letter, index: Int -> possibleWord[index] != letter.letter.uppercase().first() && possibleWord.contains(letter.letter.uppercase()) },
         )
     }
 }

@@ -4,7 +4,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select'
 import Loading from '../../components/Loading'
 import Snackbar from '@mui/material/Snackbar'
 import Alert from '../../components/Alert'
-import httpClient from './../../services/client/index'
+import HttpClient from './../../services/client/index'
 import { LANGUAGE } from '../../Interfaces/Language'
 import LanguageSelector from '../../components/LanguageSelector'
 
@@ -149,9 +149,9 @@ const Helper = () => {
 
             console.log(aux)
 
-            const response = await httpClient.post('/help', {
+            const response = await HttpClient.httpPost("/help",{
                 tries: aux,
-                language,
+                language
             })
 
             // actualizo la lista de intentos

@@ -30,10 +30,10 @@ class FindWordResolverTest: WordSpec() {
             "tries with GREEN letter" should {
                 "respect letter position of possible words" {
                     val tries = listOf( Try(letters = listOf(
-                        Letter("R", Colour.YELLOW),
-                        Letter("A", Colour.GRAY),
+                        Letter("r", Colour.YELLOW),
+                        Letter("a", Colour.GRAY),
                         Letter("D", Colour.GRAY),
-                        Letter("I", Colour.GRAY),
+                        Letter("i", Colour.GRAY),
                         Letter("O", Colour.GREEN),
                     ))
                     )
