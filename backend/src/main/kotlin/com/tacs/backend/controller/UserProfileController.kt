@@ -2,12 +2,15 @@ package com.tacs.backend.controller
 
 import com.tacs.backend.DAO.ChampionshipDAO
 import com.tacs.backend.DAO.UserByChampionshipDAO
+import com.tacs.backend.entity.Championship
 import com.tacs.backend.entity.UserByChampionship
+import com.tacs.backend.exception.ChampionshipNotFoundException
 import com.tacs.backend.exception.UnknownUserException
 import com.tacs.backend.request.AddPointsRequest
 import com.tacs.backend.request.VisibilityType
 import com.tacs.backend.response.ChampionshipResponse
 import com.tacs.backend.response.GetChampionshipsResponse
+import com.tacs.backend.response.GetUserChampionship
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -34,6 +37,20 @@ class UserProfileController(private val championshipRepository: ChampionshipDAO,
         if (userByChampionships.isEmpty()) throw UnknownUserException("Couldn't add score: Unknown user")
         userByChampionships.forEach { userByChampionshipDAO.updateScore(it.score + request.points, it.userByChampionshipId) }
         return ResponseEntity("Points added successfully", HttpStatus.OK)
+    }
+
+    @GetMapping("users/{userId}/championships/{championshipId}")
+    fun getUserChampionships(@PathVariable userId: String, @PathVariable championshipId: String): ResponseEntity<GetUserChampionship>
+    {
+        val userByChampionships = userByChampionshipDAO.findByUserByChampionshipIdIdUser(userId.toLong())
+        if (userByChampionships.isEmpty()) throw UnknownUserException("Couldn't get any championship for user $userId")
+        val userByChampionship = userByChampionships.find { c -> c.userByChampionshipId.idChampionship == championshipId.toLong() }
+            ?: throw ChampionshipNotFoundException(championshipId.toLong())
+        val championship = championshipRepository.findByIdChampionship(championshipId.toLong()).firstOrNull() ?: throw ChampionshipNotFoundException(championshipId.toLong())
+        val response = GetUserChampionship(
+            ChampionshipResponse(championship.name, championship.languages, championship.visibility, championship.startDate, championship.finishDate), userByChampionship.score)
+
+        return ResponseEntity(response, HttpStatus.OK)
     }
 
 
