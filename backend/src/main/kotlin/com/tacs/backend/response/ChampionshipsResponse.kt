@@ -2,12 +2,12 @@ package com.tacs.backend.response
 
 import com.tacs.backend.request.Language
 import com.tacs.backend.request.VisibilityType
-import org.joda.time.DateTime
 import java.util.*
 
 data class CreateChampionshipsResponse(val id: Long, val name: String)
 
 data class GetChampionshipsResponse(val championships: List<ChampionshipResponse>)
+data class GetUserChampionship(val championship: ChampionshipResponse, val score: Long)
 
 data class ChampionshipResponse(
     val name: String,
