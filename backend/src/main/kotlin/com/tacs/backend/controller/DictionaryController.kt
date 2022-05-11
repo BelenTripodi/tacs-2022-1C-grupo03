@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 class DictionaryController(val dictionaryService: DictionaryService) {
+
     @GetMapping("/dictionary")
     fun wordDefinition(@RequestParam word: String, @RequestParam language: Language): ResponseEntity<DictionaryResponse> {
         val dictionaryResponse = dictionaryService.getWordDefinition(word, language)
