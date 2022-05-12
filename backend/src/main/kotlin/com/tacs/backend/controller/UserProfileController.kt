@@ -32,7 +32,7 @@ class UserProfileController(private val championshipRepository: ChampionshipDAO,
     @PostMapping("users/{id}/score")
     fun addUserScore(@PathVariable id: String, @RequestBody request: AddPointsRequest): ResponseEntity<String> {
         val idLanguage = request.language.ordinal
-        val userByChampionships = userByChampionshipDAO.findByUserByChampionshipId_IdLanguageAndUserByChampionshipIdIdUser(idLanguage, id.toLong())
+        val userByChampionships = userByChampionshipDAO.findByUserByChampionshipIdIdLanguageAndUserByChampionshipIdIdUser(idLanguage, id.toLong())
         if (userByChampionships.isEmpty()) throw UnknownUserException("Couldn't add score: There isn't a registered user in expected championship")
         userByChampionships.forEach { userByChampionshipDAO.updateScore(it.score + request.points, it.userByChampionshipId, idLanguage) }
         return ResponseEntity("Points added successfully", HttpStatus.OK)

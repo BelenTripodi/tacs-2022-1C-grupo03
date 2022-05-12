@@ -10,7 +10,7 @@ import javax.transaction.Transactional
 
 interface UserByChampionshipDAO : JpaRepository<UserByChampionship, UserByChampionshipId> {
     fun findByUserByChampionshipIdIdUser(idUser: Long) : List<UserByChampionship>
-    fun findByUserByChampionshipId_IdLanguageAndUserByChampionshipIdIdUser(idLanguage: Int, idUser: Long) : List<UserByChampionship>
+    fun findByUserByChampionshipIdIdLanguageAndUserByChampionshipIdIdUser(idLanguage: Int, idUser: Long) : List<UserByChampionship>
     @Transactional
     @Modifying
     @Query("update UserByChampionship uc set uc.score = :new_score where uc.userByChampionshipId.idChampionship = :#{#idUserByChampionshipId.idChampionship} and uc.userByChampionshipId.idUser = :#{#idUserByChampionshipId.idUser} and uc.userByChampionshipId.idLanguage = :#{#languageId}")
