@@ -29,7 +29,7 @@ class SessionService(private val userRepository: UserDAO) {
                 .commaSeparatedStringToAuthorityList("ROLE_USER")
             val token: String = Jwts
                 .builder()
-                .setId("tacsJWT")
+                .setId(user[0].idUser.toString())
                 .setSubject(username)
                 .claim("authorities",
                     grantedAuthorities.stream()
