@@ -44,8 +44,19 @@ export const handlers = [
     rest.post(
         `${process.env.REACT_APP_BACKEND_URL}/users/0/score`,
         (req, res, ctx) => {
-            console.log('Body', req.body)
             return res(ctx.json('Points added successfully'))
+        }
+    ),
+    rest.get(
+        `${process.env.REACT_APP_BACKEND_URL}/users/0/score`,
+        (req, res, ctx) => {
+            return res(
+                ctx.json({
+                    data: {
+                        dailyScore: 1,
+                    },
+                })
+            )
         }
     ),
 ]
