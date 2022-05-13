@@ -1,31 +1,34 @@
 import { rest } from 'msw'
 
 export const handlers = [
-    rest.get(`${process.env.REACT_APP_BACKEND_URL}/dictionary`, (req, res, ctx) => {
-        console.log("Params: ", req.url.searchParams.get('language'), req.url.searchParams.get('word'))
-        return res(
-            ctx.delay(1500),
-            ctx.status(200),
-            ctx.json({
-                definitions: [
-                    "asdasdasdsa",
-                    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur odit explicabo",
-                    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur odit explicabo Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur odit explicabo"
-                ]
-            })
-        )
-    }),
-    
+    rest.get(
+        `${process.env.REACT_APP_BACKEND_URL}/dictionary`,
+        (req, res, ctx) => {
+            console.log(
+                'Params: ',
+                req.url.searchParams.get('language'),
+                req.url.searchParams.get('word')
+            )
+            return res(
+                ctx.delay(1500),
+                ctx.status(200),
+                ctx.json({
+                    definitions: [
+                        'asdasdasdsa',
+                        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur odit explicabo',
+                        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur odit explicabo Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur odit explicabo',
+                    ],
+                })
+            )
+        }
+    ),
+
     rest.post(`${process.env.REACT_APP_BACKEND_URL}/help`, (req, res, ctx) => {
         return res(
             ctx.delay(1500),
             ctx.status(200),
             ctx.json({
-                possibleWords: [
-                    "word1",
-                    "word2",
-                    "word3"  
-                ]
+                possibleWords: ['word1', 'word2', 'word3'],
             })
         )
     }),
@@ -33,9 +36,16 @@ export const handlers = [
         return res(
             ctx.json({
                 data: {
-                    jwt: 'randomjwt'
-                }
+                    jwt: 'randomjwt',
+                },
             })
         )
-    })
+    }),
+    rest.post(
+        `${process.env.REACT_APP_BACKEND_URL}/users/0/score`,
+        (req, res, ctx) => {
+            console.log('Body', req.body)
+            return res(ctx.json('Points added successfully'))
+        }
+    ),
 ]
