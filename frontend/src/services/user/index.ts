@@ -9,8 +9,11 @@ class UserService{
     private userInfo(){
         const decoded = this.tokenService.decodedToken();
 
+        console.log(decoded);
+
         const sub = {
-            username: decoded.sub
+            username: decoded.sub,
+            id: decoded.jti
         }
 
         return sub;
@@ -18,6 +21,10 @@ class UserService{
 
     public username(){
         return this.userInfo().username;
+    }
+
+    public id(){
+        return this.userInfo().id;
     }
 }
 
