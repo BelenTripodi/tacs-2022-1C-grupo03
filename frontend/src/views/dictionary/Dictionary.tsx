@@ -6,12 +6,20 @@ import HttpClient from './../../services/client/index'
 import { LANGUAGE } from '../../Interfaces/Language'
 import LanguageSelector from '../../components/LanguageSelector'
 
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import UserContext from './../../context/UserContext';
+
 interface IMeaning {
     word: string | undefined
     definition: string
 }
 
 const Dictionary = () => {
+    let navigate = useNavigate();
+
+    const { logout } = useContext(UserContext);
+
     const [language, setLanguage] = useState(LANGUAGE.ES.toString())
     const [meaning, setMeaning] = useState<IMeaning>({
         word: '',
@@ -29,13 +37,18 @@ const Dictionary = () => {
                     word,
                     language,
                 })
-
                 setMeaning({
                     word,
-                    definition: response.data.definition,
+                    definition: response!.data.definition,
                 })
             }
-        } catch (error) {
+        } catch (error: any) {
+            if(error?.response?.status === 401 || error?.response?.status === 403){
+                logout();
+                navigate("/login");
+                return;
+            }
+
             console.log('Error fetching meaning', { error })
             setMeaning({
                 word: '',

@@ -7,6 +7,9 @@ import Alert from '../../components/Alert'
 import HttpClient from './../../services/client/index'
 import { LANGUAGE } from '../../Interfaces/Language'
 import LanguageSelector from '../../components/LanguageSelector'
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import UserContext from './../../context/UserContext';
 
 enum COLOUR {
     YELLOW = 'YELLOW',
@@ -30,6 +33,10 @@ interface Try {
 }
 
 const Helper = () => {
+    let navigate = useNavigate();
+
+    const { logout } = useContext(UserContext);
+
     const [alertOpened, setAlertOpened] = useState(false)
     const [loading, setLoading] = useState(false)
     const wordLength = 5
@@ -153,19 +160,23 @@ const Helper = () => {
                 tries: aux,
                 language,
             })
-
             // actualizo la lista de intentos
             setTries((prev) => {
                 const temp = getDeepCopy(prev)
                 temp.push({ letters })
                 return [...temp]
             })
-            setPossibleWords(response.data.possibleWords.slice(0, 10))
+            setPossibleWords(response!.data.possibleWords.slice(0, 10))
 
             // vacio los inputs y enfoco en el primero
             emptyInputs()
-        } catch (error) {
+        } catch (error: any) {
             console.log('Error getting help', { error })
+            if(error?.response?.status === 401 || error?.response?.status === 403){
+                logout();
+                navigate("/login");
+                return;
+            }
         } finally {
             setLoading(false)
         }
