@@ -38,6 +38,17 @@ El bot ira guardando los intentos realizados, por cada usuario que se encuentre 
 
 1. /endgame : termina la partida actual. El bot borra el registro de intentos y el jugador puede empezar otra partida si asi lo desea.
 
+### Daily score
+
+Para hacer la carga de los resultados de tus partidas diarias, podes usar el siguiente comando
+
+/dailyscore <score> <language>
+
+*Restricciones*:
+
+0<=**score**<=6
+
+
 ### Torneos
 
 Para otra iteracion
