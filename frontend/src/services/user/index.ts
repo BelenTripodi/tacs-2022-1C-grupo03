@@ -9,8 +9,6 @@ class UserService{
     private userInfo(){
         const decoded = this.tokenService.decodedToken();
 
-        console.log(decoded);
-
         const sub = {
             username: decoded.sub,
             id: decoded.jti
@@ -26,7 +24,7 @@ class UserService{
     public id(){
         return this.userInfo().id;
     }
-    
+
     public hasToken(): boolean{
         return localStorage.getItem("jwt") !== undefined;
     }
