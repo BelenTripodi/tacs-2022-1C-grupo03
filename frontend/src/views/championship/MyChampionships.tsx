@@ -1,48 +1,51 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import HttpService from './../../services/client/index';
 
-import UserSerivce from "../../services/user"
-
-interface IChampionship{
-    name: string;
-    languages: Array<string>;
-    visibility: "PUBLIC" | "PRIVATE";
-    startDate: string;
-    finishDate: string;
-
-}
+import UserService from "../../services/user"
+import IChampionship from "../../Interfaces/Championship";
+import Championship from './Championship';
+import UserContext from './../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
+import { Grid } from "@mui/material";
 
 const MyChampionships = () => {
     const [championships, setChampionships] = useState<IChampionship[]>([]);
 
+    const { logout } = useContext(UserContext);
+    let navigate = useNavigate();
+
     useEffect(() => {
-        HttpService.httpGet(`/championships?username=${UserSerivce.username()}`).then((result) => {
-            console.log(result.data.championships[0]);
-            setChampionships(result.data.championships);
-        })
-    },[])
+        try{
+            HttpService.httpGet(`/championships?username=${UserService.username()}&type=PRIVATE`).then((result) => {
+                console.log(result.data.championships[0]);
+                setChampionships(result.data.championships);
+            }).catch(err => {
+                logout();
+                navigate("/login");
+                return;
+
+            })
+        }catch(err){
+            console.log("Hay error");
+            logout();
+            navigate("/login");
+            return;
+        }
+    })
 
     return (
-    <>
-        {championships.map((championship) => {
+    <Grid container>
+        {championships.length > 0 ? championships.map((championship,index) => {
             return (
-                <>
-                <h2>
-                    {championship.name}
-                </h2>
-                <p>
-                    {championship.languages}
-                </p>
-                <p>
-                    {championship.startDate}
-                </p>
-                <p>
-                    {championship.finishDate}
-                </p>
-                </>
+                //@ts-ignore
+                <Championship championship={championship} key={index}/>
             )
-        })}
-    </>
+        }) : (
+            <h2>
+                No posee torneos propios activos.
+            </h2>
+        )}
+    </Grid>
     );
 };
 

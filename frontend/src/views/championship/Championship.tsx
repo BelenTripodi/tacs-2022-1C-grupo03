@@ -1,24 +1,37 @@
-import React from "react";
-import Sidebar from "../../components/layout/Sidebar";
-import Box from "@mui/material/Box";
-import { Outlet } from "react-router-dom";
+import { Card, Grid, Paper } from '@mui/material';
+import React from 'react';
+import IChampionship from '../../Interfaces/Championship';
 
-const Championship = () => {
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        marginTop: "10px",
-        height: "100%",
-      }}
-    >
-      <Sidebar />
-      <Box sx={{ marginLeft: "10px", width: "100%" }}>
-        <Outlet />
-      </Box>
-    </div>
-  );
-};
+const Championship = ({championship}: {championship: IChampionship}) => {
+    const { name, languages, startDate, finishDate } = championship;
+    
+    return (
+        <>
+        <Grid xs={6} margin={1} display="block" direction="row">
+        <Paper variant="outlined" elevation={2} sx={{padding: 1}}>
+            <h3>
+                Titulo: {name}
+            </h3>
+            <Grid xs={3} direction="column">
+            <Card variant="elevation">
+                <h3>
+                Lenguajes: 
+                </h3>
+                {languages.map((lang) => <p>{lang}</p>)}
+            </Card>
+            </Grid>
+            <Grid xs={3} direction="column">
+                <h3>
+                Se juega entre:
+                </h3>
+                <p>
+                    {new Date(startDate).toLocaleDateString()} hasta {new Date(finishDate).toLocaleDateString()}
+                </p>
+            </Grid>
+        </Paper>
+        </Grid>
+        </>
+    )
+}
 
 export default Championship;
