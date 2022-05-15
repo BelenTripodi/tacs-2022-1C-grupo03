@@ -1,10 +1,11 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const axios = require('axios')
+const jwt_decode = require('jwt-decode')
 
 const host = process.env.BACKEND_HOST
 const port = process.env.BACKEND_PORT
 
-const baseUrl =
+const baseURL =
     process.env.ENV !== 'local'
         ? `http://${host}:${port}`
         : 'http://localhost:8080'
@@ -30,15 +31,24 @@ module.exports = {
             const username = interaction.options.getString('username')
             const password = interaction.options.getString('password')
 
-            const response = await axios.post(`${baseUrl}/login`, {
+            const response = await axios.post(`${baseURL}/login`, {
                 username,
                 password,
             })
 
             // me guardo el jwt y creo la instancia de axios para que el usuario haga request/post con el header incluido
-            interaction.user.jwt = response.data.data.jwt
+            interaction.user.jwt = response.data.jwt
+            const test = jwt_decode(interaction.user.jwt)
+            interaction.user.id = test.id || 0 // TODO borrar este or. Preguntarle a brian/facu por que no hay id
+
+            console.log('Mostrando el objeto decodificado', test)
+            console.log('Mostrando id ', test.id)
+            console.log(
+                `JWT: ${interaction.user.jwt}; ID: ${interaction.user.id}`
+            )
+
             interaction.user.axios = axios.create({
-                baseURL: `${baseUrl}`,
+                baseURL,
                 headers: { Authorization: `Bearer ${interaction.user.jwt}` },
             })
 

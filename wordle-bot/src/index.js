@@ -48,9 +48,15 @@ if (process.env.ENV === 'development') {
     console.log('Worker started')
 }
 
+const host = process.env.BACKEND_HOST
+const port = process.env.BACKEND_PORT
+
+const baseUrl =
+    process.env.ENV !== 'local'
+        ? `http://${host}:${port}`
+        : 'http://localhost:8080'
+
 console.log('ENVIROMENT: ', process.env.ENV)
-console.log(
-    `Backend URL ${process.env.BACKEND_HOST}:${process.env.BACKEND_PORT}`
-)
+console.log(`Backend URL ${baseUrl}`)
 
 client.login(token)
