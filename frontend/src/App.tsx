@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import SignUpPage from "./views/auth/SignUpPage";
 import Dictionary from "./views/dictionary/Dictionary";
 import Helper from "./views/helper/Helper";
-import Championship from "./views/championship/Championship";
+import Championships from "./views/championship/Championships";
 import Dashboard from "./views/dashboard/Dashboard";
 
 import UserContext from "./context/UserContext";
@@ -58,7 +58,7 @@ const App = () => {
               <Route index element={<Dashboard />} />
               <Route path="/dictionary" element={<Dictionary />} />
               <Route path="/helper" element={<Helper />} />
-              <Route path="/championship" element={<Championship />}>
+              <Route path="/championship" element={<Championships />}>
                 <Route path="create" element={<CreateChampionship />} />
                 <Route path="score" element={<Score />} />
                 <Route path="public" element={<PublicChampionships />} />
