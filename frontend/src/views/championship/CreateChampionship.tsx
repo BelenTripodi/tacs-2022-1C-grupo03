@@ -8,10 +8,12 @@ import {
   Typography,
 } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import Box from "@mui/material/Box";
 import { Visibility } from "../../Interfaces/Visibility";
 import { SelectChangeEvent } from "@mui/material/Select";
 import Container from "@mui/material/Container";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 enum Languages {
   SPANISH = "Español",
@@ -23,8 +25,8 @@ const CreateChampionship = () => {
   const [name, setName] = useState("");
   const [visibility, setVisibility] = useState(Visibility.PRIVATE);
   const [languages, setLanguages] = useState(Languages.SPANISH);
-  const [startDate, setStartDate] = useState("");
-  const [finishDate, setFinishDate] = useState("");
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [finishDate, setFinishDate] = useState<Date | null>(null);
 
   const onVisibilityChange = (event: SelectChangeEvent) => {
     setVisibility(event.target.value as Visibility);
@@ -39,7 +41,7 @@ const CreateChampionship = () => {
   };
 
   const createChampionship = () => {
-    console.log(name, visibility, languages);
+    console.log(name, visibility, languages, startDate, finishDate);
   };
 
   return (
@@ -60,13 +62,15 @@ const CreateChampionship = () => {
           alignItems: "center",
         }}
       >
-        <TextField
-          required
-          id="outlined-required"
-          label="Nombre"
-          value={name}
-          onChange={onNameChange}
-        />
+        <FormControl fullWidth>
+          <TextField
+            required
+            id="outlined-required"
+            label="Nombre"
+            value={name}
+            onChange={onNameChange}
+          />
+        </FormControl>
         <FormControl fullWidth>
           <InputLabel id="visibility-label">Visibilidad</InputLabel>
           <Select
@@ -101,11 +105,44 @@ const CreateChampionship = () => {
           alignItems: "center",
         }}
       >
-        <Box>
+        <FormControl fullWidth>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              label="Fecha inicial"
+              value={startDate}
+              onChange={(newValue) => {
+                setStartDate(newValue);
+              }}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+        </FormControl>
+        <FormControl fullWidth>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              label="Fecha de fin"
+              value={finishDate}
+              onChange={(newValue) => {
+                setFinishDate(newValue);
+              }}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+        </FormControl>
+      </Container>
+      <Container
+        maxWidth="sm"
+        sx={{
+          "&>*:not(last-child)": { margin: "1rem" },
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <FormControl fullWidth>
           <Button variant="contained" onClick={createChampionship}>
             Crear
           </Button>
-        </Box>
+        </FormControl>
       </Container>
     </>
   );
