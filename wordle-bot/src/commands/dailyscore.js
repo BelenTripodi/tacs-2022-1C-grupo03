@@ -1,6 +1,6 @@
 require('dotenv').config()
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const axios = require('axios')
+const { secretReply } = require('../response')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -28,7 +28,8 @@ module.exports = {
             const language = interaction.options.getString('language')
 
             if (score > 6 || score < 0) {
-                await interaction.reply(
+                await secretReply(
+                    interaction,
                     'Invalid score, should be a value between 0 and 6'
                 )
                 return
@@ -41,10 +42,11 @@ module.exports = {
                     language,
                 }
             )
-            await interaction.reply(`Score diario ingresado con exito!`)
+            await secretReply(interaction, `Score diario ingresado con exito!`)
         } catch (error) {
             console.log('Error updating score', { error })
-            await interaction.reply(
+            await secretReply(
+                interaction,
                 `Error: no tenes torneos registrados en ese idioma`
             )
         }

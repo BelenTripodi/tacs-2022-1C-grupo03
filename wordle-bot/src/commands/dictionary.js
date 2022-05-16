@@ -1,6 +1,5 @@
 require('dotenv').config()
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const axios = require('axios')
 
 module.exports = {
     data: new SlashCommandBuilder()

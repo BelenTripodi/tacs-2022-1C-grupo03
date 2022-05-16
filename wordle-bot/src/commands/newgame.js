@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
+const { secretReply } = require('../response')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -17,9 +18,6 @@ module.exports = {
     async execute(interaction) {
         const language = interaction.options.getString('language')
         interaction.user.match = { tries: [], language }
-        await interaction.reply({
-            content: 'Game started',
-            ephemeral: true,
-        })
+        await secretReply(interaction, 'Game started')
     },
 }

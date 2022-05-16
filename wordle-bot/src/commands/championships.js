@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
+const { secretReply } = require('../response')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -25,13 +26,14 @@ module.exports = {
             )
 
             const data = buildResponse(response.data.championships)
-            await interaction.reply(
-                `Active ${interaction.options.getString(
-                    'type'
-                )} championships:\n ${data}`
-            )
+            const msg = `Active ${interaction.options.getString(
+                'type'
+            )} championships:\n ${data}`
+
+            await secretReply(interaction, msg)
         } catch (error) {
             console.log('Error: error obteniendo torneos', error)
+            await secretReply(interaction, 'Error obteniendo torneos')
         }
     },
 }

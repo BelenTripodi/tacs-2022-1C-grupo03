@@ -1,6 +1,6 @@
 require('dotenv').config()
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const axios = require('axios')
+const { secretReply } = require('../response')
 
 const charToColour = {
     g: 'GREEN',
@@ -24,10 +24,10 @@ module.exports = {
         try {
             // si no empezó la partida, corto la ejecucion de 1
             if (!interaction.user.match) {
-                await interaction.reply({
-                    content: `Start a new game first pls. COMMAND /newgame`,
-                    ephemeral: true,
-                })
+                await secretReply(
+                    interaction,
+                    `Start a new game first pls. COMMAND /newgame`
+                )
                 return
             }
 
@@ -42,17 +42,18 @@ module.exports = {
                 interaction.user.match
             )
             // respuesta al usuario
-            await interaction.reply({
-                content: JSON.stringify(response.data.possibleWords),
-                ephemeral: true,
-            })
+            await secretReply(
+                interaction,
+                JSON.stringify(response.data.possibleWords)
+            )
+
             await interaction.followUp({
                 content: `Tries:\n${JSON.stringify(interaction.user.match)}`,
                 ephemeral: true,
             }) // este mensaje lo podemos borrar en un futuro, era solo para testear el body del post
         } catch (error) {
             console.log('Error: fallo al obtener ayuda', { error })
-            await interaction.reply(`Error al obtener ayuda`)
+            await secretReply(interaction, `Error al obtener ayuda`)
         }
     },
 }
