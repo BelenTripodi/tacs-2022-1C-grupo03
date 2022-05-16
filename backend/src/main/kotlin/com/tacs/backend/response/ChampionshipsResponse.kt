@@ -10,6 +10,7 @@ data class GetChampionshipsResponse(val championships: List<ChampionshipResponse
 data class GetUserChampionship(val championship: ChampionshipResponse, val score: Long)
 
 data class ChampionshipResponse(
+    val idChampionship: Long,
     val name: String,
     val languages: List<Language>,
     val visibility: VisibilityType,
