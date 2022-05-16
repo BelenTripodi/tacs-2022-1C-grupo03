@@ -36,7 +36,7 @@ class SessionService(private val userRepository: UserDAO) {
                         .map { obj: GrantedAuthority -> obj.authority }
                         .collect(Collectors.toList()))
                 .setIssuedAt(Date(System.currentTimeMillis()))
-                .setExpiration(Date(System.currentTimeMillis() + 600000))
+                .setExpiration(Date(System.currentTimeMillis() + 3600000))
                 .signWith(
                     SignatureAlgorithm.HS512,
                     secretKey.toByteArray()

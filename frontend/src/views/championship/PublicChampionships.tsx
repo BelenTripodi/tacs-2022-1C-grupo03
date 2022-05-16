@@ -4,6 +4,8 @@ import IChampionship from "../../Interfaces/Championship";
 import HttpService from "../../services/client";
 import { useNavigate } from "react-router-dom";
 import UserContext from "./../../context/UserContext";
+import { Grid } from "@mui/material";
+import Championship from './Championship';
 
 const PublicChampionships = () => {
   const [championships, setChampionships] = useState<IChampionship[]>([]);
@@ -23,25 +25,21 @@ const PublicChampionships = () => {
       navigate("/login");
       return;
     }
-  });
+  },[]);
 
   return (
-    <>
-      {championships.length > 0 ? (
-        championships.map((championship) => {
-          return (
-            <>
-              <h2>{championship.name}</h2>
-              <p>{championship.languages}</p>
-              <p>{championship.startDate}</p>
-              <p>{championship.finishDate}</p>
-            </>
-          );
-        })
-      ) : (
-        <h2>No hay ningún torneo activo disponible.</h2>
-      )}
-    </>
+    <Grid container>
+        {championships.length > 0 ? championships.map((championship,index) => {
+            return (
+                //@ts-ignore
+                <Championship championship={championship} key={index}/>
+            )
+        }) : (
+            <h2>
+                No posee torneos propios activos.
+            </h2>
+        )}
+    </Grid>
   );
 };
 

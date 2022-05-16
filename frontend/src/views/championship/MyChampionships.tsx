@@ -16,10 +16,12 @@ const MyChampionships = () => {
 
     useEffect(() => {
         try{
-            HttpService.httpGet(`/championships?username=${UserService.username()}&type=PRIVATE`).then((result) => {
-                console.log(result.data.championships[0]);
-                setChampionships(result.data.championships);
+            HttpService.httpGet(`/users/${UserService.id()}/championships?type=PRIVATE`).then((privates) => {
+                console.log("Torneos privados");
+                console.log(privates.data.data.championships);
+                setChampionships(privates.data.data.championships);
             }).catch(err => {
+                console.log(err);
                 logout();
                 navigate("/login");
                 return;
@@ -31,11 +33,11 @@ const MyChampionships = () => {
             navigate("/login");
             return;
         }
-    })
+    }, []);
 
     return (
     <Grid container>
-        {championships.length > 0 ? championships.map((championship,index) => {
+        {(championships && championships.length > 0) ? championships.map((championship,index) => {
             return (
                 //@ts-ignore
                 <Championship championship={championship} key={index}/>
