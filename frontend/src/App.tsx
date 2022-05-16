@@ -17,6 +17,7 @@ import CreateChampionship from "./views/championship/CreateChampionship";
 import Score from "./views/championship/Score";
 import PublicChampionships from "./views/championship/PublicChampionships";
 import MyChampionships from "./views/championship/MyChampionships";
+import ChampionshipById from './views/championship/ChampionshipById';
 
 const App = () => {
   const [user, setUser] = useState({ name: "", auth: false });
@@ -63,6 +64,7 @@ const App = () => {
                 <Route path="score" element={<Score />} />
                 <Route path="public" element={<PublicChampionships />} />
                 <Route path="personal" element={<MyChampionships />} />
+                <Route path=":id" element={<ChampionshipById/>} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Route>
