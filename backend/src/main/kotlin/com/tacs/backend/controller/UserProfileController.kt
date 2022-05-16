@@ -24,7 +24,7 @@ class UserProfileController(private val championshipRepository: ChampionshipDAO,
         @RequestParam type: VisibilityType
     ): ResponseEntity<GetChampionshipsResponse> {
        val championshipIds = userByChampionshipDAO.findByUserByChampionshipIdIdUser(id.toLong()).map { it.userByChampionshipId.idChampionship }
-        val championships = championshipRepository.findAllByIdChampionshipIn(championshipIds)
+        val championships = championshipRepository.findAllByIdChampionshipInAndVisibility(championshipIds, type)
         val response = championships.map { c -> ChampionshipResponse(c.name, c.languages, c.visibility, c.startDate, c.finishDate) }
         return ResponseEntity(GetChampionshipsResponse(response), HttpStatus.OK)
     }
