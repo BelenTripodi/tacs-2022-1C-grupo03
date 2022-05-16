@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { LANGUAGE } from '../../Interfaces/Language'
 import LanguageSelector from '../../components/LanguageSelector'
 import MenuItem from '@mui/material/MenuItem'
@@ -8,7 +8,7 @@ import { Container, Select, SelectChangeEvent } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send'
 import HttpClient from './../../services/client/index'
 import Loading from '../../components/Loading'
-import UserContext from '../../context/UserContext'
+import userService from '../../services/user'
 
 interface Result {
     points: number
@@ -21,11 +21,6 @@ const Score = () => {
         language: LANGUAGE.ES,
     })
     const [loading, setLoading] = useState(false)
-    const { user } = useContext(UserContext)
-
-    useEffect(() => {
-        console.log('falta el tema del user id', user)
-    })
 
     const handlePointsChange = (e: SelectChangeEvent<number>) => {
         setResult((prev) => {
@@ -44,10 +39,16 @@ const Score = () => {
     const handleSend = async () => {
         try {
             setLoading(true)
-            const response = await HttpClient.httpPost('/users/0/score', result)
-            console.log(response)
+            console.log('ID: ', userService.id())
+            await HttpClient.httpPost(
+                `/users/${userService.id()}/score`,
+                result
+            )
         } catch (error) {
             console.log('Error sending results', { error })
+            alert(
+                'Puede ser que no estes anotado en ningun torneo con ese idioma. Cambiar esto por un snackbar maybe'
+            )
         } finally {
             setLoading(false)
         }
