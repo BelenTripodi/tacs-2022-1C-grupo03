@@ -15,25 +15,31 @@ const MyChampionships = () => {
     let navigate = useNavigate();
 
     useEffect(() => {
+        const consumeAPI = async () => {
+            const privates = await HttpService.httpGet(`/users/${UserService.id()}/championships?type=PRIVATE`);
+            const publics = await HttpService.httpGet(`/users/${UserService.id()}/championships?type=PUBLIC`);
+            
+            setChampionships([...privates.data.championships,...publics.data.championships]);
+            
+        }
         try{
-            HttpService.httpGet(`/users/${UserService.id()}/championships?type=PRIVATE`).then((privates) => {
-                console.log("Torneos privados");
-                console.log(privates.data.data.championships);
-                setChampionships(privates.data.data.championships);
-            }).catch(err => {
-                console.log(err);
-                logout();
-                navigate("/login");
-                return;
+            consumeAPI();
+            // HttpService.httpGet(`/users/${UserService.id()}/championships?type=PRIVATE`).then((privates) => {
+            //     setChampionships(privates?.data?.championships);
+            // }).catch(err => {
+            //     console.log(err);
+            //     logout();
+            //     navigate("/login");
+            //     return;
 
-            })
+            // })
         }catch(err){
             console.log("Hay error");
             logout();
             navigate("/login");
             return;
         }
-    }, []);
+    }, [logout,navigate]);
 
     return (
     <Grid container>
