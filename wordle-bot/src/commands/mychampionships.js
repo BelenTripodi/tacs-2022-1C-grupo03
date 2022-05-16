@@ -3,8 +3,8 @@ const { secretReply } = require('../response')
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('championships')
-        .setDescription('Responde con los campeonates disponibles')
+        .setName('mychampionships')
+        .setDescription('Responde con los campeonates activos del solicitante')
         .addStringOption((option) =>
             option
                 .setName('type')
@@ -19,7 +19,7 @@ module.exports = {
         try {
             const type = interaction.options.getString('type')
             const response = await interaction.user.axios.get(
-                '/championships',
+                `/users/${interaction.user.id}/championships`,
                 {
                     params: { type },
                 }
@@ -44,20 +44,19 @@ const buildResponse = (championships) => {
     let str = ``
     for (let i = 0; i < championships.length; i++) {
         const elem = championships[i]
-        console.log('Date', elem.startDate)
-        // const startDate = JSON.parse(elem.startDate)
-        // const finishDate = JSON.parse(elem.finishDate)
-        // console.log('Date', startDate)
-        // console.log(
-        //     'Date month year',
-        //     startDate.getDate(),
-        //     startDate.getMonth(),
-        //     startDate.getFullYear()
-        // )
+        const startDate = new Date(elem.startDate)
+        const finishDate = new Date(elem.finishDate)
+
         const newStr = `
             Index: ${i}
             Name: ${elem.name}
             Languages: ${elem.languages.toString()}
+            Start date: ${startDate.getDate()}/${
+            startDate.getMonth() + 1
+        }/${startDate.getFullYear()}
+            Finish date: ${finishDate.getDate()}/${
+            finishDate.getMonth() + 1
+        }/${finishDate.getFullYear()}
         `
         str += newStr
     }
