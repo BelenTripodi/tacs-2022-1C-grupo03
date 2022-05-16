@@ -40,13 +40,15 @@ const Score = () => {
         try {
             setLoading(true)
             console.log('ID: ', userService.id())
-            const response = await HttpClient.httpPost(
+            await HttpClient.httpPost(
                 `/users/${userService.id()}/score`,
                 result
             )
-            console.log(response)
         } catch (error) {
             console.log('Error sending results', { error })
+            alert(
+                'Puede ser que no estes anotado en ningun torneo con ese idioma. Cambiar esto por un snackbar maybe'
+            )
         } finally {
             setLoading(false)
         }
