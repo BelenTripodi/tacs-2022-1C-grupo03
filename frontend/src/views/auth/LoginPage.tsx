@@ -36,7 +36,7 @@ const LoginPage = () => {
         })
             .then((result) => {
                 console.log(result.data)
-                login(name, result.data.data.jwt)
+                login(name, result.data.jwt)
                 navigate('/')
             })
             .catch((err) => {
