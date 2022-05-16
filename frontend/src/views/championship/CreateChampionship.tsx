@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Button,
   FormControl,
@@ -15,6 +15,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import HttpClient from "../../services/client";
+import UserContext from "../../context/UserContext";
 
 enum Languages {
   SPANISH = "Español",
@@ -28,6 +29,7 @@ const CreateChampionship = () => {
   const [languages, setLanguages] = useState(Languages.SPANISH);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [finishDate, setFinishDate] = useState<Date | null>(null);
+  const userName = useContext(UserContext).user.name;
 
   const onVisibilityChange = (event: SelectChangeEvent) => {
     setVisibility(event.target.value as Visibility);
@@ -42,13 +44,7 @@ const CreateChampionship = () => {
   };
 
   const createChampionship = () => {
-    console.log(
-      name,
-      visibility,
-      languages,
-      startDate?.toLocaleDateString(),
-      finishDate
-    );
+    console.log(name, visibility, languages, startDate, finishDate, userName);
     const requestLanguages =
       languages === Languages.BOTH
         ? ["SPANISH", "ENGLISH"]
@@ -62,7 +58,7 @@ const CreateChampionship = () => {
       visibility,
       startDate,
       finishDate,
-      owner: "test", // TODO: get username from context
+      owner: userName,
     };
 
     HttpClient.httpPost("/championships", body)
