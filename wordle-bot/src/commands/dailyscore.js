@@ -44,7 +44,9 @@ module.exports = {
             await interaction.reply(`Score diario ingresado con exito!`)
         } catch (error) {
             console.log('Error updating score', { error })
-            await interaction.reply(`Error: error updating score`)
+            await interaction.reply(
+                `Error: no tenes torneos registrados en ese idioma`
+            )
         }
     },
 }
