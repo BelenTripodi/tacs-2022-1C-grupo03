@@ -65,6 +65,7 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
 
     private fun transformChampionshipResponse(championship: Championship): ChampionshipResponse {
         return ChampionshipResponse(
+            idChampionship = championship.idChampionship,
             name = championship.name,
             finishDate = championship.finishDate,
             startDate = championship.startDate,

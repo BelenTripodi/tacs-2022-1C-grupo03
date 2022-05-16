@@ -4,4 +4,5 @@ export default interface IChampionship{
     visibility: "PUBLIC" | "PRIVATE";
     startDate: string;
     finishDate: string;
+    idChampionship: string;
 }
