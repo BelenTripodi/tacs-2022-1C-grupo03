@@ -5,7 +5,7 @@ import UserService from "../../services/user"
 import IChampionship from "../../Interfaces/Championship";
 import Championship from './Championship';
 import UserContext from './../../context/UserContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Grid } from "@mui/material";
 
 const MyChampionships = () => {
@@ -13,6 +13,8 @@ const MyChampionships = () => {
 
     const { logout } = useContext(UserContext);
     let navigate = useNavigate();
+
+    console.log(championships);
 
     useEffect(() => {
         const consumeAPI = async () => {
@@ -36,8 +38,11 @@ const MyChampionships = () => {
     <Grid container>
         {(championships && championships.length > 0) ? championships.map((championship,index) => {
             return (
-                //@ts-ignore
-                <Championship championship={championship} key={index}/>
+                <Grid item xs={12}>
+                    <Link to={`../${championship.idChampionship}`} style={{ textDecoration: 'none' }}>
+                        <Championship championship={championship} key={index}/>
+                    </Link>
+                </Grid>
             )
         }) : (
             <h2>
