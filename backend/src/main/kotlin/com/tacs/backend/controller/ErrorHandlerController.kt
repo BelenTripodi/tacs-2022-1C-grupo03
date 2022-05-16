@@ -1,9 +1,6 @@
 package com.tacs.backend.controller
 
-import com.tacs.backend.exception.BadRequestException
-import com.tacs.backend.exception.MalformedClientResponse
-import com.tacs.backend.exception.WordNotFoundException
-import com.tacs.backend.exception.WrongCredentialsException
+import com.tacs.backend.exception.*
 import com.tacs.backend.response.Error
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -46,5 +43,17 @@ class ErrorHandlerController: ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(WrongCredentialsException::class)
     fun unknownServiceError(exception: WrongCredentialsException): ResponseEntity<Error> =
-        ResponseEntity(Error(HttpStatus.UNAUTHORIZED.value(), exception.message!!), HttpStatus.UNAUTHORIZED)
+        ResponseEntity(Error(HttpStatus.UNAUTHORIZED.value(), exception.message), HttpStatus.UNAUTHORIZED)
+
+    @ExceptionHandler(UserAlreadyExistsException::class)
+    fun userAlreadyExistError(exception: UserAlreadyExistsException): ResponseEntity<Error> =
+        ResponseEntity(Error(HttpStatus.BAD_REQUEST.value(), exception.message), HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(UnknownUserException::class)
+    fun unknownUserError(exception: UnknownUserException): ResponseEntity<Error> =
+        ResponseEntity(Error(HttpStatus.NOT_FOUND.value(), exception.message), HttpStatus.NOT_FOUND)
+
+    @ExceptionHandler(ChampionshipNotFoundException::class)
+    fun championshipNotFoundError(exception: ChampionshipNotFoundException): ResponseEntity<Error> =
+        ResponseEntity(Error(HttpStatus.NOT_FOUND.value(), exception.message), HttpStatus.NOT_FOUND)
 }
