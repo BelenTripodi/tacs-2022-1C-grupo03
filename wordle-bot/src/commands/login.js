@@ -38,11 +38,9 @@ module.exports = {
 
             // me guardo el jwt y creo la instancia de axios para que el usuario haga request/post con el header incluido
             interaction.user.jwt = response.data.jwt
-            const test = jwt_decode(interaction.user.jwt)
-            interaction.user.id = test.id || 0 // TODO borrar este or. Preguntarle a brian/facu por que no hay id
+            const decoded = jwt_decode(interaction.user.jwt)
+            interaction.user.id = decoded.jti
 
-            console.log('Mostrando el objeto decodificado', test)
-            console.log('Mostrando id ', test.id)
             console.log(
                 `JWT: ${interaction.user.jwt}; ID: ${interaction.user.id}`
             )
