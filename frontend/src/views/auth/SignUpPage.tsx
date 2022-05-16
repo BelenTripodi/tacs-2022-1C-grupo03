@@ -8,7 +8,7 @@ import {
     InputLabel,
     Paper,
 } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, KeyboardEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import HttpClient from './../../services/client/index'
 
@@ -36,6 +36,14 @@ const SignUpPage = () => {
             .catch((err) => {
                 addError('Error al intentar registrarse')
             })
+    }
+
+    const handleKeyStroke = (
+        e: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        if (e.key === 'Enter') {
+            handleSignUp()
+        }
     }
 
     return (
@@ -83,7 +91,7 @@ const SignUpPage = () => {
                                     Nombre de Usuario*
                                 </InputLabel>
                                 <Input
-                                    onKeyUp={handleSignUp}
+                                    onKeyUp={handleKeyStroke}
                                     name="nombreUsuario"
                                     title="Nombre de usuario"
                                     fullWidth
@@ -99,7 +107,7 @@ const SignUpPage = () => {
                                     Contraseña*
                                 </InputLabel>
                                 <Input
-                                    onKeyUp={handleSignUp}
+                                    onKeyUp={handleKeyStroke}
                                     name="password"
                                     title="Contraseña"
                                     type="password"

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, KeyboardEvent } from 'react'
 
 import { Link, useNavigate } from 'react-router-dom'
 import {
@@ -36,7 +36,7 @@ const LoginPage = () => {
         })
             .then((result) => {
                 console.log(result.data)
-                login(name, result.data.data.jwt)
+                login(name, result.data.jwt)
                 navigate('/')
             })
             .catch((err) => {
@@ -48,6 +48,13 @@ const LoginPage = () => {
             })
     }
 
+    const handleKeyStroke = (
+        e: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        if (e.key === 'Enter') {
+            handleLogin()
+        }
+    }
     return (
         <>
             <Grid
@@ -95,7 +102,7 @@ const LoginPage = () => {
                                     onChange={(event) =>
                                         setName(event.target.value)
                                     }
-                                    onKeyUp={handleLogin}
+                                    onKeyUp={(e) => handleKeyStroke(e)}
                                 />
                             </FormControl>
                         </Grid>
@@ -112,7 +119,7 @@ const LoginPage = () => {
                                         setPassword(event.target.value)
                                     }
                                     fullWidth
-                                    onKeyUp={handleLogin}
+                                    onKeyUp={(e) => handleKeyStroke(e)}
                                 />
                             </FormControl>
                         </Grid>

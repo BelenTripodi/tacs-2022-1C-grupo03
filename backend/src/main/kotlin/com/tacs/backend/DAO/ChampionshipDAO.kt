@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface ChampionshipDAO : JpaRepository<Championship, Long> {
     fun findByIdChampionship(id: Long): List<Championship>
-    fun findAllByIdChampionshipIn(idsChampionship: List<Long>): List<Championship>
+    fun findAllByIdChampionshipInAndVisibility(idsChampionship: List<Long>, type: VisibilityType): List<Championship>
     fun findByVisibility(visibilityType: VisibilityType): List<Championship>
 }

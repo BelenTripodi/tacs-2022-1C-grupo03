@@ -27,7 +27,9 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
     fun createChampionship(@RequestBody request: CreateChampionshipRequest): ResponseEntity<CreateChampionshipsResponse> {
         val ownerUser = userRepository.findByUsername(request.owner).first()
         val newChampionship = championshipRepository.save(createChampionshipEntity(request, ownerUser))
-        userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(newChampionship.idChampionship, ownerUser.idUser),0))
+        newChampionship.languages.forEach { language ->
+            userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(newChampionship.idChampionship, ownerUser.idUser, language.ordinal),0))
+        }
         return ResponseEntity(CreateChampionshipsResponse(newChampionship.idChampionship, newChampionship.name), HttpStatus.OK)
     }
 
@@ -35,7 +37,8 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
     fun addUser(@PathVariable idChampionship: Long, @RequestBody request: AddUserToChampionshipRequest): ResponseEntity<String> {
         val foundChampionships = championshipRepository.findByIdChampionship(idChampionship)
         return if (foundChampionships.isNotEmpty()) {
-            userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(foundChampionships.first().idChampionship, request.idUser),0))
+            val championship = foundChampionships.first()
+            championship.languages.forEach { userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(championship.idChampionship, request.idUser, it.ordinal),0)) }
             ResponseEntity("Successful creation", HttpStatus.OK)
         } else {
             throw ChampionshipNotFoundException(idChampionship)
