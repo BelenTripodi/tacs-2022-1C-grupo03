@@ -1,6 +1,6 @@
 require('dotenv').config()
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { secretReply } = require('../response')
+const { secretReply } = require('../utils')
 
 const charToColour = {
     g: 'GREEN',

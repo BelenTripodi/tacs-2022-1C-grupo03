@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { secretReply } = require('../response')
+const { secretReply } = require('../utils')
 
 module.exports = {
     data: new SlashCommandBuilder()

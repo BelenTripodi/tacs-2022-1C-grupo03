@@ -7,6 +7,7 @@ Un timido bot para hacer de cliente a la aplicacion de TACS  **uwu**
 ### Sesion
 1. /login <username> <password> : te logea en la aplicacion para poder usar el resto de los comandos.
 2. /logout
+3. /signup <username> <password> : te crea un usuario
 
 
 ### Diccionario
@@ -20,7 +21,7 @@ Un timido bot para hacer de cliente a la aplicacion de TACS  **uwu**
 2. /help <string>,<coloresDeCadaCaracter> : Cabe aclarar que el comando solo tiene un argumento, es un string entero separado por una coma ( ',' ). *string* representa la jugada realizada. *coloresDeCadaCaracter* es un string donde cada caracter representa el **color** del caracter de *string* en el mismo indice. Abajo se demuestra un ejemplo de uso
 
 *Restricciones*:
-- Colores: ('y','g','n'), donde 'y'=yellow. 'g'=green y 'n'='null' o el color gris.
+- Color: ('y','g','n'), donde 'y'=yellow. 'g'=green y 'n'='null' o el color gris.
 - Ambas partes del string deben tener una longitud de 5 caracteres
 
 Ejemplo: 
@@ -51,4 +52,21 @@ Para hacer la carga de los resultados de tus partidas diarias, podes usar el sig
 
 ### Torneos
 
-Para otra iteracion
+Se utiliza un comando base para acceder a todas las funcionalidades de los torneos:
+
+/championships
+
+#### Subcomandos
+
+1. /championships all : obtiene todos los torneos publicos activos
+2. /championships incripted <type> : obtiene todos los torneos de tipo 'type' en los cuales el usuario esta inscripto
+
+*Restricciones*:
+Type: ('public' , 'private')
+
+3. /championships create <name> <type> <languages> <start> <finish>
+
+*Restricciones*:
+Type: ('public' , 'private')
+Languages: ('english', 'spanish', 'both')
+Start && Finish: Fecha en el siguiente formato: **xx/xx/xxxx**
