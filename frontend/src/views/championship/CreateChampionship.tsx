@@ -14,6 +14,7 @@ import Container from "@mui/material/Container";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import HttpClient from "../../services/client";
 
 enum Languages {
   SPANISH = "Español",
@@ -41,7 +42,36 @@ const CreateChampionship = () => {
   };
 
   const createChampionship = () => {
-    console.log(name, visibility, languages, startDate, finishDate);
+    console.log(
+      name,
+      visibility,
+      languages,
+      startDate?.toLocaleDateString(),
+      finishDate
+    );
+    const requestLanguages =
+      languages === Languages.BOTH
+        ? ["SPANISH", "ENGLISH"]
+        : languages === Languages.ENGLISH
+        ? ["ENGLISH"]
+        : ["SPANISH"];
+
+    const body = {
+      name,
+      languages: requestLanguages,
+      visibility,
+      startDate,
+      finishDate,
+      owner: "test", // TODO: get username from context
+    };
+
+    HttpClient.httpPost("/championships", body)
+      .then((result) => {
+        console.log(result.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
