@@ -7,20 +7,20 @@ const Championship = ({championship}: {championship: IChampionship}) => {
     
     return (
         <>
-        <Grid xs={6} margin={1} display="block" direction="row">
-        <Paper variant="outlined" elevation={2} sx={{padding: 1}}>
+        <Grid xs={6} margin={1} display="block" item>
+        <Paper variant="elevation" elevation={2} sx={{padding: 1}}>
             <h3>
                 Titulo: {name}
             </h3>
-            <Grid xs={3} direction="column">
+            <Grid xs={3} item>
             <Card variant="elevation">
                 <h3>
                 Lenguajes: 
                 </h3>
-                {languages.map((lang) => <p>{lang}</p>)}
+                {languages.map((lang,index) => <p key={index}>{lang}</p>)}
             </Card>
             </Grid>
-            <Grid xs={3} direction="column">
+            <Grid xs={3} item>
                 <h3>
                 Se juega entre:
                 </h3>

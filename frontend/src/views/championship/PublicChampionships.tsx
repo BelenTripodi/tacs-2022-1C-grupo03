@@ -25,18 +25,17 @@ const PublicChampionships = () => {
       navigate("/login");
       return;
     }
-  },[]);
+  },[logout,navigate]);
 
   return (
     <Grid container>
         {championships.length > 0 ? championships.map((championship,index) => {
             return (
-                //@ts-ignore
                 <Championship championship={championship} key={index}/>
             )
         }) : (
             <h2>
-                No posee torneos propios activos.
+                No hay torneos activos actualmente.
             </h2>
         )}
     </Grid>
