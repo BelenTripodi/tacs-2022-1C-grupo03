@@ -64,9 +64,13 @@ Se utiliza un comando base para acceder a todas las funcionalidades de los torne
 *Restricciones*:
 Type: ('public' , 'private')
 
-3. /championships create <name> <type> <languages> <start> <finish>
+3. /championships byid <id> : obtiene el detalle de un torneo
+4. /championships create <name> <type> <languages> <start> <finish>
 
 *Restricciones*:
 Type: ('public' , 'private')
 Languages: ('english', 'spanish', 'both')
 Start && Finish: Fecha en el siguiente formato: **xx/xx/xxxx**
+
+5. /championships join <id> <owner> : te permite unirte a un torneo determinado. 'id' es el id del torneo y 'owner' es el creador de ese torneo.
+6. /championships adduser <userid> <championshipid> : permite agregar a alguien a un torneo, siempre y cuando seas el owner
