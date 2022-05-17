@@ -9,7 +9,7 @@ const { join } = require('../championships/join')
 
 const subcommandToFunction = {
     all: getAll,
-    inscripted: getMyChampionships,
+    mychampionships: getMyChampionships,
     create: create,
     byid: getChampionshipById,
     adduser: addUser,
@@ -29,9 +29,9 @@ module.exports = {
         )
         .addSubcommand((subcommand) =>
             subcommand
-                .setName('inscripted')
+                .setName('mychampionships')
                 .setDescription(
-                    'Consulta los torneos activos mios, publicos o privados'
+                    'Consulta los torneos activos mios, publicos o privados, junto con los que creé'
                 )
                 .addStringOption((option) =>
                     option
