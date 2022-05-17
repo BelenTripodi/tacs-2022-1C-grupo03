@@ -70,7 +70,8 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
             finishDate = championship.finishDate,
             startDate = championship.startDate,
             visibility = championship.visibility,
-            languages = championship.languages
+            languages = championship.languages,
+            idOwner = championship.idOwner
         )
     }
 

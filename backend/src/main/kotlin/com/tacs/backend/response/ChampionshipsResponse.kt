@@ -15,5 +15,6 @@ data class ChampionshipResponse(
     val languages: List<Language>,
     val visibility: VisibilityType,
     val startDate: Date,
-    val finishDate: Date
+    val finishDate: Date,
+    val idOwner: Long
 )

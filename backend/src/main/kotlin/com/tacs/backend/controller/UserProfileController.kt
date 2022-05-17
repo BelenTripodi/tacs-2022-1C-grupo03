@@ -25,7 +25,7 @@ class UserProfileController(private val championshipRepository: ChampionshipDAO,
     ): ResponseEntity<GetChampionshipsResponse> {
        val championshipIds = userByChampionshipDAO.findByUserByChampionshipIdIdUser(id.toLong()).map { it.userByChampionshipId.idChampionship }
         val championships = championshipRepository.findAllByIdChampionshipInAndVisibility(championshipIds, type)
-        val response = championships.map { c -> ChampionshipResponse(c.idChampionship, c.name, c.languages, c.visibility, c.startDate, c.finishDate) }
+        val response = championships.map { c -> ChampionshipResponse(c.idChampionship, c.name, c.languages, c.visibility, c.startDate, c.finishDate, c.idOwner) }
         return ResponseEntity(GetChampionshipsResponse(response), HttpStatus.OK)
     }
 
@@ -47,7 +47,7 @@ class UserProfileController(private val championshipRepository: ChampionshipDAO,
             ?: throw ChampionshipNotFoundException(championshipId.toLong())
         val championship = championshipRepository.findByIdChampionship(championshipId.toLong()).firstOrNull() ?: throw ChampionshipNotFoundException(championshipId.toLong())
         val response = GetUserChampionship(
-            ChampionshipResponse(championship.idChampionship, championship.name, championship.languages, championship.visibility, championship.startDate, championship.finishDate), userByChampionship.score)
+            ChampionshipResponse(championship.idChampionship, championship.name, championship.languages, championship.visibility, championship.startDate, championship.finishDate,championship.idOwner), userByChampionship.score)
 
         return ResponseEntity(response, HttpStatus.OK)
     }
