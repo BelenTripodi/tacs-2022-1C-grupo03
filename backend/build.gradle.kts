@@ -23,9 +23,16 @@ repositories {
 }
 
 dependencies {
+	implementation("org.springdoc:springdoc-openapi-data-rest:1.6.7")
+	implementation("org.springdoc:springdoc-openapi-ui:1.6.7")
+	implementation("org.springdoc:springdoc-openapi-kotlin:1.6.7")
+	implementation("org.springframework.session:spring-session-core:2.6.3")
+
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-data-rest")
 	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.session:spring-session-jdbc:2.6.3")
+
 	implementation("io.jsonwebtoken:jjwt:0.9.1")
 	implementation("org.springframework.boot:spring-boot-starter-validation:2.6.6")
 	implementation("org.springframework.boot:spring-boot-starter-web")
@@ -34,6 +41,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation ("com.fasterxml.jackson.datatype:jackson-datatype-joda")
 	implementation("javax.validation:validation-api:2.0.1.Final")
+	implementation("org.slf4j:slf4j-api:1.7.2")
+
 	compileOnly("joda-time:joda-time:2.10.14")
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("mysql:mysql-connector-java")
