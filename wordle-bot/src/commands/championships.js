@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { secretReply, buildChampionshipsString } = require('../utils')
 const { getAll } = require('../championships/getAll')
 const { getMyChampionships } = require('../championships/getMyChampionships')
 const { create } = require('../championships/create')
