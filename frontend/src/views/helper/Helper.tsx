@@ -1,12 +1,15 @@
 import { useEffect, useState, createRef, RefObject } from 'react'
-import { Typography, Container, Input, Button, MenuItem } from '@mui/material'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
+import { Typography, Container, Input, Button } from '@mui/material'
+import { SelectChangeEvent } from '@mui/material/Select'
 import Loading from '../../components/Loading'
 import Snackbar from '@mui/material/Snackbar'
 import Alert from '../../components/Alert'
-import httpClient from './../../services/client/index'
+import HttpClient from './../../services/client/index'
 import { LANGUAGE } from '../../Interfaces/Language'
 import LanguageSelector from '../../components/LanguageSelector'
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import UserContext from './../../context/UserContext';
 
 enum COLOUR {
     YELLOW = 'YELLOW',
@@ -30,6 +33,10 @@ interface Try {
 }
 
 const Helper = () => {
+    let navigate = useNavigate();
+
+    const { logout } = useContext(UserContext);
+
     const [alertOpened, setAlertOpened] = useState(false)
     const [loading, setLoading] = useState(false)
     const wordLength = 5
@@ -149,23 +156,27 @@ const Helper = () => {
 
             console.log(aux)
 
-            const response = await httpClient.post('/help', {
+            const response = await HttpClient.httpPost('/help', {
                 tries: aux,
                 language,
             })
-
             // actualizo la lista de intentos
             setTries((prev) => {
                 const temp = getDeepCopy(prev)
                 temp.push({ letters })
                 return [...temp]
             })
-            setPossibleWords(response.data.possibleWords.slice(0, 10))
+            setPossibleWords(response!.data.possibleWords.slice(0, 10))
 
             // vacio los inputs y enfoco en el primero
             emptyInputs()
-        } catch (error) {
+        } catch (error: any) {
             console.log('Error getting help', { error })
+            if(error?.response?.status === 401 || error?.response?.status === 403){
+                logout();
+                navigate("/login");
+                return;
+            }
         } finally {
             setLoading(false)
         }
@@ -177,7 +188,7 @@ const Helper = () => {
                 Wordle Helper
             </Typography>
             <Typography align="center" variant="subtitle1">
-                If you are kinda stupid, this is the right place!
+                Ingresá las 5 letras y asignales un color!
             </Typography>
 
             {/**Contenedor de los inputs*/}
@@ -222,7 +233,7 @@ const Helper = () => {
             {/**Contenedor de los Intentos realizados previamente*/}
             <Container sx={{ textAlign: 'center' }}>
                 <Typography variant="h5">
-                    Last tries: {tries.length === 0 && '-'}
+                    Últimos intentos: {tries.length === 0 && '-'}
                 </Typography>
                 {tries.length > 0 &&
                     tries.map((_try: Try, index) => {
@@ -262,10 +273,10 @@ const Helper = () => {
                             handleChange={handleLanguageChange}
                         />
                         <Button variant="contained" onClick={getHelp}>
-                            Get Help!
+                            Buscar
                         </Button>
                         <Button variant="contained" onClick={newTry}>
-                            New try
+                            Reiniciar
                         </Button>
                     </Container>
                     {loading && <Loading />}
@@ -290,7 +301,7 @@ const Helper = () => {
                     severity="error"
                     sx={{ width: '100%' }}
                 >
-                    Fullfil all the inputs
+                    Llena todas las letras
                 </Alert>
             </Snackbar>
         </>
