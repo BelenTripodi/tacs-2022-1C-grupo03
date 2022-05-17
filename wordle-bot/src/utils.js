@@ -13,7 +13,7 @@ const buildChampionshipsString = (championships) => {
         const elem = championships[i]
         const startDate = new Date(elem.startDate)
         const finishDate = new Date(elem.finishDate)
-        console.log(elem)
+
         const newStr = `
             ID: ${elem.idChampionship}
             Name: ${elem.name}

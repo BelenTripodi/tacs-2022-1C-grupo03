@@ -18,7 +18,7 @@ const parseDate = (str) => {
 }
 
 const parseLanguages = (str) => {
-    if (str === 'both') return ['ENGLISH', 'SPANISH']
+    if (str === 'BOTH') return ['ENGLISH', 'SPANISH']
     else return [str]
 }
 
@@ -39,7 +39,11 @@ module.exports = {
             )
             championship.owner = interaction.user.appUsername
 
-            await interaction.user.axios.post(`/championships`, championship)
+            const response = await interaction.user.axios.post(
+                `/championships`,
+                championship
+            )
+            championship.idChampionship = response.data.id
 
             const data = buildChampionshipsString([championship])
             const msg = `New ${interaction.options.getString(
