@@ -4,12 +4,16 @@ const { getAll } = require('../championships/getAll')
 const { getMyChampionships } = require('../championships/getMyChampionships')
 const { create } = require('../championships/create')
 const { getChampionshipById } = require('../championships/getChampionshipById')
+const { addUser } = require('../championships/addUser')
+const { join } = require('../championships/join')
 
 const subcommandToFunction = {
     all: getAll,
     inscripted: getMyChampionships,
     create: create,
     byid: getChampionshipById,
+    adduser: addUser,
+    join: join,
 }
 
 module.exports = {
@@ -91,6 +95,44 @@ module.exports = {
                 .addIntegerOption((option) =>
                     option
                         .setName('id')
+                        .setDescription('Id del torneo')
+                        .setRequired(true)
+                )
+        )
+        .addSubcommand((subcommand) =>
+            subcommand
+                .setName('join')
+                .setDescription('Te une a un torneo en especifico')
+                .addStringOption((option) =>
+                    option
+                        .setName('id')
+                        .setDescription('Id del torneo')
+                        .setRequired(true)
+                )
+                .addStringOption(
+                    // probablemente esta opcion se saque dsp porque no tiene mucho sentido
+                    (option) =>
+                        option
+                            .setName('owner')
+                            .setDescription('Owner  del torneo')
+                            .setRequired(true)
+                )
+        )
+        .addSubcommand((subcommand) =>
+            subcommand
+                .setName('adduser')
+                .setDescription(
+                    'Agrega a un usuario a un torneo, siempre y cuando seas el admin de ese torneo'
+                )
+                .addStringOption((option) =>
+                    option
+                        .setName('userid')
+                        .setDescription('Id del usuario a agregar')
+                        .setRequired(true)
+                )
+                .addStringOption((option) =>
+                    option
+                        .setName('championshipid')
                         .setDescription('Id del torneo')
                         .setRequired(true)
                 )
