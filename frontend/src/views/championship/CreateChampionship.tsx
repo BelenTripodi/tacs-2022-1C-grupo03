@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import {
+  Alert,
   Button,
   FormControl,
   InputLabel,
@@ -30,6 +31,8 @@ const CreateChampionship = () => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [finishDate, setFinishDate] = useState<Date | null>(null);
   const userName = useContext(UserContext).user.name;
+  const [error,setError] = useState("");
+  const [success,setSuccess] = useState("");
 
   const onVisibilityChange = (event: SelectChangeEvent) => {
     setVisibility(event.target.value as Visibility);
@@ -63,10 +66,17 @@ const CreateChampionship = () => {
 
     HttpClient.httpPost("/championships", body)
       .then((result) => {
-        console.log(result.data);
+        setName("");
+        setVisibility(Visibility.PRIVATE);
+        setLanguages(Languages.SPANISH);
+        setStartDate(null);
+        setFinishDate(null);
+        setError("");
+        setSuccess("Torneo creado exitosamente");
       })
       .catch((err) => {
-        console.error(err);
+        setSuccess("");
+        setError("Error al cargar el torneo");
       });
   };
 
@@ -165,6 +175,8 @@ const CreateChampionship = () => {
         }}
       >
         <FormControl fullWidth>
+          {error && <Alert severity="error" sx={{margin: 1}}>{error}</Alert>}
+          {success && <Alert severity="success">{success}</Alert>}
           <Button variant="contained" onClick={createChampionship}>
             Crear
           </Button>

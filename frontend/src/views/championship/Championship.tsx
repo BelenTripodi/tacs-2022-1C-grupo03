@@ -7,13 +7,13 @@ const Championship = ({championship}: {championship: IChampionship}) => {
     
     return (
         <>
-        <Grid xs={6} margin={1} display="block" item>
+        <Grid xs={6} margin={1} display="block" item maxWidth={600}>
         <Paper variant="elevation" elevation={2} sx={{padding: 1}}>
             <h3>
                 Titulo: {name}
             </h3>
             <Grid xs={3} item>
-            <Card variant="elevation">
+            <Card variant="outlined" sx={{padding: 2}}>
                 <h3>
                 Lenguajes: 
                 </h3>

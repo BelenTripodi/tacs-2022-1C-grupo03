@@ -5,7 +5,8 @@ import HttpService from "../../services/client";
 import { useNavigate } from "react-router-dom";
 import UserContext from "./../../context/UserContext";
 import { Grid } from "@mui/material";
-import Championship from './Championship';
+import Championship from "./Championship";
+import ItemChampionship from './ItemChampionship';
 
 const PublicChampionships = () => {
   const [championships, setChampionships] = useState<IChampionship[]>([]);
@@ -25,20 +26,22 @@ const PublicChampionships = () => {
       navigate("/login");
       return;
     }
-  },[logout,navigate]);
+  }, [logout, navigate]);
 
   return (
-    <Grid container>
-        {championships.length > 0 ? championships.map((championship,index) => {
-            return (
-                <Championship championship={championship} key={index}/>
-            )
-        }) : (
-            <h2>
-                No hay torneos activos actualmente.
-            </h2>
-        )}
-    </Grid>
+    <>
+      {championships.length > 0 ? (
+        championships.map((championship, index) => {
+          return (
+            <Grid>
+              <ItemChampionship championship={championship} key={index} />
+            </Grid>
+          );
+        })
+      ) : (
+        <h2>No hay torneos activos actualmente.</h2>
+      )}
+    </>
   );
 };
 
