@@ -2,8 +2,6 @@ package com.tacs.backend.controller
 
 import com.tacs.backend.DAO.ChampionshipDAO
 import com.tacs.backend.DAO.UserByChampionshipDAO
-import com.tacs.backend.entity.Championship
-import com.tacs.backend.entity.UserByChampionship
 import com.tacs.backend.exception.ChampionshipNotFoundException
 import com.tacs.backend.exception.UnknownUserException
 import com.tacs.backend.request.AddPointsRequest
@@ -26,16 +24,17 @@ class UserProfileController(private val championshipRepository: ChampionshipDAO,
         @RequestParam type: VisibilityType
     ): ResponseEntity<GetChampionshipsResponse> {
        val championshipIds = userByChampionshipDAO.findByUserByChampionshipIdIdUser(id.toLong()).map { it.userByChampionshipId.idChampionship }
-        val championships = championshipRepository.findAllByIdChampionshipIn(championshipIds)
-        val response = championships.map { c -> ChampionshipResponse(c.name, c.languages, c.visibility, c.startDate, c.finishDate) }
+        val championships = championshipRepository.findAllByIdChampionshipInAndVisibility(championshipIds, type)
+        val response = championships.map { c -> ChampionshipResponse(c.idChampionship, c.name, c.languages, c.visibility, c.startDate, c.finishDate) }
         return ResponseEntity(GetChampionshipsResponse(response), HttpStatus.OK)
     }
 
     @PostMapping("users/{id}/score")
     fun addUserScore(@PathVariable id: String, @RequestBody request: AddPointsRequest): ResponseEntity<String> {
-        val userByChampionships = userByChampionshipDAO.findByUserByChampionshipIdIdUser(id.toLong())
-        if (userByChampionships.isEmpty()) throw UnknownUserException("Couldn't add score: Unknown user")
-        userByChampionships.forEach { userByChampionshipDAO.updateScore(it.score + request.points, it.userByChampionshipId) }
+        val idLanguage = request.language.ordinal
+        val userByChampionships = userByChampionshipDAO.findByUserByChampionshipIdIdLanguageAndUserByChampionshipIdIdUser(idLanguage, id.toLong())
+        if (userByChampionships.isEmpty()) throw UnknownUserException("Couldn't add score: There isn't a registered user in expected championship")
+        userByChampionships.forEach { userByChampionshipDAO.updateScore(it.score + request.points, it.userByChampionshipId, idLanguage) }
         return ResponseEntity("Points added successfully", HttpStatus.OK)
     }
 
@@ -48,7 +47,7 @@ class UserProfileController(private val championshipRepository: ChampionshipDAO,
             ?: throw ChampionshipNotFoundException(championshipId.toLong())
         val championship = championshipRepository.findByIdChampionship(championshipId.toLong()).firstOrNull() ?: throw ChampionshipNotFoundException(championshipId.toLong())
         val response = GetUserChampionship(
-            ChampionshipResponse(championship.name, championship.languages, championship.visibility, championship.startDate, championship.finishDate), userByChampionship.score)
+            ChampionshipResponse(championship.idChampionship, championship.name, championship.languages, championship.visibility, championship.startDate, championship.finishDate), userByChampionship.score)
 
         return ResponseEntity(response, HttpStatus.OK)
     }
