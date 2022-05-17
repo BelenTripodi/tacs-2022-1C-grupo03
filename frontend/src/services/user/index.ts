@@ -22,7 +22,7 @@ class UserService{
     }
 
     public id(){
-        return this.userInfo().id;
+        return Number(this.userInfo().id);
     }
 
     public hasToken(): boolean{

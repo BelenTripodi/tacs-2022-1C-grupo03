@@ -7,6 +7,7 @@ import Championship from './Championship';
 import UserContext from './../../context/UserContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { Grid } from "@mui/material";
+import ItemChampionship from "./ItemChampionship";
 
 const MyChampionships = () => {
     const [championships, setChampionships] = useState<IChampionship[]>([]);
@@ -35,13 +36,11 @@ const MyChampionships = () => {
     }, [logout,navigate]);
 
     return (
-    <Grid container>
-        {(championships && championships.length > 0) ? championships.map((championship,index) => {
+        <>
+            {(championships && championships.length > 0) ? championships.map((championship,index) => {
             return (
-                <Grid item xs={12}>
-                    <Link to={`../${championship.idChampionship}`} style={{ textDecoration: 'none' }}>
-                        <Championship championship={championship} key={index}/>
-                    </Link>
+                <Grid>
+                    <ItemChampionship championship={championship} key={index}/>
                 </Grid>
             )
         }) : (
@@ -49,7 +48,7 @@ const MyChampionships = () => {
                 No posee torneos propios activos.
             </h2>
         )}
-    </Grid>
+        </>
     );
 };
 
