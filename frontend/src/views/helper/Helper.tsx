@@ -17,10 +17,10 @@ enum COLOUR {
     GREEN = 'GREEN',
 }
 
-const colorToHex = {
-    YELLOW: { hexValue: '#daee07', next: 'GRAY' },
-    GRAY: { hexValue: '#96999b', next: 'GREEN' },
-    GREEN: { hexValue: '#32b45f', next: 'YELLOW' },
+const nextColor = {
+    YELLOW: 'GRAY',
+    GRAY: 'GREEN',
+    GREEN: 'YELLOW',
 }
 
 interface ILetter {
@@ -109,9 +109,41 @@ const Helper = () => {
         setLetters((prev) => {
             const aux = getDeepCopy(prev)
             const currentColor: COLOUR = aux[index].colour
-            aux[index].colour = colorToHex[currentColor].next
+            aux[index].colour = nextColor[currentColor]
             return [...aux]
         })
+    }
+
+    function styleForLetter(letter: ILetter) {
+        if (letter.colour === COLOUR.GREEN) {
+            return {
+                backgroundColor: '#6aaa64',
+                color: 'white'
+            }
+        }
+        if (letter.colour === COLOUR.YELLOW) {
+            return {
+                backgroundColor: '#c9b458',
+                color: 'white'
+            }
+        }
+        if (letter.letter !== '') {
+            return {
+                backgroundColor: '#787c7e',
+                color: 'white',
+            }
+        } else {
+            return {
+                borderColor: 'rgb(211, 214, 218)',
+                borderWidth: '2px',
+                borderStyle: 'solid',
+            }
+        }
+    }
+
+    const getLetterStyle = (index: number) => {
+        const current = letters[index]
+        return styleForLetter(current)
     }
 
     const handleAlertClose = () => {
@@ -191,14 +223,54 @@ const Helper = () => {
                 Ingresá las 5 letras y asignales un color!
             </Typography>
 
+            <div style={{ marginTop: '1rem' }} />
+
+            {tries.length > 0 &&
+                tries.map((_try: Try, index: number) => {
+                    const word = _try.letters.map((current: ILetter, index: number) =>
+                        <Container key={index} style={{ width: 'auto', margin: 0, padding:'3px' }}>
+                            <Input
+                                disableUnderline
+                                value={current.letter}
+                                style={{
+                                    height: '62px',
+                                    width: '62px',
+                                    fontSize: '2rem',
+                                    ...styleForLetter(current)
+                                }}
+                                sx={{
+                                    '&>*': {
+                                        textTransform: 'capitalize',
+                                        textAlign: 'center',
+                                        cursor: 'not-allowed',
+                                    },
+                                }}
+                                readOnly={true}
+                            />
+                        </Container>
+                    )
+                    return (
+                        <Container
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                '&>*': { margin: '1rem 1rem' },
+                                width: '600px',
+                            }}
+                            key={index}
+                        >
+                            {word}
+                        </Container>
+                    )
+                })}
+
             {/**Contenedor de los inputs*/}
             <Container
                 sx={{
                     display: 'flex',
-                    justifyContent: 'space-around',
+                    justifyContent: 'center',
                     '&>*': { margin: '1rem 1rem' },
                     width: '600px',
-                    marginTop: '4rem',
                 }}
             >
                 {inputRefs.length &&
@@ -207,47 +279,29 @@ const Helper = () => {
                     Array(wordLength)
                         .fill(0)
                         .map((_, index) => (
-                            <Container key={index}>
+                            <Container key={index} style={{ width: 'auto', margin: 0, padding:'3px' }}>
                                 <Input
+                                    disableUnderline
                                     inputRef={inputRefs[index]}
                                     onChange={() => handleCharInput(index)}
                                     value={letters[index].letter}
-                                />
-                                <div
-                                    ref={colorRefs[index]}
                                     onClick={() => handleColourClick(index)}
                                     style={{
-                                        background: `${
-                                            colorToHex[letters[index].colour]
-                                                .hexValue
-                                        }`,
-                                        minWidth: 'inherit',
-                                        minHeight: '30px',
-                                        marginTop: '1rem',
+                                        height: '62px',
+                                        width: '62px',
+                                        fontSize: '2rem',
+                                        ...getLetterStyle(index)
                                     }}
-                                ></div>
+                                    sx={{
+                                        '&>*': {
+                                            textTransform: 'capitalize',
+                                            textAlign: 'center',
+                                            cursor: 'pointer'
+                                        },
+                                    }}
+                                />
                             </Container>
                         ))}
-            </Container>
-
-            {/**Contenedor de los Intentos realizados previamente*/}
-            <Container sx={{ textAlign: 'center' }}>
-                <Typography variant="h5">
-                    Últimos intentos: {tries.length === 0 && '-'}
-                </Typography>
-                {tries.length > 0 &&
-                    tries.map((_try: Try, index) => {
-                        const word = _try.letters.reduce(
-                            (prev: string, current: ILetter) =>
-                                prev + current.letter,
-                            ''
-                        )
-                        return (
-                            <Typography key={index} paragraph>{`${
-                                index + 1
-                            }: ${word}`}</Typography>
-                        )
-                    })}
             </Container>
 
             {/* Resultados del Helper */}
