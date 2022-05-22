@@ -2,6 +2,19 @@
 
 Un timido bot para hacer de cliente a la aplicacion de TACS  **uwu**
 
+## Run
+
+Para levantar el bot, es necesario crear un '.env' en la raiz del proyecto con las siguientes variables:
+BOT_TOKEN=
+BOT_SECRET=
+BOT_CLIENT_ID=
+BOT_GUILD_ID=
+BACKEND_HOST=
+BACKEND_PORT=
+ENV=
+
+Hablar con el administrador para obtener los valores
+
 ## Comandos
 
 ### Sesion

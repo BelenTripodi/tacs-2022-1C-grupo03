@@ -6,9 +6,7 @@ module.exports = {
             const response = await interaction.user.axios.get(`/championships`)
 
             const data = buildChampionshipsString(response.data.championships)
-            const msg = `Active ${interaction.options.getString(
-                'type'
-            )} championships:\n ${data}`
+            const msg = `Active championships:\n ${data}`
 
             await secretReply(interaction, msg)
         } catch (error) {
