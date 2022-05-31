@@ -9,6 +9,7 @@ import com.tacs.backend.request.VisibilityType
 import com.tacs.backend.response.ChampionshipResponse
 import com.tacs.backend.response.GetChampionshipsResponse
 import com.tacs.backend.response.GetUserChampionship
+import org.apache.commons.lang3.time.DateUtils
 import org.joda.time.DateTime
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -38,7 +39,7 @@ class UserProfileController(private val championshipRepository: ChampionshipDAO,
         val userByChampionships = userByChampionshipDAO.findByUserByChampionshipIdIdLanguageAndUserByChampionshipIdIdUser(idLanguage, id.toLong())
         if (userByChampionships.isEmpty()) throw UnknownUserException("Couldn't add score: There isn't a registered user in expected championship")
         val today = Date()
-        return if(userByChampionships.first().lastUpdateTime == null || today != userByChampionships.first().lastUpdateTime) {
+        return if(userByChampionships.first().lastUpdateTime == null || !DateUtils.isSameDay(today, userByChampionships.first().lastUpdateTime)) {
             userByChampionships.forEach {
                 userByChampionshipDAO.updateScore(
                     it.score + request.points,

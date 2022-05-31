@@ -1,6 +1,5 @@
 package com.tacs.backend.entity
 
-import org.joda.time.DateTime
 import java.util.*
 import javax.persistence.Embeddable
 import javax.persistence.EmbeddedId
