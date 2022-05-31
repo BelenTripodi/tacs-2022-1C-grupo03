@@ -5,18 +5,14 @@
 
 http://localhost:8080/swagger-ui/index.html
 
-## Cómo correr la app en un contenedor
+## Cómo correr la app con docker-compose
 
-### Paso 1 - Crear la imagen
-Correr
+### Ejecutar siguiente comando
+
 ```bash
-docker build --tag app .
+docker-compose up
 ```
 
-### Paso 2 - Correr el contenedor
-```bash
-docker run -p 8080:8080 app
-```
 
 ### Paso 3 - Acceder mediante login - signup
 
