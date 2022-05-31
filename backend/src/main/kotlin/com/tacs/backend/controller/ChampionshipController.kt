@@ -11,9 +11,8 @@ import com.tacs.backend.exception.ChampionshipNotFoundException
 import com.tacs.backend.request.AddUserToChampionshipRequest
 import com.tacs.backend.request.CreateChampionshipRequest
 import com.tacs.backend.request.VisibilityType
-import com.tacs.backend.response.ChampionshipResponse
-import com.tacs.backend.response.CreateChampionshipsResponse
-import com.tacs.backend.response.GetChampionshipsResponse
+import com.tacs.backend.response.*
+import com.tacs.backend.utils.logger
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -62,6 +61,28 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
             throw ChampionshipNotFoundException(id)
         }
     }
+
+    @GetMapping("championships/{id}/score")
+    fun scoreChampionshipById(@PathVariable id: Long): ResponseEntity<ChampionshipScoreResponse> {
+        val usersByChampionship = userByChampionshipRepository.findByUserByChampionshipIdIdChampionshipOrderByScoreAsc(id)
+        return if (usersByChampionship.isNotEmpty()) {
+            ResponseEntity(transformChampionshipScoreResponse(usersByChampionship, id) , HttpStatus.OK)
+        } else {
+            throw ChampionshipNotFoundException(id)
+        }
+    }
+
+    private fun transformChampionshipScoreResponse(usersByChampionship: List<UserByChampionship>, id: Long): ChampionshipScoreResponse{
+        return ChampionshipScoreResponse(
+            idChampionship = id,
+            scores = usersByChampionship.map {
+                logger().error("este es el id del usuario ${it.userByChampionshipId.idUser}")
+                val username = userRepository.findByIdUser(it.userByChampionshipId.idUser)
+                ScoreByUser(it.score, username.get().username)
+            }
+        )
+    }
+
 
     private fun transformChampionshipResponse(championship: Championship): ChampionshipResponse {
         return ChampionshipResponse(

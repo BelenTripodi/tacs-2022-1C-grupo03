@@ -18,3 +18,13 @@ data class ChampionshipResponse(
     val finishDate: Date,
     val idOwner: Long
 )
+
+data class ChampionshipScoreResponse(
+    val idChampionship: Long,
+    val scores: List<ScoreByUser>
+)
+
+data class ScoreByUser(
+    val score: Long,
+    val user: String
+)
