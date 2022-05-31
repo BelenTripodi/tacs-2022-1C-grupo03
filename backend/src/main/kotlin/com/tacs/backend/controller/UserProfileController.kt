@@ -9,9 +9,11 @@ import com.tacs.backend.request.VisibilityType
 import com.tacs.backend.response.ChampionshipResponse
 import com.tacs.backend.response.GetChampionshipsResponse
 import com.tacs.backend.response.GetUserChampionship
+import org.apache.commons.lang3.time.DateUtils
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping
@@ -34,8 +36,20 @@ class UserProfileController(private val championshipRepository: ChampionshipDAO,
         val idLanguage = request.language.ordinal
         val userByChampionships = userByChampionshipDAO.findByUserByChampionshipIdIdLanguageAndUserByChampionshipIdIdUser(idLanguage, id.toLong())
         if (userByChampionships.isEmpty()) throw UnknownUserException("Couldn't add score: There isn't a registered user in expected championship")
-        userByChampionships.forEach { userByChampionshipDAO.updateScore(it.score + request.points, it.userByChampionshipId, idLanguage) }
-        return ResponseEntity("Points added successfully", HttpStatus.OK)
+        val today = Date()
+        return if(userByChampionships.first().lastUpdateTime == null || !DateUtils.isSameDay(today, userByChampionships.first().lastUpdateTime)) {
+            userByChampionships.forEach {
+                userByChampionshipDAO.updateScore(
+                    it.score + request.points,
+                    today,
+                    it.userByChampionshipId,
+                    idLanguage
+                )
+            }
+            ResponseEntity("Points added successfully", HttpStatus.OK)
+        } else {
+            ResponseEntity("Points already added today", HttpStatus.OK)
+        }
     }
 
     @GetMapping("users/{userId}/championships/{championshipId}")

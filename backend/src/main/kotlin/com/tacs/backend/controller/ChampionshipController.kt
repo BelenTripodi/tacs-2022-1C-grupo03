@@ -12,7 +12,6 @@ import com.tacs.backend.request.AddUserToChampionshipRequest
 import com.tacs.backend.request.CreateChampionshipRequest
 import com.tacs.backend.request.VisibilityType
 import com.tacs.backend.response.*
-import com.tacs.backend.utils.logger
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -27,7 +26,7 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
         val ownerUser = userRepository.findByUsername(request.owner).first()
         val newChampionship = championshipRepository.save(createChampionshipEntity(request, ownerUser))
         newChampionship.languages.forEach { language ->
-            userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(newChampionship.idChampionship, ownerUser.idUser, language.ordinal),0))
+            userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(newChampionship.idChampionship, ownerUser.idUser, language.ordinal), null,0))
         }
         return ResponseEntity(CreateChampionshipsResponse(newChampionship.idChampionship, newChampionship.name), HttpStatus.OK)
     }
@@ -37,7 +36,7 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
         val foundChampionships = championshipRepository.findByIdChampionship(idChampionship)
         return if (foundChampionships.isNotEmpty()) {
             val championship = foundChampionships.first()
-            championship.languages.forEach { userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(championship.idChampionship, request.idUser, it.ordinal),0)) }
+            championship.languages.forEach { userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(championship.idChampionship, request.idUser, it.ordinal),null,0)) }
             ResponseEntity("Successful creation", HttpStatus.OK)
         } else {
             throw ChampionshipNotFoundException(idChampionship)
@@ -76,7 +75,6 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
         return ChampionshipScoreResponse(
             idChampionship = id,
             scores = usersByChampionship.map {
-                logger().error("este es el id del usuario ${it.userByChampionshipId.idUser}")
                 val username = userRepository.findByIdUser(it.userByChampionshipId.idUser)
                 ScoreByUser(it.score, username.get().username)
             }
