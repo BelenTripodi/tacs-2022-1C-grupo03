@@ -10,11 +10,9 @@ import com.tacs.backend.response.ChampionshipResponse
 import com.tacs.backend.response.GetChampionshipsResponse
 import com.tacs.backend.response.GetUserChampionship
 import org.apache.commons.lang3.time.DateUtils
-import org.joda.time.DateTime
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.time.temporal.ChronoUnit
 import java.util.*
 
 @RestController

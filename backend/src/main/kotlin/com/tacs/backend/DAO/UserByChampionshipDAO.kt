@@ -9,11 +9,16 @@ import org.springframework.data.repository.query.Param
 import java.util.*
 import javax.transaction.Transactional
 
-interface UserByChampionshipDAO : JpaRepository<UserByChampionship, UserByChampionshipId> {
+interface UserByChampionshipDAO: JpaRepository<UserByChampionship, UserByChampionshipId> {
     fun findByUserByChampionshipIdIdUser(idUser: Long) : List<UserByChampionship>
     fun findByUserByChampionshipIdIdLanguageAndUserByChampionshipIdIdUser(idLanguage: Int, idUser: Long) : List<UserByChampionship>
     @Transactional
     @Modifying
     @Query("update UserByChampionship uc set uc.score = :new_score, uc.lastUpdateTime = :new_update_time where uc.userByChampionshipId.idChampionship = :#{#idUserByChampionshipId.idChampionship} and uc.userByChampionshipId.idUser = :#{#idUserByChampionshipId.idUser} and uc.userByChampionshipId.idLanguage = :#{#languageId}")
-    fun updateScore(@Param("new_score") newScore: Long, @Param("new_update_time")newUpdateTime: Date, idUserByChampionshipId: UserByChampionshipId, languageId: Int)
+    fun updateScore(@Param("new_score") newScore: Long, @Param("new_update_time") newUpdateTime: Date, idUserByChampionshipId: UserByChampionshipId, languageId: Int)
+
+    @Transactional
+    @Modifying
+    @Query("update UserByChampionship uc set uc.score = uc.score + :new_score, uc.lastUpdateTime = :new_update_time where uc.lastUpdateTime is null or uc.lastUpdateTime < :new_update_time")
+    fun updateScoreAtEndOfDayWithMaxPoints(@Param("new_score") newScore: Long, @Param("new_update_time") newUpdateTime: Date)
 }
