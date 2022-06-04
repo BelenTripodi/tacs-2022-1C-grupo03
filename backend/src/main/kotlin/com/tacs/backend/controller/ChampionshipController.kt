@@ -28,7 +28,7 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
         val ownerUser = userRepository.findByUsername(request.owner).first()
         val newChampionship = championshipRepository.save(createChampionshipEntity(request, ownerUser))
         newChampionship.languages.forEach { language ->
-            userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(newChampionship.idChampionship, ownerUser.idUser, language.ordinal),0))
+            userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(newChampionship.idChampionship, ownerUser.idUser, language.ordinal), null,0))
         }
         return ResponseEntity(CreateChampionshipsResponse(newChampionship.idChampionship, newChampionship.name), HttpStatus.OK)
     }
@@ -38,7 +38,7 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
         val foundChampionships = championshipRepository.findByIdChampionship(idChampionship)
         return if (foundChampionships.isNotEmpty()) {
             val championship = foundChampionships.first()
-            championship.languages.forEach { userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(championship.idChampionship, request.idUser, it.ordinal),0)) }
+            championship.languages.forEach { userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(championship.idChampionship, request.idUser, it.ordinal),null,0)) }
             ResponseEntity("Successful creation", HttpStatus.OK)
         } else {
             throw ChampionshipNotFoundException(idChampionship)

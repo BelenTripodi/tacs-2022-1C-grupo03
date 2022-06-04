@@ -1,5 +1,6 @@
 package com.tacs.backend.entity
 
+import java.util.*
 import javax.persistence.Embeddable
 import javax.persistence.EmbeddedId
 import javax.persistence.Entity
@@ -10,6 +11,7 @@ import javax.persistence.Table
 class UserByChampionship(
     @EmbeddedId
     val userByChampionshipId: UserByChampionshipId,
+    var lastUpdateTime: Date?,
     var score: Long)
 
 @Embeddable
