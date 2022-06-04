@@ -57,7 +57,7 @@ class UserProfileController(private val championshipRepository: ChampionshipDAO,
         }
     }
 
-    @GetMapping("users/{id}/score")
+    @GetMapping("users/{id}/score/updated")
     fun getUserScore(@PathVariable id: String, @RequestParam language: Language): ResponseEntity<UpdatedScore>{
         val idLanguage = language.ordinal
         val userByChampionship = userByChampionshipDAO.findByUserByChampionshipIdIdLanguageAndUserByChampionshipIdIdUser(idLanguage, id.toLong())
