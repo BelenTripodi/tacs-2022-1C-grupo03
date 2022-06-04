@@ -36,7 +36,7 @@ const Score = () => {
       try {
         const alreadyUpdatedScore: boolean = await (
           await HttpClient.httpGet(
-            `/users/${userService.id()}/score?language=${result.language}`
+            `/users/${userService.id()}/score/updated?language=${result.language}`
           )
         ).data.alreadyUpdatedScore;
         console.log(alreadyUpdatedScore);
