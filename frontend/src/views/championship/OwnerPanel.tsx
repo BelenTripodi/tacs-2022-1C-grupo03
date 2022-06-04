@@ -5,12 +5,15 @@ import UserService from "./../../services/user";
 import Alert from './../../components/Alert';
 
 const OwnerPanel = ({id,owner}: {id: number,owner: string}) => {
-    const inputUserId = useRef<HTMLInputElement>(null);
+    const inputUserId = useRef<HTMLInputElement>() as React.MutableRefObject<HTMLInputElement>;
 
     const [error,setError] = useState("");
     const [success,setSuccess] = useState("");
 
     const handleAddUser = () => {
+        console.log(inputUserId?.current.value);
+        inputUserId.current.focus()
+
         if(inputUserId.current?.value){
             HttpService.httpPut(`/championships/${id}/users`,{
                 owner: UserService.username(),
@@ -32,7 +35,7 @@ const OwnerPanel = ({id,owner}: {id: number,owner: string}) => {
                 <h3>
                 Agregar usuario al torneo
                 </h3>
-                <TextField required id="outlined-required" label="Id" placeholder="Id de Usuario" ref={inputUserId}/>
+                <TextField required id="outlined-required" label="Id" placeholder="Id de Usuario" inputRef={inputUserId} type="number" />
                 <Button variant="outlined" onClick={handleAddUser}>
                     Agregar usuario
                 </Button>
