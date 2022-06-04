@@ -2,13 +2,16 @@ package com.tacs.backend.controller
 
 import com.tacs.backend.DAO.ChampionshipDAO
 import com.tacs.backend.DAO.UserByChampionshipDAO
+import com.tacs.backend.entity.UpdatedScore
 import com.tacs.backend.exception.ChampionshipNotFoundException
 import com.tacs.backend.exception.UnknownUserException
 import com.tacs.backend.request.AddPointsRequest
+import com.tacs.backend.request.Language
 import com.tacs.backend.request.VisibilityType
 import com.tacs.backend.response.ChampionshipResponse
 import com.tacs.backend.response.GetChampionshipsResponse
 import com.tacs.backend.response.GetUserChampionship
+import netscape.javascript.JSObject
 import org.apache.commons.lang3.time.DateUtils
 import org.joda.time.DateTime
 import org.springframework.http.HttpStatus
@@ -51,6 +54,19 @@ class UserProfileController(private val championshipRepository: ChampionshipDAO,
             ResponseEntity("Points added successfully", HttpStatus.OK)
         } else {
             ResponseEntity("Points already added today", HttpStatus.OK)
+        }
+    }
+
+    @GetMapping("users/{id}/score")
+    fun getUserScore(@PathVariable id: String, @RequestParam language: Language): ResponseEntity<UpdatedScore>{
+        val idLanguage = language.ordinal
+        val userByChampionship = userByChampionshipDAO.findByUserByChampionshipIdIdLanguageAndUserByChampionshipIdIdUser(idLanguage, id.toLong())
+        if(userByChampionship.isEmpty()) throw  UnknownUserException("There isn't a registered user in expected championship")
+        val today = Date()
+        return if(userByChampionship.first().lastUpdateTime == null || !DateUtils.isSameDay(today, userByChampionship.first().lastUpdateTime)){
+            ResponseEntity(UpdatedScore(false), HttpStatus.OK)
+        } else {
+            ResponseEntity(UpdatedScore(true),HttpStatus.OK)
         }
     }
 

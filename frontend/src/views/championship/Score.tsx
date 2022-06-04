@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LANGUAGE } from "../../Interfaces/Language";
 import LanguageSelector from "../../components/LanguageSelector";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import {
-    Alert,
+  Alert,
   Container,
   Select,
   SelectChangeEvent,
@@ -27,9 +27,31 @@ const Score = () => {
     language: LANGUAGE.ES,
   });
   const [loading, setLoading] = useState(false);
-
+  const [updatedScore, setUpdatedScore] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  useEffect(() => {
+    const isScoreAlreadyUploaded = async () => {
+      try {
+        const alreadyUpdatedScore: boolean = await (
+          await HttpClient.httpGet(
+            `/users/${userService.id()}/score?language=${result.language}`
+          )
+        ).data.alreadyUpdatedScore;
+        console.log(alreadyUpdatedScore);
+        setUpdatedScore(alreadyUpdatedScore);
+      } catch (err) {
+        setSuccess("");
+        setError(
+          "No se ha encontrado ningun torneo con ese idioma en el que estes anotado"
+        );
+        return;
+      }
+    };
+    isScoreAlreadyUploaded();
+    setError("");
+  }, [result.language]);
 
   const handlePointsChange = (e: SelectChangeEvent<number>) => {
     setResult((prev) => {
@@ -47,14 +69,21 @@ const Score = () => {
   };
   const handleSend = async () => {
     try {
-      setLoading(true);
-      console.log("ID: ", userService.id());
-      await HttpClient.httpPost(`/users/${userService.id()}/score`, result);
-      setError("");
-      setSuccess("Tus puntos se cargaron correctamente");
+      if(!updatedScore){
+        setLoading(true);
+        console.log("ID: ", userService.id());
+        await HttpClient.httpPost(`/users/${userService.id()}/score`, result);
+        setError("");
+        setSuccess("Tus puntos se cargaron correctamente");
+      } else {
+          setSuccess("");
+          setError("Ya cargaste tus puntos hoy para ese lenguaje");
+      }
     } catch (error) {
       setSuccess("");
-      setError("No se ha encontrado ningun torneo con ese idioma en el que estes anotado!")
+      setError(
+        "No se ha encontrado ningun torneo con ese idioma en el que estes anotado!"
+      );
     } finally {
       setLoading(false);
     }
@@ -106,10 +135,15 @@ const Score = () => {
                 handleChange={handleLanguageChange}
               />
             </Stack>
-            
-            <Stack direction="row" spacing={2} sx={{ margin: "auto" }}>
-            {error && <Alert severity="error" sx={{margin: 1}}>{error}</Alert>}
-            {success && <Alert severity="success">{success}</Alert>}
+
+            <Stack direction="row" spacing={2} sx={{ margin: "auto",padding: 1 }}>
+              {error && (
+                <Alert severity="error" sx={{ margin: 1 }}>
+                  {error}
+                </Alert>
+              )}
+              {success && <Alert severity="success">{success}</Alert>}
+              {!error && updatedScore && <Alert severity="warning">Ya cargaste el puntaje de hoy</Alert>}
             </Stack>
 
             <Stack direction="row" spacing={2} sx={{ margin: "auto" }}>
