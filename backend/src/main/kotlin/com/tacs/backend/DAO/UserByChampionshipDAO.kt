@@ -16,4 +16,5 @@ interface UserByChampionshipDAO : JpaRepository<UserByChampionship, UserByChampi
     @Modifying
     @Query("update UserByChampionship uc set uc.score = :new_score, uc.lastUpdateTime = :new_update_time where uc.userByChampionshipId.idChampionship = :#{#idUserByChampionshipId.idChampionship} and uc.userByChampionshipId.idUser = :#{#idUserByChampionshipId.idUser} and uc.userByChampionshipId.idLanguage = :#{#languageId}")
     fun updateScore(@Param("new_score") newScore: Long, @Param("new_update_time")newUpdateTime: Date, idUserByChampionshipId: UserByChampionshipId, languageId: Int)
+    fun findByUserByChampionshipIdIdChampionshipOrderByScoreAsc(idChampionship: Long): List<UserByChampionship>
 }

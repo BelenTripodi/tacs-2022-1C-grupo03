@@ -1,8 +1,10 @@
-version: "3.9"
+version: "2.4"
 services:
   app:
     container_name: "app_backend"
-    build: ./backend
+    build:
+      context: .
+      dockerfile: Dockerfile
     depends_on:
       mysql:
         condition: service_healthy
@@ -32,17 +34,3 @@ services:
       MYSQL_ROOT_PASSWORD: "Mysql123"
     healthcheck:
       test: "exit 0"
-  tacsfront:
-    container_name: tacsfront
-    build: ./frontend
-    ports:
-      - 3000:3000
-    environment:
-      - CHOKIDAR_USEPOLLING=
-  bot-uwu:
-    build: ./wordle-bot
-    environment:
-      - ENV=prod
-    links:
-      - app
-  
