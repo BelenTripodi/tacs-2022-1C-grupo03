@@ -146,6 +146,7 @@ const CreateChampionship = () => {
             <DatePicker
               label="Fecha inicial"
               value={startDate}
+              minDate={new Date()}
               onChange={(newValue) => {
                 setStartDate(newValue);
               }}
@@ -158,6 +159,7 @@ const CreateChampionship = () => {
             <DatePicker
               label="Fecha de fin"
               value={finishDate}
+              minDate={startDate}
               onChange={(newValue) => {
                 setFinishDate(newValue);
               }}
