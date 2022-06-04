@@ -24,7 +24,7 @@ services:
     volumes:
       - ./schemas:/var/lib/mysql:rw
     ports:
-      - "3306:3306"
+      - "23306:3306"
     environment:
       MYSQL_DATABASE: "db_tacs_wordle"
       MYSQL_USER: "userdb"
