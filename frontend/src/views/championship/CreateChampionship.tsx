@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Alert,
   Button,
@@ -24,15 +24,34 @@ enum Languages {
   BOTH = "Ambos",
 }
 
+const yearFromNow = (date: Date): Date => {
+  const newDate = new Date(date.getTime());
+  newDate.setFullYear(date.getFullYear() + 1);
+  return newDate;
+};
+
+const weeksFromNow = (now: Date, weeks: number): Date => {
+  return new Date(now.getTime() + 1000 * 60 * 60 * 24 * weeks * 7);
+};
+
 const CreateChampionship = () => {
+  const today: Date = new Date();
+  const DEFAULT_DURATION_IN_WEEKS = 2;
   const [name, setName] = useState("");
   const [visibility, setVisibility] = useState(Visibility.PRIVATE);
   const [languages, setLanguages] = useState(Languages.SPANISH);
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [finishDate, setFinishDate] = useState<Date | null>(null);
+  const [startDate, setStartDate] = useState<Date | null>(today);
+  const [finishDate, setFinishDate] = useState<Date | null>(
+    weeksFromNow(today, DEFAULT_DURATION_IN_WEEKS)
+  );
   const userName = useContext(UserContext).user.name;
-  const [error,setError] = useState("");
-  const [success,setSuccess] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  useEffect(() => {
+    validateForm();
+  });
 
   const onVisibilityChange = (event: SelectChangeEvent) => {
     setVisibility(event.target.value as Visibility);
@@ -46,8 +65,19 @@ const CreateChampionship = () => {
     setLanguages(event.target.value as Languages);
   };
 
+  const validateForm = () => {
+    const isValid =
+      name !== null &&
+      name !== "" &&
+      startDate !== null &&
+      finishDate !== null &&
+      visibility !== null &&
+      languages !== null &&
+      userName !== null;
+    setIsFormValid(isValid);
+  };
+
   const createChampionship = () => {
-    console.log(name, visibility, languages, startDate, finishDate, userName);
     const requestLanguages =
       languages === Languages.BOTH
         ? ["SPANISH", "ENGLISH"]
@@ -73,6 +103,9 @@ const CreateChampionship = () => {
         setFinishDate(null);
         setError("");
         setSuccess("Torneo creado exitosamente");
+        setTimeout(() => {
+          setSuccess("");
+        }, 3000);
       })
       .catch((err) => {
         setSuccess("");
@@ -146,9 +179,13 @@ const CreateChampionship = () => {
             <DatePicker
               label="Fecha inicial"
               value={startDate}
+              minDate={today}
+              maxDate={yearFromNow(today)}
               onChange={(newValue) => {
                 setStartDate(newValue);
+                setFinishDate(weeksFromNow(newValue!, DEFAULT_DURATION_IN_WEEKS));
               }}
+              inputFormat="dd/MM/yyyy"
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
@@ -158,9 +195,13 @@ const CreateChampionship = () => {
             <DatePicker
               label="Fecha de fin"
               value={finishDate}
+              minDate={startDate}
+              maxDate={yearFromNow(startDate!)}
               onChange={(newValue) => {
                 setFinishDate(newValue);
               }}
+              disabled={startDate === null}
+              inputFormat="dd/MM/yyyy"
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
@@ -175,9 +216,17 @@ const CreateChampionship = () => {
         }}
       >
         <FormControl fullWidth>
-          {error && <Alert severity="error" sx={{margin: 1}}>{error}</Alert>}
+          {error && (
+            <Alert severity="error" sx={{ margin: 1 }}>
+              {error}
+            </Alert>
+          )}
           {success && <Alert severity="success">{success}</Alert>}
-          <Button variant="contained" onClick={createChampionship}>
+          <Button
+            variant="contained"
+            onClick={createChampionship}
+            disabled={!isFormValid}
+          >
             Crear
           </Button>
         </FormControl>
