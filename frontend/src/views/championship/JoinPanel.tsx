@@ -10,8 +10,7 @@ const JoinPanel = ({id,owner}: {id: number,owner: string}) => {
 
     const handleJoin = () => {
         HttpService.httpPut(`/championships/${id}/users`,{
-            owner: owner,
-            idUser: UserService.id()
+            username: UserService.username()
         }).then(() => {
             setSuccess("Se ha unido exitosamente");
         }).catch((err) => {

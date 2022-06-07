@@ -36,7 +36,7 @@ const Score = () => {
       try {
         const alreadyUpdatedScore: boolean = await (
           await HttpClient.httpGet(
-            `/users/${userService.id()}/score/updated?language=${result.language}`
+            `/users/${userService.username()}/score/updated?language=${result.language}`
           )
         ).data.alreadyUpdatedScore;
         console.log(alreadyUpdatedScore);
@@ -71,8 +71,7 @@ const Score = () => {
     try {
       if(!updatedScore){
         setLoading(true);
-        console.log("ID: ", userService.id());
-        await HttpClient.httpPost(`/users/${userService.id()}/score`, result);
+        await HttpClient.httpPost(`/users/${userService.username()}/score`, result);
         setError("");
         setSuccess("Tus puntos se cargaron correctamente");
       } else {
