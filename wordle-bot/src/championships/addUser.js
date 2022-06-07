@@ -1,3 +1,5 @@
+const { secretReply } = require('../utils')
+
 module.exports = {
     addUser: async (interaction) => {
         try {

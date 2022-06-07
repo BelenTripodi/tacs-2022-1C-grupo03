@@ -30,7 +30,19 @@ const buildChampionshipsString = (championships) => {
     return str
 }
 
+const buildScoresString = (scores) => {
+    let str = ''
+    for (let i = 0; i < scores.length; i++) {
+        const elem = scores[i]
+        const newStr = `
+            User: ${elem.user} - Score: ${elem.score}`
+        str += newStr
+    }
+    return str
+}
+
 module.exports = {
     secretReply,
     buildChampionshipsString,
+    buildScoresString,
 }
