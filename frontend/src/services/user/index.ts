@@ -21,9 +21,9 @@ class UserService{
         return this.userInfo().username;
     }
 
-    public id(){
-        return Number(this.userInfo().id);
-    }
+    // public id(){
+    //     return Number(this.userInfo().id);
+    // }
 
     public hasToken(): boolean{
         return localStorage.getItem("jwt") !== undefined;

@@ -16,7 +16,7 @@ data class ChampionshipResponse(
     val visibility: VisibilityType,
     val startDate: Date,
     val finishDate: Date,
-    val idOwner: Long
+    val ownerUsername: String
 )
 
 data class ChampionshipScoreResponse(

@@ -20,11 +20,6 @@ const ChampionshipById = () => {
       const championship = (await (
         await HttpService.httpGet(`/championships/${id}`)
       ).data) as IChampionship;
-      console.log(championship);
-      console.log(UserService.id());
-      if (championship.idOwner === UserService.id()) {
-        console.log("Usuario owner");
-      }
       setChampionship(championship);
     };
     consumeAPI();
@@ -45,15 +40,15 @@ const ChampionshipById = () => {
         </Grid>
       )}
       {championship &&
-        (championship?.idOwner === UserService.id() ? (
+        (championship?.ownerUsername === UserService.username() ? (
           <OwnerPanel
             id={championship.idChampionship}
-            owner={championship.idOwner.toString()}
+            owner={championship.ownerUsername.toString()}
           />
         ) : (
           <JoinPanel
             id={championship.idChampionship}
-            owner={championship.idOwner.toString()}
+            owner={championship.ownerUsername.toString()}
           />
         ))}
     </Paper>

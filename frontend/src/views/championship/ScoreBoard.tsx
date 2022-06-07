@@ -21,7 +21,7 @@ const ScoreBoard = ({id}: {id: string}) => {
         }
 
         consumeApi();
-    })
+    },[])
 
   return (
     <>
