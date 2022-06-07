@@ -5,5 +5,5 @@ export default interface IChampionship{
     startDate: string;
     finishDate: string;
     idChampionship: number;
-    idOwner: number;
+    ownerUsername: number;
 }

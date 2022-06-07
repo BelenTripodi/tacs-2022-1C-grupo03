@@ -12,4 +12,4 @@ enum class Language(val type: String = "") {
 
 }
 
-data class AddUserToChampionshipRequest(val idUser: Long)
+data class AddUserToChampionshipRequest(val username: String)

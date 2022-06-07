@@ -1,0 +1,36 @@
+version: "2.4"
+services:
+  app:
+    container_name: "app_backend"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_JSON: '{
+          "spring.datasource.url"  : "jdbc:mysql://mysql:3306/db_tacs_wordle?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&allowPublicKeyRetrieval=true&useSSL=false",
+          "spring.datasource.username" : "root",
+          "spring.datasource.password" : "Mysql123",
+          "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
+          "spring.jpa.hibernate.ddl-auto" : "update",
+          "spring.session.jdbc.initialize-schema": "always"
+        }'
+    ports:
+      - "8080:8080"
+  mysql:
+    container_name: mysql
+    restart: always
+    image: mysql:8.0.29
+    volumes:
+      - ./schemas:/var/lib/mysql:rw
+    ports:
+      - "23306:3306"
+    environment:
+      MYSQL_DATABASE: "db_tacs_wordle"
+      MYSQL_USER: "userdb"
+      MYSQL_PASSWORD: "tacs123"
+      MYSQL_ROOT_PASSWORD: "Mysql123"
+    healthcheck:
+      test: "exit 0"
