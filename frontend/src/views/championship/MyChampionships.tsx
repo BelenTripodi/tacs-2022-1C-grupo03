@@ -3,9 +3,8 @@ import HttpService from './../../services/client/index';
 
 import UserService from "../../services/user"
 import IChampionship from "../../Interfaces/Championship";
-import Championship from './Championship';
 import UserContext from './../../context/UserContext';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Grid } from "@mui/material";
 import ItemChampionship from "./ItemChampionship";
 
@@ -19,8 +18,8 @@ const MyChampionships = () => {
 
     useEffect(() => {
         const consumeAPI = async () => {
-            const privates = await HttpService.httpGet(`/users/${UserService.id()}/championships?type=PRIVATE`);
-            const publics = await HttpService.httpGet(`/users/${UserService.id()}/championships?type=PUBLIC`);
+            const privates = await HttpService.httpGet(`/users/${UserService.username()}/championships?type=PRIVATE`);
+            const publics = await HttpService.httpGet(`/users/${UserService.username()}/championships?type=PUBLIC`);
             
             setChampionships([...privates.data.championships,...publics.data.championships]);     
         }
