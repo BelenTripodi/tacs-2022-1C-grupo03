@@ -8,6 +8,7 @@ import com.tacs.backend.entity.User
 import com.tacs.backend.entity.UserByChampionship
 import com.tacs.backend.entity.UserByChampionshipId
 import com.tacs.backend.exception.ChampionshipNotFoundException
+import com.tacs.backend.exception.UnknownUserException
 import com.tacs.backend.request.AddUserToChampionshipRequest
 import com.tacs.backend.request.CreateChampionshipRequest
 import com.tacs.backend.request.VisibilityType
@@ -34,6 +35,8 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
     @PutMapping("championships/{idChampionship}/users")
     fun addUser(@PathVariable idChampionship: Long, @RequestBody request: AddUserToChampionshipRequest): ResponseEntity<String> {
         val foundChampionships = championshipRepository.findByIdChampionship(idChampionship)
+        val username = userRepository.findByUsername(request.username)
+        if(username.isEmpty()) { throw UnknownUserException("Username not found") }
         return if (foundChampionships.isNotEmpty()) {
             val championship = foundChampionships.first()
             championship.languages.forEach { userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(championship.idChampionship, request.username, it.ordinal),null,0)) }
