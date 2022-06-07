@@ -51,7 +51,7 @@ const Score = () => {
     };
     isScoreAlreadyUploaded();
     setError("");
-  }, [result.language]);
+  }, []);
 
   const handlePointsChange = (e: SelectChangeEvent<number>) => {
     setResult((prev) => {
