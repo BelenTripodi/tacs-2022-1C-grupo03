@@ -99,8 +99,8 @@ const CreateChampionship = () => {
         setName("");
         setVisibility(Visibility.PRIVATE);
         setLanguages(Languages.SPANISH);
-        setStartDate(null);
-        setFinishDate(null);
+        setStartDate(today);
+        setFinishDate(weeksFromNow(today, DEFAULT_DURATION_IN_WEEKS));
         setError("");
         setSuccess("Torneo creado exitosamente");
         setTimeout(() => {
@@ -183,7 +183,9 @@ const CreateChampionship = () => {
               maxDate={yearFromNow(today)}
               onChange={(newValue) => {
                 setStartDate(newValue);
-                setFinishDate(weeksFromNow(newValue!, DEFAULT_DURATION_IN_WEEKS));
+                setFinishDate(
+                  weeksFromNow(newValue!, DEFAULT_DURATION_IN_WEEKS)
+                );
               }}
               inputFormat="dd/MM/yyyy"
               renderInput={(params) => <TextField {...params} />}
