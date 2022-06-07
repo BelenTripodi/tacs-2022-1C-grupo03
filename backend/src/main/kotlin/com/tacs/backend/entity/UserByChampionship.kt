@@ -15,4 +15,4 @@ class UserByChampionship(
     var score: Long)
 
 @Embeddable
-data class UserByChampionshipId(var idChampionship: Long, var idUser: Long, var idLanguage: Int): java.io.Serializable
+data class UserByChampionshipId(var idChampionship: Long, var username: String, var idLanguage: Int): java.io.Serializable
