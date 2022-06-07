@@ -35,8 +35,8 @@ module.exports = {
                 return
             }
 
-            const response = await interaction.user.axios.post(
-                `/users/${interaction.user.id}/score`,
+            await interaction.user.axios.post(
+                `/users/${interaction.user.appUsername}/score`,
                 {
                     points: score,
                     language,

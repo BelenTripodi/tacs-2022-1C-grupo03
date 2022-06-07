@@ -108,14 +108,6 @@ module.exports = {
                         .setDescription('Id del torneo')
                         .setRequired(true)
                 )
-                .addStringOption(
-                    // probablemente esta opcion se saque dsp porque no tiene mucho sentido
-                    (option) =>
-                        option
-                            .setName('owner')
-                            .setDescription('Owner  del torneo')
-                            .setRequired(true)
-                )
         )
         .addSubcommand((subcommand) =>
             subcommand
@@ -125,8 +117,8 @@ module.exports = {
                 )
                 .addStringOption((option) =>
                     option
-                        .setName('userid')
-                        .setDescription('Id del usuario a agregar')
+                        .setName('username')
+                        .setDescription('Username del usuario a agregar')
                         .setRequired(true)
                 )
                 .addStringOption((option) =>

@@ -5,7 +5,7 @@ module.exports = {
         try {
             const type = interaction.options.getString('type')
             const response = await interaction.user.axios.get(
-                `/users/${interaction.user.id}/championships`,
+                `/users/${interaction.user.appUsername}/championships`,
                 {
                     params: { type },
                 }
