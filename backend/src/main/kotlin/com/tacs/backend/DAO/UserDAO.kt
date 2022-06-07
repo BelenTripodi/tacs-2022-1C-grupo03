@@ -6,7 +6,6 @@ import java.util.*
 
 interface UserDAO : JpaRepository<User,Long> {
 
-    fun findByUsername(name: String?): List<User>
-    fun findByIdUser(idUser: Long): Optional<User>
+    fun findByUsername(name: String): List<User>
 
 }
