@@ -25,5 +25,5 @@ data class Championship(
     @Column(columnDefinition="DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
     val finishDate: Date,
-    val idOwner: Long,
+    val ownerUsername: String,
 )

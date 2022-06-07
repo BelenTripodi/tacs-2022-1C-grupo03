@@ -26,7 +26,7 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
         val ownerUser = userRepository.findByUsername(request.owner).first()
         val newChampionship = championshipRepository.save(createChampionshipEntity(request, ownerUser))
         newChampionship.languages.forEach { language ->
-            userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(newChampionship.idChampionship, ownerUser.idUser, language.ordinal), null,0))
+            userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(newChampionship.idChampionship, ownerUser.username, language.ordinal), null,0))
         }
         return ResponseEntity(CreateChampionshipsResponse(newChampionship.idChampionship, newChampionship.name), HttpStatus.OK)
     }
@@ -36,7 +36,7 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
         val foundChampionships = championshipRepository.findByIdChampionship(idChampionship)
         return if (foundChampionships.isNotEmpty()) {
             val championship = foundChampionships.first()
-            championship.languages.forEach { userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(championship.idChampionship, request.idUser, it.ordinal),null,0)) }
+            championship.languages.forEach { userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(championship.idChampionship, request.username, it.ordinal),null,0)) }
             ResponseEntity("Successful creation", HttpStatus.OK)
         } else {
             throw ChampionshipNotFoundException(idChampionship)
@@ -75,8 +75,8 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
         return ChampionshipScoreResponse(
             idChampionship = id,
             scores = usersByChampionship.map {
-                val username = userRepository.findByIdUser(it.userByChampionshipId.idUser)
-                ScoreByUser(it.score, username.get().username)
+                val username = userRepository.findByUsername(it.userByChampionshipId.username).first().username
+                ScoreByUser(it.score, username)
             }
         )
     }
@@ -90,7 +90,7 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
             startDate = championship.startDate,
             visibility = championship.visibility,
             languages = championship.languages,
-            idOwner = championship.idOwner
+            ownerUsername = championship.ownerUsername
         )
     }
 
@@ -101,7 +101,7 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
             startDate = request.startDate.toDate(),
             finishDate = request.finishDate.toDate(),
             languages = request.languages,
-            idOwner = ownerUser.idUser
+            ownerUsername = ownerUser.username
         )
     }
 }

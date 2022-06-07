@@ -10,11 +10,11 @@ import java.util.*
 import javax.transaction.Transactional
 
 interface UserByChampionshipDAO : JpaRepository<UserByChampionship, UserByChampionshipId> {
-    fun findByUserByChampionshipIdIdUser(idUser: Long) : List<UserByChampionship>
-    fun findByUserByChampionshipIdIdLanguageAndUserByChampionshipIdIdUser(idLanguage: Int, idUser: Long) : List<UserByChampionship>
+    fun findByUserByChampionshipIdUsername(username: String) : List<UserByChampionship>
+    fun findByUserByChampionshipIdIdLanguageAndUserByChampionshipIdUsername(idLanguage: Int, username: String) : List<UserByChampionship>
     @Transactional
     @Modifying
-    @Query("update UserByChampionship uc set uc.score = :new_score, uc.lastUpdateTime = :new_update_time where uc.userByChampionshipId.idChampionship = :#{#idUserByChampionshipId.idChampionship} and uc.userByChampionshipId.idUser = :#{#idUserByChampionshipId.idUser} and uc.userByChampionshipId.idLanguage = :#{#languageId}")
-    fun updateScore(@Param("new_score") newScore: Long, @Param("new_update_time")newUpdateTime: Date, idUserByChampionshipId: UserByChampionshipId, languageId: Int)
+    @Query("update UserByChampionship uc set uc.score = :new_score, uc.lastUpdateTime = :new_update_time where uc.userByChampionshipId.idChampionship = :#{#idUserByChampionshipId.idChampionship} and uc.userByChampionshipId.username = :#{#idUserByChampionshipId.username} and uc.userByChampionshipId.idLanguage = :#{#languageId}")
+    fun updateScore(@Param("new_score") newScore: Long, @Param("new_update_time") newUpdateTime: Date, idUserByChampionshipId: UserByChampionshipId, languageId: Int)
     fun findByUserByChampionshipIdIdChampionshipOrderByScoreAsc(idChampionship: Long): List<UserByChampionship>
 }
