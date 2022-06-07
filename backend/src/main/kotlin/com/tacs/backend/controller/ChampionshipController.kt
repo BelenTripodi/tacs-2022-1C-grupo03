@@ -20,26 +20,56 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping
 @CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
-class ChampionshipController (private val championshipRepository: ChampionshipDAO, private val userRepository: UserDAO, private val userByChampionshipRepository: UserByChampionshipDAO) {
+class ChampionshipController(
+    private val championshipRepository: ChampionshipDAO,
+    private val userRepository: UserDAO,
+    private val userByChampionshipRepository: UserByChampionshipDAO
+) {
 
     @PostMapping("/championships")
     fun createChampionship(@RequestBody request: CreateChampionshipRequest): ResponseEntity<CreateChampionshipsResponse> {
         val ownerUser = userRepository.findByUsername(request.owner).first()
         val newChampionship = championshipRepository.save(createChampionshipEntity(request, ownerUser))
         newChampionship.languages.forEach { language ->
-            userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(newChampionship.idChampionship, ownerUser.username, language.ordinal), null,0))
+            userByChampionshipRepository.save(
+                UserByChampionship(
+                    UserByChampionshipId(
+                        newChampionship.idChampionship,
+                        ownerUser.username,
+                        language.ordinal
+                    ), null, 0
+                )
+            )
         }
-        return ResponseEntity(CreateChampionshipsResponse(newChampionship.idChampionship, newChampionship.name), HttpStatus.OK)
+        return ResponseEntity(
+            CreateChampionshipsResponse(newChampionship.idChampionship, newChampionship.name),
+            HttpStatus.OK
+        )
     }
 
     @PutMapping("championships/{idChampionship}/users")
-    fun addUser(@PathVariable idChampionship: Long, @RequestBody request: AddUserToChampionshipRequest): ResponseEntity<String> {
+    fun addUser(
+        @PathVariable idChampionship: Long,
+        @RequestBody request: AddUserToChampionshipRequest
+    ): ResponseEntity<String> {
         val foundChampionships = championshipRepository.findByIdChampionship(idChampionship)
         val username = userRepository.findByUsername(request.username)
-        if(username.isEmpty()) { throw UnknownUserException("Username not found") }
+        if (username.isEmpty()) {
+            throw UnknownUserException("Username not found")
+        }
         return if (foundChampionships.isNotEmpty()) {
             val championship = foundChampionships.first()
-            championship.languages.forEach { userByChampionshipRepository.save(UserByChampionship(UserByChampionshipId(championship.idChampionship, request.username, it.ordinal),null,0)) }
+            championship.languages.forEach {
+                userByChampionshipRepository.save(
+                    UserByChampionship(
+                        UserByChampionshipId(
+                            championship.idChampionship,
+                            request.username,
+                            it.ordinal
+                        ), null, 0
+                    )
+                )
+            }
             ResponseEntity("Successful creation", HttpStatus.OK)
         } else {
             throw ChampionshipNotFoundException(idChampionship)
@@ -49,7 +79,8 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
 
     @GetMapping("championships")
     fun championshipsByType(): ResponseEntity<GetChampionshipsResponse> {
-        val resultChampionships = championshipRepository.findByVisibility(VisibilityType.PUBLIC).map { transformChampionshipResponse(it) }
+        val resultChampionships =
+            championshipRepository.findByVisibility(VisibilityType.PUBLIC).map { transformChampionshipResponse(it) }
         return ResponseEntity(GetChampionshipsResponse(resultChampionships), HttpStatus.OK)
     }
 
@@ -66,21 +97,26 @@ class ChampionshipController (private val championshipRepository: ChampionshipDA
 
     @GetMapping("championships/{id}/score")
     fun scoreChampionshipById(@PathVariable id: Long): ResponseEntity<ChampionshipScoreResponse> {
-        val usersByChampionship = userByChampionshipRepository.findByUserByChampionshipIdIdChampionshipOrderByScoreAsc(id)
+        val usersByChampionship =
+            userByChampionshipRepository.findByUserByChampionshipIdIdChampionshipOrderByScoreAsc(id)
         return if (usersByChampionship.isNotEmpty()) {
-            ResponseEntity(transformChampionshipScoreResponse(usersByChampionship, id) , HttpStatus.OK)
+            ResponseEntity(transformChampionshipScoreResponse(usersByChampionship, id), HttpStatus.OK)
         } else {
             throw ChampionshipNotFoundException(id)
         }
     }
 
-    private fun transformChampionshipScoreResponse(usersByChampionship: List<UserByChampionship>, id: Long): ChampionshipScoreResponse{
+    private fun transformChampionshipScoreResponse(
+        usersByChampionship: List<UserByChampionship>,
+        id: Long
+    ): ChampionshipScoreResponse {
         return ChampionshipScoreResponse(
             idChampionship = id,
-            scores = usersByChampionship.map {
-                val username = userRepository.findByUsername(it.userByChampionshipId.username).first().username
-                ScoreByUser(it.score, username)
-            }
+            scores = usersByChampionship.groupBy { it.userByChampionshipId.username }
+                .map { (user, userScores) ->
+                    val username = userRepository.findByUsername(user).first().username
+                    ScoreByUser(userScores.sumOf { it.score }, username)
+                }
         )
     }
 
