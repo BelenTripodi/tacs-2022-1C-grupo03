@@ -32,22 +32,14 @@ const buildChampionshipsString = (championships) => {
 
 const buildScoresString = (scores) => {
     let str = ''
-    scores = scores.sort()
-    console.log(scores)
-    for (let i = 0; i < scores.length; i++) {
-        const elem = scores[i]
+    const sorted = scores.sort((a, b) => b.score - a.score)
+    for (let i = 0; i < sorted.length; i++) {
+        const elem = sorted[i]
         const newStr = `
             User: ${elem.user} - Score: ${elem.score}`
         str += newStr
     }
     return str
-}
-
-function compareScores(a, b) {
-    if (a.score > b.score) return 1
-    if (b.score > a.score) return -1
-
-    return 0
 }
 
 module.exports = {
