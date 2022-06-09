@@ -44,7 +44,7 @@ module.exports = {
             // respuesta al usuario
             await secretReply(
                 interaction,
-                JSON.stringify(response.data.possibleWords)
+                response.data.possibleWords.join('\n')
             )
 
             await interaction.followUp({

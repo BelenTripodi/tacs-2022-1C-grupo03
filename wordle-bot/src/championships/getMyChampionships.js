@@ -11,12 +11,9 @@ module.exports = {
                 }
             )
 
-            const data = buildChampionshipsString(response.data.championships)
-            const msg = `Active ${interaction.options.getString(
-                'type'
-            )} championships:\n ${data}`
+            const msg = buildChampionshipsString(response.data.championships)
 
-            await secretReply(interaction, msg)
+            await secretReply(interaction, 'My championships: \n' + msg)
         } catch (error) {
             console.log('Error: error obteniendo torneos', error)
             await secretReply(interaction, 'Error obteniendo torneos')
