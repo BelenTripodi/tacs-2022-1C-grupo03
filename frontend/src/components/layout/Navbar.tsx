@@ -15,7 +15,7 @@ import UserContext from './../../context/UserContext';
 
 const pages = [
   { name: "Diccionario", route: "dictionary" },
-  { name: "Torneos", route: "championship" },
+  { name: "Torneos", route: "championship/personal" },
   { name: "Helper", route: "helper" },
 ];
 
