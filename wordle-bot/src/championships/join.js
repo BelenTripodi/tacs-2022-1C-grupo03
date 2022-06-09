@@ -2,10 +2,9 @@ module.exports = {
     join: async (interaction) => {
         try {
             const championshipId = interaction.options.getString('id')
-            const owner = interaction.options.getString('owner')
             await interaction.user.axios.put(
                 `/championships/${championshipId}/users`,
-                { idUser: interaction.user.id, owner }
+                { username: interaction.user.appUsername }
             )
 
             await interaction.reply(

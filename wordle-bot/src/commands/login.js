@@ -39,12 +39,7 @@ module.exports = {
             // me guardo el jwt y creo la instancia de axios para que el usuario haga request/post con el header incluido
             interaction.user.jwt = response.data.jwt
             const decoded = jwt_decode(interaction.user.jwt)
-            interaction.user.id = decoded.jti
             interaction.user.appUsername = decoded.sub
-
-            console.log(
-                `JWT: ${interaction.user.jwt}; ID: ${interaction.user.id}`
-            )
 
             interaction.user.axios = axios.create({
                 baseURL,

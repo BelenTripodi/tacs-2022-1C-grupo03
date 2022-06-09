@@ -9,6 +9,7 @@ BOT_TOKEN=
 BOT_SECRET=
 BOT_CLIENT_ID=
 BOT_GUILD_ID=
+GENERAL_CHANNEL_ID=
 BACKEND_HOST=
 BACKEND_PORT=
 ENV=
@@ -72,7 +73,7 @@ Se utiliza un comando base para acceder a todas las funcionalidades de los torne
 #### Subcomandos
 
 1. /championships all : obtiene todos los torneos publicos activos
-2. /championships incripted <type> : obtiene todos los torneos de tipo 'type' en los cuales el usuario esta inscripto
+2. /championships mychampionships <type> : obtiene todos los torneos de tipo 'type' en los cuales el usuario esta inscripto
 
 *Restricciones*:
 Type: ('public' , 'private')
@@ -86,4 +87,4 @@ Languages: ('english', 'spanish', 'both')
 Start && Finish: Fecha en el siguiente formato: **xx/xx/xxxx**
 
 5. /championships join <id> <owner> : te permite unirte a un torneo determinado. 'id' es el id del torneo y 'owner' es el creador de ese torneo.
-6. /championships adduser <userid> <championshipid> : permite agregar a alguien a un torneo, siempre y cuando seas el owner
+6. /championships adduser <user> <championshipid> : permite agregar a alguien a un torneo, siempre y cuando seas el owner
