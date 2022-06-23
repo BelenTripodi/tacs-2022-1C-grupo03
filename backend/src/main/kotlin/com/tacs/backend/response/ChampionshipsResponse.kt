@@ -5,6 +5,7 @@ import com.tacs.backend.request.VisibilityType
 import java.util.*
 
 data class CreateChampionshipsResponse(val id: Long, val name: String)
+data class AddUserToChampionship(val message: String)
 
 data class GetChampionshipsResponse(val championships: List<ChampionshipResponse>)
 data class GetUserChampionship(val championship: ChampionshipResponse, val score: Long)
