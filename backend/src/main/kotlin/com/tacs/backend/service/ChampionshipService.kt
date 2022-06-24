@@ -14,6 +14,7 @@ import com.tacs.backend.request.VisibilityType
 import com.tacs.backend.response.ChampionshipResponse
 import com.tacs.backend.response.ChampionshipScoreResponse
 import com.tacs.backend.response.ScoreByUser
+import com.tacs.backend.utils.getChampionshipResponse
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -48,12 +49,12 @@ class ChampionshipService(
 
     fun findByType(): List<ChampionshipResponse> =
         championshipRepository.findByVisibility(VisibilityType.PUBLIC)
-            .map { transformChampionshipResponse(it) }
+            .map { getChampionshipResponse(it) }
 
     fun findById(championshipId: Long): ChampionshipResponse {
         val foundChampionships = championshipRepository.findByIdChampionship(championshipId)
         if (foundChampionships.isNotEmpty()) {
-            return transformChampionshipResponse(foundChampionships.first())
+            return getChampionshipResponse(foundChampionships.first())
         } else {
             throw ChampionshipNotFoundException(championshipId)
         }
@@ -97,19 +98,6 @@ class ChampionshipService(
                     val username = userRepository.findByUsername(user).first().username
                     ScoreByUser(userScores.sumOf { it.score }, username)
                 }
-        )
-    }
-
-
-    private fun transformChampionshipResponse(championship: Championship): ChampionshipResponse {
-        return ChampionshipResponse(
-            idChampionship = championship.idChampionship,
-            name = championship.name,
-            finishDate = championship.finishDate,
-            startDate = championship.startDate,
-            visibility = championship.visibility,
-            languages = championship.languages,
-            ownerUsername = championship.ownerUsername
         )
     }
 
